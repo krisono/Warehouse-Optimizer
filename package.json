@@ -1,27 +1,45 @@
 {
-  "name": "warehouse-optimizer",
-  "version": "0.1.0",
+  "name": "warehouse-optimizer-pro",
+  "version": "1.0.0",
   "private": true,
+  "description": "Advanced AI-powered warehouse optimization platform with intelligent routing and task management",
+  "keywords": [
+    "warehouse",
+    "optimization",
+    "logistics",
+    "ai",
+    "automation",
+    "route-optimization",
+    "task-management"
+  ],
+  "homepage": "https://github.com/krisono/Warehouse-Optimizer",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/krisono/Warehouse-Optimizer.git"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
+    "lint:fix": "eslint . --ext .ts,.tsx,.js,.jsx --fix",
+    "type-check": "tsc --noEmit"
   },
   "dependencies": {
+    "lucide-react": "^0.552.0",
+    "next": "16.0.1",
     "react": "19.2.0",
-    "react-dom": "19.2.0",
-    "next": "16.0.1"
+    "react-dom": "19.2.0"
   },
   "devDependencies": {
-    "babel-plugin-react-compiler": "1.0.0",
-    "typescript": "^5",
+    "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "@tailwindcss/postcss": "^4",
-    "tailwindcss": "^4",
+    "babel-plugin-react-compiler": "1.0.0",
     "eslint": "^9",
-    "eslint-config-next": "16.0.1"
+    "eslint-config-next": "16.0.1",
+    "tailwindcss": "^4",
+    "typescript": "^5"
   }
 }
