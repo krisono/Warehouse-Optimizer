@@ -4,135 +4,73 @@ import { useState } from "react";
 import {
   ArrowLeft,
   Settings,
-  User,
-  Bell,
-  Database,
   Palette,
   Save,
   RefreshCw,
+  Moon,
+  Sun,
 } from "lucide-react";
 import Link from "next/link";
+import { useTheme } from "@/context/ThemeContext";
 
 export default function SettingsPage() {
-  const [activeTab, setActiveTab] = useState("general");
-  const [settings, setSettings] = useState({
-    general: {
-      companyName: "Warehouse-Optimizer",
-      timeZone: "UTC-8 (Pacific)",
-      dateFormat: "MM/DD/YYYY",
-      language: "English",
-      refreshInterval: 30,
-    },
-    notifications: {
-      emailAlerts: true,
-      pushNotifications: true,
-      taskAssignments: true,
-      systemMaintenance: false,
-      performanceReports: true,
-      criticalAlerts: true,
-    },
-    users: {
-      maxUsers: 50,
-      sessionTimeout: 120,
-      passwordPolicy: "strong",
-      twoFactorAuth: true,
-      ssoEnabled: false,
-    },
-    system: {
-      autoBackup: true,
-      backupFrequency: "daily",
-      dataRetention: 365,
-      performanceMode: "balanced",
-      debugMode: false,
-      maintenanceWindow: "02:00-04:00",
-    },
-    appearance: {
-      theme: "light",
-      primaryColor: "blue",
-      compactMode: false,
-      animations: true,
-      highContrast: false,
-    },
-  });
-
   const [saving, setSaving] = useState(false);
+  const { 
+    theme, 
+    primaryColor, 
+    compactMode, 
+    animations, 
+    highContrast, 
+    setTheme, 
+    setPrimaryColor, 
+    setCompactMode, 
+    setAnimations, 
+    setHighContrast,
+    resetToDefaults 
+  } = useTheme();
 
   const handleSave = async () => {
     setSaving(true);
     await new Promise((resolve) => setTimeout(resolve, 1500));
     setSaving(false);
-    alert("Settings saved successfully!");
+    alert("Settings saved successfully! Your preferences are now active.");
   };
 
-  const handleReset = () => {
-    if (
-      confirm("Are you sure you want to reset all settings to default values?")
-    ) {
-      alert("Settings reset to defaults.");
-    }
-  };
-
-  const updateSetting = (category: string, key: string, value: string | number | boolean) => {
-    setSettings((prev) => ({
-      ...prev,
-      [category]: {
-        ...prev[category as keyof typeof prev],
-        [key]: value,
-      },
-    }));
-  };
-
-  const tabs = [
-    { id: "general", label: "General", icon: Settings },
-    { id: "notifications", label: "Notifications", icon: Bell },
-    { id: "users", label: "User Management", icon: User },
-    { id: "system", label: "System", icon: Database },
-    { id: "appearance", label: "Appearance", icon: Palette },
+  const colorOptions = [
+    { name: "Blue", value: "blue" },
+    { name: "Green", value: "green" },
+    { name: "Purple", value: "purple" },
+    { name: "Orange", value: "orange" },
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
-      {/* Header */}
-      <nav className="bg-white shadow-lg border-b border-slate-200">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-gray-900 dark:to-gray-800">
+      <nav className="bg-card border-b border-custom shadow-lg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
+          <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-4">
               <Link
                 href="/"
-                className="flex items-center space-x-2 text-blue-600 hover:text-blue-700"
+                className="flex items-center space-x-2 text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100"
               >
                 <ArrowLeft className="h-5 w-5" />
-                <span className="text-sm font-medium">Back to Dashboard</span>
+                <span className="font-medium">Back to Dashboard</span>
               </Link>
-              <div className="h-6 w-px bg-slate-300"></div>
-              <div className="flex items-center space-x-3">
-                <div className="p-2 bg-slate-600 rounded-lg">
-                  <Settings className="h-6 w-6 text-white" />
-                </div>
-                <div>
-                  <h1 className="text-xl font-bold text-slate-900">
-                    System Settings
-                  </h1>
-                  <p className="text-xs text-slate-500">
-                    Configure application preferences
-                  </p>
-                </div>
-              </div>
             </div>
-            <div className="flex items-center space-x-3">
-              <button
-                onClick={handleReset}
-                className="px-4 py-2 bg-red-600 text-white text-sm font-medium rounded-lg hover:bg-red-700 transition-colors flex items-center space-x-2"
-              >
-                <RefreshCw className="h-4 w-4" />
-                <span>Reset</span>
-              </button>
+            <h1 className="text-xl font-bold text-slate-900 dark:text-slate-100">
+              System Settings
+            </h1>
+            <div className="flex items-center space-x-4">
               <button
                 onClick={handleSave}
                 disabled={saving}
-                className="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2 disabled:opacity-50"
+                className="flex items-center space-x-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-hover disabled:opacity-50 transition-colors"
               >
-                <Save className="h-4 w-4" />
+                {saving ? (
+                  <RefreshCw className="h-4 w-4 animate-spin" />
+                ) : (
+                  <Save className="h-4 w-4" />
+                )}
                 <span>{saving ? "Saving..." : "Save Changes"}</span>
               </button>
             </div>
@@ -140,498 +78,152 @@ export default function SettingsPage() {
         </div>
       </nav>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-          {/* Settings Navigation */}
-          <div className="lg:col-span-1">
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-4">
-              <nav className="space-y-2">
-                {tabs.map((tab) => (
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="bg-card rounded-xl shadow-sm border border-custom">
+          <div className="p-6 border-b border-custom">
+            <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 flex items-center">
+              <Palette className="h-5 w-5 mr-2" />
+              Appearance & Theme Settings
+            </h3>
+            <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
+              Customize the look and feel of your warehouse optimization dashboard
+            </p>
+          </div>
+          
+          <div className="p-6 space-y-8">
+            {/* Theme Selection */}
+            <div>
+              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-4">
+                Theme Mode
+              </label>
+              <div className="grid grid-cols-2 gap-4">
+                <button
+                  onClick={() => setTheme('light')}
+                  className={`flex items-center space-x-3 p-4 border rounded-lg transition-all ${
+                    theme === 'light' 
+                      ? 'border-primary bg-primary-light text-primary' 
+                      : 'border-custom hover:border-slate-300'
+                  }`}
+                >
+                  <Sun className="h-5 w-5" />
+                  <span className="font-medium">Light Mode</span>
+                </button>
+                <button
+                  onClick={() => setTheme('dark')}
+                  className={`flex items-center space-x-3 p-4 border rounded-lg transition-all ${
+                    theme === 'dark' 
+                      ? 'border-primary bg-primary-light text-primary' 
+                      : 'border-custom hover:border-slate-300'
+                  }`}
+                >
+                  <Moon className="h-5 w-5" />
+                  <span className="font-medium">Dark Mode</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Primary Color */}
+            <div>
+              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-4">
+                Primary Color Theme
+              </label>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                {colorOptions.map((color) => (
                   <button
-                    key={tab.id}
-                    onClick={() => setActiveTab(tab.id)}
-                    className={`w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                      activeTab === tab.id
-                        ? "bg-blue-100 text-blue-700 border border-blue-200"
-                        : "text-slate-600 hover:bg-slate-100"
+                    key={color.value}
+                    onClick={() => setPrimaryColor(color.value)}
+                    className={`flex items-center justify-center p-4 border rounded-lg transition-all ${
+                      primaryColor === color.value
+                        ? 'border-primary bg-primary-light'
+                        : 'border-custom hover:border-slate-300'
                     }`}
                   >
-                    <tab.icon className="h-4 w-4" />
-                    <span>{tab.label}</span>
+                    <div className={`w-6 h-6 rounded-full mr-2 ${
+                      color.value === 'blue' ? 'bg-blue-500' :
+                      color.value === 'green' ? 'bg-green-500' :
+                      color.value === 'purple' ? 'bg-purple-500' :
+                      'bg-orange-500'
+                    }`}></div>
+                    <span className="font-medium">{color.name}</span>
                   </button>
                 ))}
-              </nav>
+              </div>
             </div>
-          </div>
 
-          {/* Settings Content */}
-          <div className="lg:col-span-3">
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-              {/* General Settings */}
-              {activeTab === "general" && (
-                <div>
-                  <h2 className="text-xl font-semibold text-slate-900 mb-6">
-                    General Settings
-                  </h2>
-                  <div className="space-y-6">
-                    <div>
-                      <label className="block text-sm font-medium text-slate-700 mb-2">
-                        Company Name
-                      </label>
-                      <input
-                        type="text"
-                        value={settings.general.companyName}
-                        onChange={(e) =>
-                          updateSetting(
-                            "general",
-                            "companyName",
-                            e.target.value
-                          )
-                        }
-                        className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      />
-                    </div>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-sm font-medium text-slate-700 mb-2">
-                          Time Zone
-                        </label>
-                        <select
-                          value={settings.general.timeZone}
-                          onChange={(e) =>
-                            updateSetting("general", "timeZone", e.target.value)
-                          }
-                          className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        >
-                          <option value="UTC-8 (Pacific)">
-                            UTC-8 (Pacific)
-                          </option>
-                          <option value="UTC-5 (Eastern)">
-                            UTC-5 (Eastern)
-                          </option>
-                          <option value="UTC+0 (GMT)">UTC+0 (GMT)</option>
-                          <option value="UTC+1 (CET)">UTC+1 (CET)</option>
-                        </select>
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-slate-700 mb-2">
-                          Date Format
-                        </label>
-                        <select
-                          value={settings.general.dateFormat}
-                          onChange={(e) =>
-                            updateSetting(
-                              "general",
-                              "dateFormat",
-                              e.target.value
-                            )
-                          }
-                          className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        >
-                          <option value="MM/DD/YYYY">MM/DD/YYYY</option>
-                          <option value="DD/MM/YYYY">DD/MM/YYYY</option>
-                          <option value="YYYY-MM-DD">YYYY-MM-DD</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-slate-700 mb-2">
-                        Data Refresh Interval (seconds):{" "}
-                        {settings.general.refreshInterval}
-                      </label>
-                      <input
-                        type="range"
-                        min="10"
-                        max="300"
-                        value={settings.general.refreshInterval}
-                        onChange={(e) =>
-                          updateSetting(
-                            "general",
-                            "refreshInterval",
-                            parseInt(e.target.value)
-                          )
-                        }
-                        className="w-full"
-                      />
-                    </div>
+            {/* Display Options */}
+            <div>
+              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-4">
+                Display Preferences
+              </label>
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h4 className="font-medium text-slate-900 dark:text-slate-100">Compact Mode</h4>
+                    <p className="text-sm text-slate-600 dark:text-slate-400">Reduce spacing and font sizes for denser information display</p>
                   </div>
+                  <label className="relative inline-flex items-center cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={compactMode}
+                      onChange={(e) => setCompactMode(e.target.checked)}
+                      className="sr-only peer"
+                    />
+                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary"></div>
+                  </label>
                 </div>
-              )}
 
-              {/* Notifications Settings */}
-              {activeTab === "notifications" && (
-                <div>
-                  <h2 className="text-xl font-semibold text-slate-900 mb-6">
-                    Notification Preferences
-                  </h2>
-                  <div className="space-y-4">
-                    {Object.entries(settings.notifications).map(
-                      ([key, value]) => (
-                        <div
-                          key={key}
-                          className="flex items-center justify-between py-3 border-b border-slate-200"
-                        >
-                          <div>
-                            <p className="font-medium text-slate-900 capitalize">
-                              {key.replace(/([A-Z])/g, " $1").trim()}
-                            </p>
-                            <p className="text-sm text-slate-600">
-                              {key === "emailAlerts" &&
-                                "Receive email notifications for important events"}
-                              {key === "pushNotifications" &&
-                                "Get browser push notifications in real-time"}
-                              {key === "taskAssignments" &&
-                                "Notifications when tasks are assigned to workers"}
-                              {key === "systemMaintenance" &&
-                                "Alerts about scheduled system maintenance"}
-                              {key === "performanceReports" &&
-                                "Weekly performance and analytics reports"}
-                              {key === "criticalAlerts" &&
-                                "Immediate alerts for critical system issues"}
-                            </p>
-                          </div>
-                          <label className="relative inline-flex items-center cursor-pointer">
-                            <input
-                              type="checkbox"
-                              checked={value as boolean}
-                              onChange={(e) =>
-                                updateSetting(
-                                  "notifications",
-                                  key,
-                                  e.target.checked
-                                )
-                              }
-                              className="sr-only peer"
-                            />
-                            <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-                          </label>
-                        </div>
-                      )
-                    )}
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h4 className="font-medium text-slate-900 dark:text-slate-100">Enable Animations</h4>
+                    <p className="text-sm text-slate-600 dark:text-slate-400">Show smooth transitions and hover effects throughout the interface</p>
                   </div>
+                  <label className="relative inline-flex items-center cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={animations}
+                      onChange={(e) => setAnimations(e.target.checked)}
+                      className="sr-only peer"
+                    />
+                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary"></div>
+                  </label>
                 </div>
-              )}
 
-              {/* User Management Settings */}
-              {activeTab === "users" && (
-                <div>
-                  <h2 className="text-xl font-semibold text-slate-900 mb-6">
-                    User Management
-                  </h2>
-                  <div className="space-y-6">
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-sm font-medium text-slate-700 mb-2">
-                          Maximum Users
-                        </label>
-                        <input
-                          type="number"
-                          value={settings.users.maxUsers}
-                          onChange={(e) =>
-                            updateSetting(
-                              "users",
-                              "maxUsers",
-                              parseInt(e.target.value)
-                            )
-                          }
-                          className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-slate-700 mb-2">
-                          Session Timeout (minutes)
-                        </label>
-                        <input
-                          type="number"
-                          value={settings.users.sessionTimeout}
-                          onChange={(e) =>
-                            updateSetting(
-                              "users",
-                              "sessionTimeout",
-                              parseInt(e.target.value)
-                            )
-                          }
-                          className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        />
-                      </div>
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-slate-700 mb-2">
-                        Password Policy
-                      </label>
-                      <select
-                        value={settings.users.passwordPolicy}
-                        onChange={(e) =>
-                          updateSetting(
-                            "users",
-                            "passwordPolicy",
-                            e.target.value
-                          )
-                        }
-                        className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      >
-                        <option value="basic">Basic (8+ characters)</option>
-                        <option value="strong">
-                          Strong (8+ chars, numbers, symbols)
-                        </option>
-                        <option value="enterprise">
-                          Enterprise (12+ chars, mixed case, numbers, symbols)
-                        </option>
-                      </select>
-                    </div>
-                    <div className="flex items-center justify-between py-3 border-b border-slate-200">
-                      <div>
-                        <p className="font-medium text-slate-900">
-                          Two-Factor Authentication
-                        </p>
-                        <p className="text-sm text-slate-600">
-                          Require 2FA for all user accounts
-                        </p>
-                      </div>
-                      <label className="relative inline-flex items-center cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={settings.users.twoFactorAuth}
-                          onChange={(e) =>
-                            updateSetting(
-                              "users",
-                              "twoFactorAuth",
-                              e.target.checked
-                            )
-                          }
-                          className="sr-only peer"
-                        />
-                        <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-                      </label>
-                    </div>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h4 className="font-medium text-slate-900 dark:text-slate-100">High Contrast Mode</h4>
+                    <p className="text-sm text-slate-600 dark:text-slate-400">Enhance visibility with high contrast colors for better accessibility</p>
                   </div>
+                  <label className="relative inline-flex items-center cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={highContrast}
+                      onChange={(e) => setHighContrast(e.target.checked)}
+                      className="sr-only peer"
+                    />
+                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary"></div>
+                  </label>
                 </div>
-              )}
+              </div>
+            </div>
 
-              {/* System Settings */}
-              {activeTab === "system" && (
+            {/* Reset Section */}
+            <div className="pt-6 border-t border-custom">
+              <div className="flex items-center justify-between">
                 <div>
-                  <h2 className="text-xl font-semibold text-slate-900 mb-6">
-                    System Configuration
-                  </h2>
-                  <div className="space-y-6">
-                    <div className="flex items-center justify-between py-3 border-b border-slate-200">
-                      <div>
-                        <p className="font-medium text-slate-900">
-                          Automatic Backup
-                        </p>
-                        <p className="text-sm text-slate-600">
-                          Enable automatic data backups
-                        </p>
-                      </div>
-                      <label className="relative inline-flex items-center cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={settings.system.autoBackup}
-                          onChange={(e) =>
-                            updateSetting(
-                              "system",
-                              "autoBackup",
-                              e.target.checked
-                            )
-                          }
-                          className="sr-only peer"
-                        />
-                        <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-                      </label>
-                    </div>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-sm font-medium text-slate-700 mb-2">
-                          Backup Frequency
-                        </label>
-                        <select
-                          value={settings.system.backupFrequency}
-                          onChange={(e) =>
-                            updateSetting(
-                              "system",
-                              "backupFrequency",
-                              e.target.value
-                            )
-                          }
-                          className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        >
-                          <option value="hourly">Hourly</option>
-                          <option value="daily">Daily</option>
-                          <option value="weekly">Weekly</option>
-                        </select>
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-slate-700 mb-2">
-                          Data Retention (days)
-                        </label>
-                        <input
-                          type="number"
-                          value={settings.system.dataRetention}
-                          onChange={(e) =>
-                            updateSetting(
-                              "system",
-                              "dataRetention",
-                              parseInt(e.target.value)
-                            )
-                          }
-                          className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        />
-                      </div>
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-slate-700 mb-2">
-                        Performance Mode
-                      </label>
-                      <select
-                        value={settings.system.performanceMode}
-                        onChange={(e) =>
-                          updateSetting(
-                            "system",
-                            "performanceMode",
-                            e.target.value
-                          )
-                        }
-                        className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      >
-                        <option value="power-saver">Power Saver</option>
-                        <option value="balanced">Balanced</option>
-                        <option value="high-performance">
-                          High Performance
-                        </option>
-                      </select>
-                    </div>
-                  </div>
+                  <h4 className="font-medium text-slate-900 dark:text-slate-100">Reset Appearance</h4>
+                  <p className="text-sm text-slate-600 dark:text-slate-400">Restore all appearance settings to their default values</p>
                 </div>
-              )}
-
-              {/* Appearance Settings */}
-              {activeTab === "appearance" && (
-                <div>
-                  <h2 className="text-xl font-semibold text-slate-900 mb-6">
-                    Appearance & Theme
-                  </h2>
-                  <div className="space-y-6">
-                    <div>
-                      <label className="block text-sm font-medium text-slate-700 mb-2">
-                        Theme
-                      </label>
-                      <div className="grid grid-cols-3 gap-3">
-                        {["light", "dark", "auto"].map((theme) => (
-                          <button
-                            key={theme}
-                            onClick={() =>
-                              updateSetting("appearance", "theme", theme)
-                            }
-                            className={`p-3 border rounded-lg text-center capitalize ${
-                              settings.appearance.theme === theme
-                                ? "border-blue-500 bg-blue-50 text-blue-700"
-                                : "border-slate-300 hover:border-slate-400"
-                            }`}
-                          >
-                            {theme}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-slate-700 mb-2">
-                        Primary Color
-                      </label>
-                      <div className="grid grid-cols-6 gap-2">
-                        {[
-                          "blue",
-                          "green",
-                          "purple",
-                          "red",
-                          "orange",
-                          "pink",
-                        ].map((color) => (
-                          <button
-                            key={color}
-                            onClick={() =>
-                              updateSetting("appearance", "primaryColor", color)
-                            }
-                            className={`w-12 h-12 rounded-lg border-2 ${
-                              settings.appearance.primaryColor === color
-                                ? "border-slate-900"
-                                : "border-slate-300"
-                            }`}
-                            style={{
-                              backgroundColor:
-                                color === "blue"
-                                  ? "#3b82f6"
-                                  : color === "green"
-                                  ? "#10b981"
-                                  : color === "purple"
-                                  ? "#8b5cf6"
-                                  : color === "red"
-                                  ? "#ef4444"
-                                  : color === "orange"
-                                  ? "#f97316"
-                                  : "#ec4899",
-                            }}
-                          />
-                        ))}
-                      </div>
-                    </div>
-                    <div className="space-y-4">
-                      {[
-                        {
-                          key: "compactMode",
-                          label: "Compact Mode",
-                          desc: "Reduce spacing and padding for more content",
-                        },
-                        {
-                          key: "animations",
-                          label: "Animations",
-                          desc: "Enable smooth transitions and animations",
-                        },
-                        {
-                          key: "highContrast",
-                          label: "High Contrast",
-                          desc: "Increase contrast for better accessibility",
-                        },
-                      ].map((setting) => (
-                        <div
-                          key={setting.key}
-                          className="flex items-center justify-between py-3 border-b border-slate-200"
-                        >
-                          <div>
-                            <p className="font-medium text-slate-900">
-                              {setting.label}
-                            </p>
-                            <p className="text-sm text-slate-600">
-                              {setting.desc}
-                            </p>
-                          </div>
-                          <label className="relative inline-flex items-center cursor-pointer">
-                            <input
-                              type="checkbox"
-                              checked={Boolean(
-                                settings.appearance[setting.key as keyof typeof settings.appearance]
-                              )}
-                              onChange={(e) =>
-                                updateSetting(
-                                  "appearance",
-                                  setting.key,
-                                  e.target.checked
-                                )
-                              }
-                              className="sr-only peer"
-                            />
-                            <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-                          </label>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              )}
+                <button
+                  onClick={resetToDefaults}
+                  className="px-4 py-2 text-sm text-red-600 hover:text-red-700 border border-red-200 rounded-lg hover:bg-red-50 transition-colors"
+                >
+                  Reset to Defaults
+                </button>
+              </div>
             </div>
           </div>
         </div>
-      </main>
+      </div>
     </div>
   );
 }
