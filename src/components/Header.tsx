@@ -1,4 +1,5 @@
 import { Package } from "lucide-react";
+import { NotificationBell } from "./NotificationPanel";
 
 interface HeaderProps {
   currentTime: string;
@@ -33,6 +34,7 @@ export function Header({ currentTime, mounted }: HeaderProps) {
                 System Online
               </span>
             </div>
+            <NotificationBell />
             {mounted && (
               <div className="text-right">
                 <p className="text-xs text-slate-500">Live Time</p>

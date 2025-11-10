@@ -114,7 +114,7 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
     const loadInitialData = () => {
       refreshData();
     };
-    
+
     loadInitialData();
 
     // Set up auto-refresh every 30 seconds

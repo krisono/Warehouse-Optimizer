@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Package,
   ArrowLeft,
@@ -8,100 +8,54 @@ import {
   Clock,
   Zap,
   RotateCcw,
+  TrendingUp,
+  Users,
+  Target,
 } from "lucide-react";
 import Link from "next/link";
+import RouteOptimizer, {
+  type Route,
+  type OptimizationResult,
+} from "../../lib/routeOptimizer";
 
 export default function RoutesPage() {
   const [isOptimizing, setIsOptimizing] = useState(false);
   const [optimizationProgress, setOptimizationProgress] = useState(0);
+  const [routes, setRoutes] = useState<Route[]>([]);
+  const [metrics, setMetrics] = useState<OptimizationResult["metrics"]>({
+    totalDistance: 0,
+    averageEfficiency: 0,
+    improvementPercentage: 0,
+    energySaved: 0,
+    timeReduction: 0,
+  });
+  const [optimizer] = useState(() => new RouteOptimizer());
 
-  // Mock route data
-  const routes = [
-    {
-      id: "RT-001",
-      name: "Electronics Zone Route",
-      worker: "John Smith",
-      tasks: ["WO-001", "WO-005", "WO-007"],
-      estimatedTime: 45,
-      actualTime: 42,
-      distance: 285,
-      efficiency: 96.8,
-      status: "completed",
-      startTime: "09:15 AM",
-      endTime: "10:00 AM",
-      zones: ["A", "B"],
-      optimizationScore: 95,
-    },
-    {
-      id: "RT-002",
-      name: "Appliances & Kitchen Route",
-      worker: "Maria Garcia",
-      tasks: ["WO-002", "WO-006"],
-      estimatedTime: 35,
-      actualTime: null,
-      distance: 420,
-      efficiency: 89.2,
-      status: "in-progress",
-      startTime: "10:30 AM",
-      endTime: null,
-      zones: ["B", "C"],
-      optimizationScore: 88,
-    },
-    {
-      id: "RT-003",
-      name: "Sports & Recreation Route",
-      worker: "David Lee",
-      tasks: ["WO-003", "WO-008", "WO-010"],
-      estimatedTime: 55,
-      actualTime: null,
-      distance: 520,
-      efficiency: 92.1,
-      status: "pending",
-      startTime: null,
-      endTime: null,
-      zones: ["C", "D"],
-      optimizationScore: 91,
-    },
-    {
-      id: "RT-004",
-      name: "Multi-Zone Express Route",
-      worker: "Sarah Johnson",
-      tasks: ["WO-004", "WO-009"],
-      estimatedTime: 28,
-      actualTime: 25,
-      distance: 180,
-      efficiency: 98.5,
-      status: "completed",
-      startTime: "11:15 AM",
-      endTime: "11:40 AM",
-      zones: ["A", "D"],
-      optimizationScore: 97,
-    },
-  ];
-
-  const optimizationMetrics = {
-    totalDistance: routes.reduce((sum, route) => sum + route.distance, 0),
-    averageEfficiency:
-      routes.reduce((sum, route) => sum + route.efficiency, 0) / routes.length,
-    totalTasks: routes.reduce((sum, route) => sum + route.tasks.length, 0),
-    energySaved: 34,
-    timeReduction: 22,
-  };
+  // Initialize with optimized routes on component mount
+  useEffect(() => {
+    const { tasks, workers } = optimizer.generateMockData();
+    const result = optimizer.optimizeRoutes(tasks, workers);
+    setRoutes(result.routes);
+    setMetrics(result.metrics);
+  }, [optimizer]);
 
   const handleOptimizeRoutes = async () => {
     setIsOptimizing(true);
     setOptimizationProgress(0);
 
-    // Simulate optimization process
+    // Simulate optimization process with real calculation
     for (let i = 0; i <= 100; i += 10) {
       await new Promise((resolve) => setTimeout(resolve, 200));
       setOptimizationProgress(i);
     }
 
+    // Generate new optimized routes
+    const { tasks, workers } = optimizer.generateMockData();
+    const result = optimizer.optimizeRoutes(tasks, workers);
+    setRoutes(result.routes);
+    setMetrics(result.metrics);
+
     setIsOptimizing(false);
-    alert(
-      "Routes optimized successfully! 15% improvement in efficiency achieved."
-    );
   };
 
   const handleResetRoutes = () => {
@@ -110,20 +64,24 @@ export default function RoutesPage() {
         "Are you sure you want to reset all routes to default configuration?"
       )
     ) {
-      alert("Routes reset to default configuration.");
+      // Reset to initial state
+      const { tasks, workers } = optimizer.generateMockData();
+      const result = optimizer.optimizeRoutes(tasks, workers);
+      setRoutes(result.routes);
+      setMetrics(result.metrics);
     }
   };
 
   const getStatusColor = (status: string) => {
     switch (status) {
       case "completed":
-        return "bg-green-100 text-green-700";
+        return "bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300";
       case "in-progress":
-        return "bg-blue-100 text-blue-700";
+        return "bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300";
       case "pending":
-        return "bg-yellow-100 text-yellow-700";
+        return "bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300";
       default:
-        return "bg-gray-100 text-gray-700";
+        return "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300";
     }
   };
 
@@ -219,7 +177,7 @@ export default function RoutesPage() {
                   Total Distance
                 </p>
                 <p className="text-2xl font-bold text-slate-900">
-                  {optimizationMetrics.totalDistance}m
+                  {metrics.totalDistance}m
                 </p>
               </div>
               <div className="p-3 bg-blue-100 rounded-lg">
@@ -234,7 +192,7 @@ export default function RoutesPage() {
                   Avg Efficiency
                 </p>
                 <p className="text-2xl font-bold text-emerald-600">
-                  {optimizationMetrics.averageEfficiency.toFixed(1)}%
+                  {metrics.averageEfficiency.toFixed(1)}%
                 </p>
               </div>
               <div className="p-3 bg-emerald-100 rounded-lg">
@@ -249,7 +207,7 @@ export default function RoutesPage() {
                   Total Tasks
                 </p>
                 <p className="text-2xl font-bold text-purple-600">
-                  {optimizationMetrics.totalTasks}
+                  {routes.reduce((sum, route) => sum + route.tasks.length, 0)}
                 </p>
               </div>
               <div className="p-3 bg-purple-100 rounded-lg">
@@ -264,7 +222,7 @@ export default function RoutesPage() {
                   Energy Saved
                 </p>
                 <p className="text-2xl font-bold text-green-600">
-                  {optimizationMetrics.energySaved}%
+                  {metrics.energySaved}%
                 </p>
               </div>
               <div className="p-3 bg-green-100 rounded-lg">
@@ -277,7 +235,7 @@ export default function RoutesPage() {
               <div>
                 <p className="text-sm font-medium text-slate-600">Time Saved</p>
                 <p className="text-2xl font-bold text-amber-600">
-                  {optimizationMetrics.timeReduction}%
+                  {metrics.timeReduction}%
                 </p>
               </div>
               <div className="p-3 bg-amber-100 rounded-lg">
@@ -297,16 +255,17 @@ export default function RoutesPage() {
               <div className="flex items-start justify-between mb-4">
                 <div>
                   <h3 className="text-lg font-semibold text-slate-900">
-                    {route.name}
+                    {route.name || `Route ${route.id}`}
                   </h3>
                   <p className="text-sm text-slate-600">Route ID: {route.id}</p>
                 </div>
                 <span
                   className={`px-2 py-1 text-xs font-medium rounded-full ${getStatusColor(
-                    route.status
+                    route.status || "pending"
                   )}`}
                 >
-                  {route.status.charAt(0).toUpperCase() + route.status.slice(1)}
+                  {(route.status || "pending").charAt(0).toUpperCase() +
+                    (route.status || "pending").slice(1)}
                 </span>
               </div>
 
@@ -314,7 +273,7 @@ export default function RoutesPage() {
                 <div>
                   <p className="text-xs text-slate-500">Assigned Worker</p>
                   <p className="text-sm font-medium text-slate-900">
-                    {route.worker}
+                    {route.worker.name}
                   </p>
                 </div>
                 <div>
@@ -332,7 +291,7 @@ export default function RoutesPage() {
                 <div>
                   <p className="text-xs text-slate-500">Distance</p>
                   <p className="text-sm font-medium text-slate-900">
-                    {route.distance}m
+                    {route.totalDistance}m
                   </p>
                 </div>
               </div>
@@ -362,11 +321,11 @@ export default function RoutesPage() {
 
               <div className="flex items-center justify-between">
                 <div className="text-xs text-slate-500">
-                  Zones: {route.zones.join(", ")} | Tasks:{" "}
+                  Zones: {route.zones?.join(", ") || "Multiple"} | Tasks:{" "}
                   {route.tasks.join(", ")}
                 </div>
                 <button
-                  onClick={() => alert('Route details feature coming soon!')}
+                  onClick={() => alert("Route details feature coming soon!")}
                   className="text-blue-600 hover:text-blue-700 text-sm font-medium"
                 >
                   View Details
@@ -377,19 +336,19 @@ export default function RoutesPage() {
                 <div className="mt-4 pt-4 border-t border-slate-200">
                   <div className="flex justify-between text-xs">
                     <span className="text-slate-500">
-                      Started: {route.startTime}
+                      Started: {route.startTime || "Not started"}
                     </span>
                     <span className="text-slate-500">
-                      Completed: {route.endTime}
+                      Completed: {route.endTime || "In progress"}
                     </span>
                     <span
                       className={`font-medium ${
-                        route.actualTime <= route.estimatedTime
+                        (route.actualTime || 0) <= route.estimatedTime
                           ? "text-green-600"
                           : "text-red-600"
                       }`}
                     >
-                      Actual: {route.actualTime} min
+                      Actual: {route.actualTime || 0} min
                     </span>
                   </div>
                 </div>

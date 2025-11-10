@@ -29,13 +29,13 @@ export default function Dashboard() {
     const initializeComponent = () => {
       setMounted(true);
     };
-    
+
     initializeComponent();
   }, []);
 
   useEffect(() => {
     if (!mounted) return;
-    
+
     const updateTime = () => {
       setCurrentTime(new Date().toLocaleTimeString());
     };
@@ -45,13 +45,18 @@ export default function Dashboard() {
   }, [mounted]);
 
   // Calculate metrics from real data
-  const activeTasks = tasks.filter(t => t.status !== 'completed').length;
+  const activeTasks = tasks.filter((t) => t.status !== "completed").length;
   const totalRevenue = tasks.reduce((sum, task) => {
-    const revenue = parseFloat(task.revenue.replace('$', '').replace(',', ''));
+    const revenue = parseFloat(task.revenue.replace("$", "").replace(",", ""));
     return sum + revenue;
   }, 0);
-  const avgPickTime = tasks.reduce((sum, task) => sum + task.estimatedTime, 0) / Math.max(tasks.length, 1);
-  const completionRate = tasks.filter(t => t.status === 'completed').length / Math.max(tasks.length, 1) * 100;
+  const avgPickTime =
+    tasks.reduce((sum, task) => sum + task.estimatedTime, 0) /
+    Math.max(tasks.length, 1);
+  const completionRate =
+    (tasks.filter((t) => t.status === "completed").length /
+      Math.max(tasks.length, 1)) *
+    100;
 
   const metrics = [
     {
@@ -113,21 +118,21 @@ export default function Dashboard() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-gray-900 dark:to-gray-800">
       {/* Navigation Header */}
-      <nav className="bg-white shadow-lg border-b border-slate-200">
+      <nav className="bg-card shadow-lg border-b border-custom">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row justify-between items-center h-auto sm:h-16 py-4 sm:py-0">
             <div className="flex items-center space-x-4 mb-4 sm:mb-0">
               <div className="flex items-center space-x-3">
-                <div className="p-2 bg-blue-600 rounded-lg">
+                <div className="p-2 bg-primary rounded-lg">
                   <Package className="h-6 w-6 text-white" />
                 </div>
                 <div>
-                  <h1 className="text-xl font-bold text-slate-900">
+                  <h1 className="text-xl font-bold text-slate-900 dark:text-slate-100">
                     Warehouse-Optimizer
                   </h1>
-                  <p className="text-xs text-slate-500">
+                  <p className="text-xs text-slate-500 dark:text-slate-400">
                     AI-Powered Operations Dashboard
                   </p>
                 </div>
@@ -137,14 +142,16 @@ export default function Dashboard() {
             <div className="flex items-center space-x-6">
               <div className="flex items-center space-x-2">
                 <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                <span className="text-sm font-medium text-slate-700">
+                <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
                   System Online
                 </span>
               </div>
               {mounted && (
                 <div className="text-right">
-                  <p className="text-xs text-slate-500">Live Time</p>
-                  <p className="font-mono text-sm font-medium text-slate-900">
+                  <p className="text-xs text-slate-500 dark:text-slate-400">
+                    Live Time
+                  </p>
+                  <p className="font-mono text-sm font-medium text-slate-900 dark:text-slate-100">
                     {currentTime}
                   </p>
                 </div>
@@ -159,28 +166,28 @@ export default function Dashboard() {
         <div className="flex flex-wrap gap-3">
           <Link
             href="/tasks"
-            className="flex items-center space-x-2 px-4 py-2 bg-white border border-slate-200 rounded-lg shadow-sm hover:shadow-md transition-shadow text-sm font-medium text-slate-700 hover:text-blue-600"
+            className="flex items-center space-x-2 px-4 py-2 bg-card border border-custom rounded-lg shadow-sm hover:shadow-md transition-shadow text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-primary"
           >
             <List className="h-4 w-4" />
             <span>Task Management</span>
           </Link>
           <Link
             href="/routes"
-            className="flex items-center space-x-2 px-4 py-2 bg-white border border-slate-200 rounded-lg shadow-sm hover:shadow-md transition-shadow text-sm font-medium text-slate-700 hover:text-blue-600"
+            className="flex items-center space-x-2 px-4 py-2 bg-card border border-custom rounded-lg shadow-sm hover:shadow-md transition-shadow text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-primary"
           >
             <MapPin className="h-4 w-4" />
             <span>Route Optimization</span>
           </Link>
           <Link
             href="/analytics"
-            className="flex items-center space-x-2 px-4 py-2 bg-white border border-slate-200 rounded-lg shadow-sm hover:shadow-md transition-shadow text-sm font-medium text-slate-700 hover:text-blue-600"
+            className="flex items-center space-x-2 px-4 py-2 bg-card border border-custom rounded-lg shadow-sm hover:shadow-md transition-shadow text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-primary"
           >
             <BarChart3 className="h-4 w-4" />
             <span>Analytics Dashboard</span>
           </Link>
           <Link
             href="/settings"
-            className="flex items-center space-x-2 px-4 py-2 bg-white border border-slate-200 rounded-lg shadow-sm hover:shadow-md transition-shadow text-sm font-medium text-slate-700 hover:text-blue-600"
+            className="flex items-center space-x-2 px-4 py-2 bg-card border border-custom rounded-lg shadow-sm hover:shadow-md transition-shadow text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-primary"
           >
             <Settings className="h-4 w-4" />
             <span>System Settings</span>
@@ -194,14 +201,14 @@ export default function Dashboard() {
           {metrics.map((metric, index) => (
             <div
               key={index}
-              className="bg-white rounded-xl p-6 shadow-sm border border-slate-200 hover:shadow-md transition-shadow"
+              className="bg-card rounded-xl p-6 shadow-sm border border-custom hover:shadow-md transition-shadow"
             >
               <div className="flex items-center justify-between">
                 <div className="min-w-0 flex-1">
-                  <p className="text-sm font-medium text-slate-600 truncate">
+                  <p className="text-sm font-medium text-slate-600 dark:text-slate-400 truncate">
                     {metric.label}
                   </p>
-                  <p className="text-2xl sm:text-3xl font-bold text-slate-900 mt-1">
+                  <p className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-slate-100 mt-1">
                     {metric.value}
                   </p>
                   <div className="flex items-center mt-2">
@@ -225,15 +232,17 @@ export default function Dashboard() {
 
         <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
           {/* Priority Tasks Queue */}
-          <div className="xl:col-span-2 bg-white rounded-xl shadow-sm border border-slate-200">
-            <div className="p-6 border-b border-slate-200">
+          <div className="xl:col-span-2 bg-card rounded-xl shadow-sm border border-custom">
+            <div className="p-6 border-b border-custom">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <h2 className="text-lg font-semibold text-slate-900">
+                <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">
                   High Priority Queue
                 </h2>
                 <div className="flex items-center space-x-2">
                   <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                  <span className="text-sm text-slate-600">AI Optimized</span>
+                  <span className="text-sm text-slate-600 dark:text-slate-400">
+                    AI Optimized
+                  </span>
                 </div>
               </div>
             </div>
@@ -242,7 +251,7 @@ export default function Dashboard() {
                 {tasks.map((task) => (
                   <div
                     key={task.id}
-                    className="border border-slate-200 rounded-lg p-4 hover:bg-slate-50 transition-colors"
+                    className="border border-custom rounded-lg p-4 hover:bg-muted transition-colors"
                   >
                     <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
                       <div className="flex items-start space-x-4 min-w-0 flex-1">
@@ -257,25 +266,25 @@ export default function Dashboard() {
                         />
                         <div className="min-w-0 flex-1">
                           <div className="flex flex-wrap items-center gap-2 mb-1">
-                            <span className="font-medium text-slate-900">
+                            <span className="font-medium text-slate-900 dark:text-slate-100">
                               {task.id}
                             </span>
                             <span
                               className={`px-2 py-1 text-xs font-medium rounded-full ${
                                 task.priority === "Critical"
-                                  ? "bg-red-100 text-red-700"
+                                  ? "bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300"
                                   : task.priority === "High"
-                                  ? "bg-amber-100 text-amber-700"
-                                  : "bg-green-100 text-green-700"
+                                  ? "bg-amber-100 text-amber-700 dark:bg-amber-900 dark:text-amber-300"
+                                  : "bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300"
                               }`}
                             >
                               {task.priority}
                             </span>
                           </div>
-                          <p className="text-sm text-slate-600 mb-1 truncate">
+                          <p className="text-sm text-slate-600 dark:text-slate-400 mb-1 truncate">
                             {task.product}
                           </p>
-                          <p className="text-xs text-slate-500">
+                          <p className="text-xs text-slate-500 dark:text-slate-500">
                             {task.location}
                           </p>
                         </div>
@@ -283,51 +292,63 @@ export default function Dashboard() {
                       <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 lg:gap-6">
                         <div className="grid grid-cols-2 gap-4 sm:flex sm:gap-6">
                           <div className="text-left sm:text-right">
-                            <p className="text-xs text-slate-500">SLA Time</p>
-                            <p className="font-medium text-slate-900">
+                            <p className="text-xs text-slate-500 dark:text-slate-500">
+                              SLA Time
+                            </p>
+                            <p className="font-medium text-slate-900 dark:text-slate-100">
                               {task.sla}
                             </p>
                           </div>
                           <div className="text-left sm:text-right">
-                            <p className="text-xs text-slate-500">Revenue</p>
+                            <p className="text-xs text-slate-500 dark:text-slate-500">
+                              Revenue
+                            </p>
                             <p className="font-medium text-emerald-600">
                               {task.revenue}
                             </p>
                           </div>
                         </div>
-                        {task.status === 'pending' ? (
-                          <button 
+                        {task.status === "pending" ? (
+                          <button
                             onClick={() => setAssignModalTask(task)}
                             className="w-full sm:w-auto px-4 py-2 bg-primary text-white text-sm font-medium rounded-lg hover:bg-primary-hover transition-colors flex items-center justify-center space-x-2"
                           >
                             <User className="h-4 w-4" />
                             <span>Assign</span>
                           </button>
-                        ) : task.status === 'assigned' ? (
+                        ) : task.status === "assigned" ? (
                           <div className="flex flex-col sm:flex-row gap-2">
                             <div className="text-left sm:text-right">
-                              <p className="text-xs text-slate-500">Assigned to</p>
-                              <p className="font-medium text-blue-600 text-sm">
+                              <p className="text-xs text-slate-500 dark:text-slate-500">
+                                Assigned to
+                              </p>
+                              <p className="font-medium text-primary text-sm">
                                 {task.assignedWorker}
                               </p>
                             </div>
-                            <button 
-                              onClick={() => updateTaskStatus(task.id, 'in-progress')}
+                            <button
+                              onClick={() =>
+                                updateTaskStatus(task.id, "in-progress")
+                              }
                               className="px-3 py-1 bg-amber-600 text-white text-xs font-medium rounded-lg hover:bg-amber-700 transition-colors"
                             >
                               Start
                             </button>
                           </div>
-                        ) : task.status === 'in-progress' ? (
+                        ) : task.status === "in-progress" ? (
                           <div className="flex flex-col sm:flex-row gap-2">
                             <div className="text-left sm:text-right">
-                              <p className="text-xs text-slate-500">In Progress</p>
-                              <p className="font-medium text-blue-600 text-sm">
+                              <p className="text-xs text-slate-500 dark:text-slate-500">
+                                In Progress
+                              </p>
+                              <p className="font-medium text-primary text-sm">
                                 {task.assignedWorker}
                               </p>
                             </div>
-                            <button 
-                              onClick={() => updateTaskStatus(task.id, 'completed')}
+                            <button
+                              onClick={() =>
+                                updateTaskStatus(task.id, "completed")
+                              }
                               className="px-3 py-1 bg-green-600 text-white text-xs font-medium rounded-lg hover:bg-green-700 transition-colors flex items-center space-x-1"
                             >
                               <CheckCircle className="h-3 w-3" />
@@ -336,8 +357,10 @@ export default function Dashboard() {
                           </div>
                         ) : (
                           <div className="text-left sm:text-right">
-                            <p className="text-xs text-slate-500">Status</p>
-                            <span className="inline-block px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-700">
+                            <p className="text-xs text-slate-500 dark:text-slate-500">
+                              Status
+                            </p>
+                            <span className="inline-block px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300">
                               Completed
                             </span>
                           </div>
@@ -352,9 +375,11 @@ export default function Dashboard() {
 
           {/* System Status & Controls */}
           <div className="space-y-6">
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200">
-              <div className="p-6 border-b border-slate-200">
-                <h3 className="font-semibold text-slate-900">Zone Status</h3>
+            <div className="bg-card rounded-xl shadow-sm border border-custom">
+              <div className="p-6 border-b border-custom">
+                <h3 className="font-semibold text-slate-900 dark:text-slate-100">
+                  Zone Status
+                </h3>
               </div>
               <div className="p-6">
                 <div className="space-y-4">
@@ -374,10 +399,10 @@ export default function Dashboard() {
                           }`}
                         />
                         <div className="min-w-0 flex-1">
-                          <p className="text-sm font-medium text-slate-900 truncate">
+                          <p className="text-sm font-medium text-slate-900 dark:text-slate-100 truncate">
                             {zone.zone}
                           </p>
-                          <p className="text-xs text-slate-500">
+                          <p className="text-xs text-slate-500 dark:text-slate-500">
                             {zone.workers} workers
                           </p>
                         </div>
@@ -385,12 +410,12 @@ export default function Dashboard() {
                       <span
                         className={`text-xs font-medium px-2 py-1 rounded-full flex-shrink-0 ${
                           zone.status === "Optimal"
-                            ? "bg-green-100 text-green-700"
+                            ? "bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300"
                             : zone.status === "Busy"
-                            ? "bg-amber-100 text-amber-700"
+                            ? "bg-amber-100 text-amber-700 dark:bg-amber-900 dark:text-amber-300"
                             : zone.status === "Normal"
-                            ? "bg-green-100 text-green-700"
-                            : "bg-slate-100 text-slate-700"
+                            ? "bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300"
+                            : "bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300"
                         }`}
                       >
                         {zone.status}
@@ -401,9 +426,11 @@ export default function Dashboard() {
               </div>
             </div>
 
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200">
-              <div className="p-6 border-b border-slate-200">
-                <h3 className="font-semibold text-slate-900">System Health</h3>
+            <div className="bg-card rounded-xl shadow-sm border border-custom">
+              <div className="p-6 border-b border-custom">
+                <h3 className="font-semibold text-slate-900 dark:text-slate-100">
+                  System Health
+                </h3>
               </div>
               <div className="p-6">
                 <div className="space-y-3">
@@ -412,7 +439,7 @@ export default function Dashboard() {
                       key={index}
                       className="flex items-center justify-between"
                     >
-                      <span className="text-sm text-slate-700 min-w-0 flex-1 truncate">
+                      <span className="text-sm text-slate-700 dark:text-slate-300 min-w-0 flex-1 truncate">
                         {service.service}
                       </span>
                       <div className="flex items-center space-x-2 flex-shrink-0">
@@ -453,15 +480,15 @@ export default function Dashboard() {
               <span>Optimize Routes</span>
             </button>
           </Link>
-          <button 
+          <button
             onClick={refreshTasks}
-            className="px-6 py-3 bg-slate-600 text-white font-medium rounded-lg hover:bg-slate-700 transition-colors flex items-center justify-center space-x-2 shadow-lg"
+            className="px-6 py-3 bg-secondary text-white font-medium rounded-lg hover:bg-secondary-hover transition-colors flex items-center justify-center space-x-2 shadow-lg"
           >
             <RefreshCw className="h-5 w-5" />
             <span>Refresh Data</span>
           </button>
           <Link href="/settings">
-            <button className="px-6 py-3 bg-purple-600 text-white font-medium rounded-lg hover:bg-purple-700 transition-colors flex items-center justify-center space-x-2 shadow-lg">
+            <button className="px-6 py-3 bg-accent text-white font-medium rounded-lg hover:bg-accent-hover transition-colors flex items-center justify-center space-x-2 shadow-lg">
               <Settings className="h-5 w-5" />
               <span>Settings</span>
             </button>
