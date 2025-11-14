@@ -1,48 +1,27 @@
-# 🏭 Warehouse Optimizer
+# Warehouse Optimizer
 
-_AI-Powered Warehouse Operations Management Platform_
+A warehouse management dashboard that optimizes task routing and worker assignments using algorithmic optimization.
 
-## 🎯 What Does This Platform Do?
+## What It Does
 
-**Warehouse Optimizer** is an intelligent warehouse management system that uses AI algorithms to optimize warehouse operations and maximize efficiency. The platform addresses the core challenges of modern warehouse management:
+This application helps warehouse managers optimize operations by:
 
-### 🧠 **AI-Powered Intelligence**
+- **Route Optimization**: Uses A\* pathfinding algorithm to calculate efficient picking routes
+- **Task Management**: Prioritizes tasks based on deadlines, revenue, and worker availability
+- **Zone Monitoring**: Tracks warehouse zone status and capacity in real-time
+- **Performance Analytics**: Displays operational metrics and identifies bottlenecks
 
-- **Route Optimization**: Advanced algorithms calculate the most efficient picking routes, reducing travel time by up to 40%
-- **Dynamic Task Prioritization**: AI considers SLA deadlines, revenue impact, worker availability, and zone congestion to optimize task sequencing
-- **Predictive Analytics**: Machine learning models forecast operational bottlenecks and suggest proactive solutions
-- **Workload Balancing**: Intelligent distribution of tasks across workers and zones based on capacity and performance metrics
+## How It Works
 
-### 📊 **Core Business Value**
+The system uses several optimization algorithms:
 
-1. **Reduce Operating Costs**: Optimize worker routes and task assignments to minimize wasted time and movement
-2. **Improve SLA Compliance**: Prioritize high-value, time-sensitive orders to meet customer expectations
-3. **Increase Throughput**: Process more orders with the same workforce through intelligent optimization
-4. **Real-time Visibility**: Monitor warehouse performance with live dashboards and actionable insights
+- **A\* Algorithm**: Finds shortest paths between warehouse locations
+- **Dijkstra's Algorithm**: Calculates optimal routes considering distance and priority
+- **K-means Clustering**: Groups tasks by location for efficient batching
+- **Nearest Neighbor TSP**: Sequences multiple picks to minimize travel distance
 
-### 🚀 **Key Features**
+## Tech Stack
 
-#### **Intelligent Task Management**
-
-- Real-time task prioritization based on revenue impact and SLA constraints
-- Automatic worker assignment using skills matching and workload balancing
-- Dynamic re-prioritization as conditions change throughout the day
-
-#### **AI Route Optimization**
-
-- Multi-objective optimization considering distance, priority, and operational constraints
-- Real-time route recalculation as new tasks are added
-- Integration with warehouse layout for accurate travel time estimates
-
-#### **Performance Analytics**
-
-- Worker efficiency tracking and performance insights
-- Zone utilization analysis and bottleneck identification
-- Trend analysis for continuous operational improvement
-
-#### **Smart Notifications**
-
-- SLA breach warnings with recommended actions
-- Worker assignment notifications and updates
-- System health monitoring and alerting
-
+- **Next.js 16** with React 19 and TypeScript
+- **Tailwind CSS** for styling
+- **Lucide React** for icons
