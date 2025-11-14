@@ -42,8 +42,7 @@ export default function RoutesPage() {
     const result = initializeRoutes();
     setRoutes(result.routes);
     setMetrics(result.metrics);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [optimizer]);
 
   const handleOptimizeRoutes = async () => {
     setIsOptimizing(true);

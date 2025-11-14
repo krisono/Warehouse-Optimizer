@@ -194,10 +194,7 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
           },
           {
             label: "Reassign",
-            action: () => {
-              // Open reassignment modal
-              console.log(`Reassigning task ${taskId}`);
-            },
+            action: () => {},
           },
         ],
       });

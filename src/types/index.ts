@@ -138,14 +138,8 @@ export interface NotificationProps {
   onDismiss?: (id: string) => void;
 }
 
-// ========================================
-// MVP ENHANCEMENT: Grid-Based Optimization
-// ========================================
-
-// Grid coordinate system [row, column]
 export type Coord = [number, number];
 
-// Enhanced Warehouse with grid-based layout
 export interface WarehouseLayout {
   id: string;
   name: string;

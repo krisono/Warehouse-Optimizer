@@ -244,7 +244,6 @@ class PersistentDataManager {
     return cached;
   }
 
-  // Session data (temporary data that expires when browser closes)
   saveSessionData(key: string, data: unknown): void {
     try {
       sessionStorage.setItem(`warehouse-session-${key}`, JSON.stringify(data));
