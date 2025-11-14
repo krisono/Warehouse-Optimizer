@@ -33,36 +33,83 @@ const defaultTheme = {
 };
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setThemeState] = useState<"light" | "dark">(defaultTheme.theme);
-  const [primaryColor, setPrimaryColorState] = useState(
-    defaultTheme.primaryColor
-  );
-  const [compactMode, setCompactModeState] = useState(defaultTheme.compactMode);
-  const [animations, setAnimationsState] = useState(defaultTheme.animations);
-  const [highContrast, setHighContrastState] = useState(
-    defaultTheme.highContrast
-  );
-
-  // Load settings from localStorage on mount
-  useEffect(() => {
-    const savedTheme = localStorage.getItem("warehouse-theme");
-    if (savedTheme) {
-      try {
-        const parsed = JSON.parse(savedTheme);
-        setThemeState(parsed.theme || defaultTheme.theme);
-        setPrimaryColorState(parsed.primaryColor || defaultTheme.primaryColor);
-        setCompactModeState(parsed.compactMode || defaultTheme.compactMode);
-        setAnimationsState(
-          parsed.animations !== undefined
-            ? parsed.animations
-            : defaultTheme.animations
-        );
-        setHighContrastState(parsed.highContrast || defaultTheme.highContrast);
-      } catch (error) {
-        console.warn("Failed to parse saved theme settings:", error);
+  // Load settings from localStorage with lazy initialization
+  const [theme, setThemeState] = useState<"light" | "dark">(() => {
+    if (typeof window !== "undefined") {
+      const savedTheme = localStorage.getItem("warehouse-theme");
+      if (savedTheme) {
+        try {
+          const parsed = JSON.parse(savedTheme);
+          return parsed.theme || defaultTheme.theme;
+        } catch {
+          return defaultTheme.theme;
+        }
       }
     }
-  }, []);
+    return defaultTheme.theme;
+  });
+
+  const [primaryColor, setPrimaryColorState] = useState(() => {
+    if (typeof window !== "undefined") {
+      const savedTheme = localStorage.getItem("warehouse-theme");
+      if (savedTheme) {
+        try {
+          const parsed = JSON.parse(savedTheme);
+          return parsed.primaryColor || defaultTheme.primaryColor;
+        } catch {
+          return defaultTheme.primaryColor;
+        }
+      }
+    }
+    return defaultTheme.primaryColor;
+  });
+
+  const [compactMode, setCompactModeState] = useState(() => {
+    if (typeof window !== "undefined") {
+      const savedTheme = localStorage.getItem("warehouse-theme");
+      if (savedTheme) {
+        try {
+          const parsed = JSON.parse(savedTheme);
+          return parsed.compactMode || defaultTheme.compactMode;
+        } catch {
+          return defaultTheme.compactMode;
+        }
+      }
+    }
+    return defaultTheme.compactMode;
+  });
+
+  const [animations, setAnimationsState] = useState(() => {
+    if (typeof window !== "undefined") {
+      const savedTheme = localStorage.getItem("warehouse-theme");
+      if (savedTheme) {
+        try {
+          const parsed = JSON.parse(savedTheme);
+          return parsed.animations !== undefined
+            ? parsed.animations
+            : defaultTheme.animations;
+        } catch {
+          return defaultTheme.animations;
+        }
+      }
+    }
+    return defaultTheme.animations;
+  });
+
+  const [highContrast, setHighContrastState] = useState(() => {
+    if (typeof window !== "undefined") {
+      const savedTheme = localStorage.getItem("warehouse-theme");
+      if (savedTheme) {
+        try {
+          const parsed = JSON.parse(savedTheme);
+          return parsed.highContrast || defaultTheme.highContrast;
+        } catch {
+          return defaultTheme.highContrast;
+        }
+      }
+    }
+    return defaultTheme.highContrast;
+  });
 
   // Save settings to localStorage whenever they change
   useEffect(() => {

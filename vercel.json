@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "name": "warehouse-optimizer-pro",
+  "name": "warehouse-optimizer",
   "builds": [
     {
       "src": "package.json",
@@ -8,7 +8,7 @@
     }
   ],
   "env": {
-    "NEXT_PUBLIC_APP_NAME": "Warehouse Optimizer Pro"
+    "NEXT_PUBLIC_APP_NAME": "Warehouse Optimizer"
   },
   "build": {
     "env": {

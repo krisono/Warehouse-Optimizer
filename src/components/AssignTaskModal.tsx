@@ -35,29 +35,29 @@ export function AssignTaskModal({
     setSelectedWorker("");
   };
 
-  const getWorkerStatusColor = (worker: Worker) => {
-    switch (worker.status) {
+  const getStatusColor = (status: string) => {
+    switch (status) {
       case "available":
-        return "text-green-600 bg-green-100";
+        return "text-green-600 bg-green-100 dark:text-green-400 dark:bg-green-900/20";
       case "busy":
-        return "text-amber-600 bg-amber-100";
+        return "text-amber-600 bg-amber-100 dark:text-amber-400 dark:bg-amber-900/20";
       case "offline":
-        return "text-gray-600 bg-gray-100";
+        return "text-gray-600 bg-gray-100 dark:text-gray-400 dark:bg-gray-700/50";
       default:
-        return "text-gray-600 bg-gray-100";
+        return "text-gray-600 bg-gray-100 dark:text-gray-400 dark:bg-gray-700/50";
     }
   };
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
       case "Critical":
-        return "text-red-700 bg-red-100";
+        return "text-red-700 bg-red-100 dark:text-red-400 dark:bg-red-900/20";
       case "High":
-        return "text-amber-700 bg-amber-100";
+        return "text-amber-700 bg-amber-100 dark:text-amber-400 dark:bg-amber-900/20";
       case "Medium":
-        return "text-blue-700 bg-blue-100";
+        return "text-blue-700 bg-blue-100 dark:text-blue-400 dark:bg-blue-900/20";
       default:
-        return "text-green-700 bg-green-100";
+        return "text-green-700 bg-green-100 dark:text-green-400 dark:bg-green-900/20";
     }
   };
 
@@ -198,8 +198,8 @@ export function AssignTaskModal({
                               </p>
                             </div>
                             <span
-                              className={`px-2 py-1 text-xs font-medium rounded-full ${getWorkerStatusColor(
-                                worker
+                              className={`px-2 py-1 text-xs font-medium rounded-full ${getStatusColor(
+                                worker.status
                               )}`}
                             >
                               {worker.status}
@@ -241,8 +241,8 @@ export function AssignTaskModal({
                               <span
                                 className={`text-xs px-2 py-1 rounded ${
                                   getSkillMatch(worker).includes("✓")
-                                    ? "bg-green-100 text-green-700"
-                                    : "bg-gray-100 text-gray-600"
+                                    ? "bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-400"
+                                    : "bg-gray-100 dark:bg-gray-700/50 text-gray-600 dark:text-gray-400"
                                 }`}
                               >
                                 {getSkillMatch(worker)}

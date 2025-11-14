@@ -1,0 +1,8 @@
+export default function Page() {
+  return (
+    <div style={{padding: '50px', textAlign: 'center'}}>
+      <h1>Warehouse Optimizer Works!</h1>
+      <p>The page is loading correctly now.</p>
+    </div>
+  )
+}

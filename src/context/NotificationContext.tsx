@@ -59,25 +59,25 @@ const NotificationContext = createContext<NotificationContextType | undefined>(
 );
 
 export function NotificationProvider({ children }: { children: ReactNode }) {
-  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [notifications, setNotifications] = useState<Notification[]>(() => {
+    // Load notifications from localStorage on initialization
+    if (typeof window === "undefined") return [];
 
-  // Load notifications from localStorage on mount
-  useEffect(() => {
     const saved = localStorage.getItem("warehouse-notifications");
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
-        setNotifications(
-          parsed.map((notif: any) => ({
-            ...notif,
-            timestamp: new Date(notif.timestamp),
-          }))
-        );
+        return parsed.map((notif: Notification & { timestamp: string }) => ({
+          ...notif,
+          timestamp: new Date(notif.timestamp),
+        }));
       } catch (error) {
         console.error("Failed to load notifications:", error);
+        return [];
       }
     }
-  }, []);
+    return [];
+  });
 
   // Save notifications to localStorage when they change
   useEffect(() => {
@@ -278,14 +278,12 @@ export function useNotifications() {
 
 // Hook for requesting notification permission
 export function useNotificationPermission() {
-  const [permission, setPermission] =
-    useState<NotificationPermission>("default");
-
-  useEffect(() => {
-    if ("Notification" in window) {
-      setPermission(Notification.permission);
+  const [permission, setPermission] = useState<NotificationPermission>(() => {
+    if (typeof window !== "undefined" && "Notification" in window) {
+      return Notification.permission;
     }
-  }, []);
+    return "default";
+  });
 
   const requestPermission = async () => {
     if ("Notification" in window && Notification.permission === "default") {

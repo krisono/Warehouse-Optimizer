@@ -19,15 +19,15 @@ export function ZoneStatus({ zone, onClick }: ZoneStatusProps) {
   const getStatusTextColor = (status: string) => {
     switch (status) {
       case "Optimal":
-        return "bg-green-100 text-green-700";
+        return "bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-400";
       case "Busy":
-        return "bg-amber-100 text-amber-700";
+        return "bg-amber-100 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400";
       case "Normal":
-        return "bg-green-100 text-green-700";
+        return "bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-400";
       case "Maintenance":
-        return "bg-red-100 text-red-700";
+        return "bg-red-100 dark:bg-red-900/20 text-red-700 dark:text-red-400";
       default:
-        return "bg-slate-100 text-slate-700";
+        return "bg-slate-100 dark:bg-gray-700 text-slate-700 dark:text-gray-300";
     }
   };
 
@@ -39,7 +39,7 @@ export function ZoneStatus({ zone, onClick }: ZoneStatusProps) {
 
   return (
     <div
-      className={`flex items-center justify-between p-3 rounded-lg hover:bg-slate-50 transition-colors ${
+      className={`flex items-center justify-between p-3 rounded-lg hover:bg-slate-50 dark:hover:bg-gray-700 transition-colors ${
         onClick ? "cursor-pointer" : ""
       }`}
       onClick={handleClick}
@@ -49,12 +49,14 @@ export function ZoneStatus({ zone, onClick }: ZoneStatusProps) {
           className={`w-2 h-2 rounded-full ${getStatusColor(zone.status)}`}
         />
         <div>
-          <p className="text-sm font-medium text-slate-900">{zone.name}</p>
-          <p className="text-xs text-slate-500">
+          <p className="text-sm font-medium text-slate-900 dark:text-white">
+            {zone.name}
+          </p>
+          <p className="text-xs text-slate-500 dark:text-gray-500">
             {zone.workers} workers •{" "}
             {Math.round((zone.currentLoad / zone.capacity) * 100)}% capacity
           </p>
-          <p className="text-xs text-slate-500">
+          <p className="text-xs text-slate-500 dark:text-gray-500">
             Efficiency: {zone.efficiency}%
           </p>
         </div>

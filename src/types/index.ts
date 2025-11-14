@@ -137,3 +137,72 @@ export interface NotificationProps {
   notification: Notification;
   onDismiss?: (id: string) => void;
 }
+
+// ========================================
+// MVP ENHANCEMENT: Grid-Based Optimization
+// ========================================
+
+// Grid coordinate system [row, column]
+export type Coord = [number, number];
+
+// Enhanced Warehouse with grid-based layout
+export interface WarehouseLayout {
+  id: string;
+  name: string;
+  rows: number;
+  cols: number;
+  start: Coord;                    // Dock or starting point
+  blocked: Coord[];                // Obstacles/blocked cells
+  locations: Record<string, Coord>; // "A-101": [row, col]
+  meta?: Record<string, string>;
+  cellSizeMeters?: number;          // Physical size of each cell (default 1m)
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+// Order item for picking
+export interface OrderItem {
+  sku: string;
+  locationId: string;              // Must match a key in warehouse.locations
+  qty?: number;
+  productName?: string;
+}
+
+// Optimization parameters
+export interface OptimizeParams {
+  strategy: "nearest" | "return_to_dock";
+  walkingSpeedMps?: number;        // Walking speed in meters/second (default 1.2)
+  pickSecondsPerItem?: number;     // Time to pick each item (default 6)
+  distanceModel?: "manhattan" | "euclidean"; // Display metric
+}
+
+// Optimization result
+export interface OptimizeResult {
+  path: Coord[];                   // Full step-by-step grid path
+  stops: { locationId: string; at: Coord; sku?: string }[];
+  distanceMeters: number;
+  timeSeconds: number;
+  efficiency: number;              // 0-100 score
+  missing: OrderItem[];            // Unresolved items
+  metadata?: {
+    stopsCount: number;
+    avgDistanceBetweenStops: number;
+    routeComplexity: number;
+  };
+}
+
+// Path segment for visualization
+export interface PathSegment {
+  from: Coord;
+  to: Coord;
+  distance: number;
+  purpose: 'navigate' | 'pick' | 'return';
+}
+
+// Grid cell type for layout editor
+export interface GridCell {
+  coord: Coord;
+  type: 'empty' | 'blocked' | 'start' | 'location';
+  locationId?: string;
+  label?: string;
+}

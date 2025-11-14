@@ -1,509 +1,276 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import {
-  Package,
-  List,
-  MapPin,
-  Settings,
-  TrendingUp,
-  Clock,
-  Activity,
-  BarChart3,
-  CheckCircle,
-  AlertTriangle,
-  User,
-  RefreshCw,
-} from "lucide-react";
 import Link from "next/link";
-import { useTask, Task } from "@/context/TaskContext";
-import { AssignTaskModal } from "@/components/AssignTaskModal";
+import {
+  ArrowRight,
+  Package,
+  TrendingUp,
+  Map,
+  Zap,
+  Github,
+  BarChart3,
+  Route,
+  Calendar,
+} from "lucide-react";
 
-export default function Dashboard() {
-  const [mounted, setMounted] = useState(false);
-  const [currentTime, setCurrentTime] = useState("");
-  const [assignModalTask, setAssignModalTask] = useState<Task | null>(null);
-  const { tasks, workers, updateTaskStatus, refreshTasks } = useTask();
-
-  useEffect(() => {
-    const initializeComponent = () => {
-      setMounted(true);
-    };
-
-    initializeComponent();
-  }, []);
-
-  useEffect(() => {
-    if (!mounted) return;
-
-    const updateTime = () => {
-      setCurrentTime(new Date().toLocaleTimeString());
-    };
-    updateTime();
-    const timer = setInterval(updateTime, 1000);
-    return () => clearInterval(timer);
-  }, [mounted]);
-
-  // Calculate metrics from real data
-  const activeTasks = tasks.filter((t) => t.status !== "completed").length;
-  const totalRevenue = tasks.reduce((sum, task) => {
-    const revenue = parseFloat(task.revenue.replace("$", "").replace(",", ""));
-    return sum + revenue;
-  }, 0);
-  const avgPickTime =
-    tasks.reduce((sum, task) => sum + task.estimatedTime, 0) /
-    Math.max(tasks.length, 1);
-  const completionRate =
-    (tasks.filter((t) => t.status === "completed").length /
-      Math.max(tasks.length, 1)) *
-    100;
-
-  const metrics = [
-    {
-      label: "Active Tasks",
-      value: activeTasks.toString(),
-      change: "+12% from yesterday",
-      icon: BarChart3,
-      iconColor: "text-blue-600",
-      bgColor: "bg-blue-100",
-    },
-    {
-      label: "Route Efficiency",
-      value: `${Math.min(completionRate + 20, 100).toFixed(1)}%`,
-      change: "+3.2% optimized",
-      icon: MapPin,
-      iconColor: "text-emerald-600",
-      bgColor: "bg-emerald-100",
-    },
-    {
-      label: "Avg. Pick Time",
-      value: `${avgPickTime.toFixed(1)}m`,
-      change: "22% faster",
-      icon: Clock,
-      iconColor: "text-amber-600",
-      bgColor: "bg-amber-100",
-    },
-    {
-      label: "Total Revenue",
-      value: `$${(totalRevenue / 1000).toFixed(1)}k`,
-      change: "vs. manual routing",
-      icon: Activity,
-      iconColor: "text-purple-600",
-      bgColor: "bg-purple-100",
-    },
-  ];
-
-  const zones = [
-    {
-      zone: "Zone A (Electronics)",
-      workers: 8,
-      status: "Optimal",
-      color: "green",
-    },
-    {
-      zone: "Zone B (Appliances)",
-      workers: 12,
-      status: "Busy",
-      color: "amber",
-    },
-    { zone: "Zone C (Sports)", workers: 6, status: "Normal", color: "green" },
-    { zone: "Zone D (Media)", workers: 4, status: "Idle", color: "slate" },
-  ];
-
-  const services = [
-    { service: "Route Optimizer", status: "online" },
-    { service: "Task Scheduler", status: "online" },
-    { service: "Database", status: "online" },
-    { service: "API Gateway", status: "warning" },
-  ];
-
+export default function Home() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-gray-900 dark:to-gray-800">
-      {/* Navigation Header */}
-      <nav className="bg-card shadow-lg border-b border-custom">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col sm:flex-row justify-between items-center h-auto sm:h-16 py-4 sm:py-0">
-            <div className="flex items-center space-x-4 mb-4 sm:mb-0">
-              <div className="flex items-center space-x-3">
-                <div className="p-2 bg-primary rounded-lg">
-                  <Package className="h-6 w-6 text-white" />
-                </div>
-                <div>
-                  <h1 className="text-xl font-bold text-slate-900 dark:text-slate-100">
-                    Warehouse-Optimizer
-                  </h1>
-                  <p className="text-xs text-slate-500 dark:text-slate-400">
-                    AI-Powered Operations Dashboard
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex items-center space-x-6">
-              <div className="flex items-center space-x-2">
-                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
-                  System Online
-                </span>
-              </div>
-              {mounted && (
-                <div className="text-right">
-                  <p className="text-xs text-slate-500 dark:text-slate-400">
-                    Live Time
-                  </p>
-                  <p className="font-mono text-sm font-medium text-slate-900 dark:text-slate-100">
-                    {currentTime}
-                  </p>
-                </div>
-              )}
-            </div>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+      {/* Navigation */}
+      <nav className="border-b border-slate-200 bg-white/80 backdrop-blur-sm sticky top-0 z-50">
+        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Package className="w-8 h-8 text-blue-600" />
+            <span className="text-xl font-bold text-slate-900">
+              Warehouse Optimizer
+            </span>
+          </div>
+          <div className="flex items-center gap-6">
+            <Link
+              href="/routes"
+              className="text-slate-600 hover:text-slate-900 font-medium transition-colors"
+            >
+              Routes
+            </Link>
+            <Link
+              href="/analytics"
+              className="text-slate-600 hover:text-slate-900 font-medium transition-colors"
+            >
+              Analytics
+            </Link>
+            <Link
+              href="/tasks"
+              className="text-slate-600 hover:text-slate-900 font-medium transition-colors"
+            >
+              Tasks
+            </Link>
+            <Link
+              href="/routes"
+              className="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
+            >
+              Get Started
+            </Link>
           </div>
         </div>
       </nav>
 
-      {/* Quick Navigation */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-        <div className="flex flex-wrap gap-3">
-          <Link
-            href="/tasks"
-            className="flex items-center space-x-2 px-4 py-2 bg-card border border-custom rounded-lg shadow-sm hover:shadow-md transition-shadow text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-primary"
-          >
-            <List className="h-4 w-4" />
-            <span>Task Management</span>
-          </Link>
-          <Link
-            href="/routes"
-            className="flex items-center space-x-2 px-4 py-2 bg-card border border-custom rounded-lg shadow-sm hover:shadow-md transition-shadow text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-primary"
-          >
-            <MapPin className="h-4 w-4" />
-            <span>Route Optimization</span>
-          </Link>
-          <Link
-            href="/analytics"
-            className="flex items-center space-x-2 px-4 py-2 bg-card border border-custom rounded-lg shadow-sm hover:shadow-md transition-shadow text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-primary"
-          >
-            <BarChart3 className="h-4 w-4" />
-            <span>Analytics Dashboard</span>
-          </Link>
-          <Link
-            href="/settings"
-            className="flex items-center space-x-2 px-4 py-2 bg-card border border-custom rounded-lg shadow-sm hover:shadow-md transition-shadow text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-primary"
-          >
-            <Settings className="h-4 w-4" />
-            <span>System Settings</span>
-          </Link>
+      {/* Hero Section */}
+      <div className="container mx-auto px-4 py-20">
+        <div className="text-center mb-20 max-w-4xl mx-auto">
+          <div className="inline-block mb-4 px-4 py-2 bg-blue-100 text-blue-700 rounded-full text-sm font-medium">
+            🚀 Algorithm-Driven Warehouse Management
+          </div>
+          <h1 className="text-6xl md:text-7xl font-bold mb-6 text-slate-900 leading-tight">
+            Optimize Your
+            <br />
+            <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+              Warehouse Operations
+            </span>
+          </h1>
+          <p className="text-xl text-slate-600 mb-10 max-w-2xl mx-auto leading-relaxed">
+            Reduce picking time by 40% with intelligent route optimization using
+            advanced algorithms (A*, TSP, K-means), real-time analytics, and
+            smart task management. Built for modern warehouses.
+          </p>
+          <div className="flex gap-4 justify-center flex-wrap">
+            <Link
+              href="/routes"
+              className="px-8 py-4 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 transition-all hover:shadow-lg hover:scale-105 flex items-center gap-2"
+            >
+              Start Optimizing <ArrowRight className="w-5 h-5" />
+            </Link>
+            <Link
+              href="/analytics"
+              className="px-8 py-4 bg-white text-slate-700 border-2 border-slate-200 rounded-xl font-semibold hover:bg-slate-50 transition-all hover:shadow-lg flex items-center gap-2"
+            >
+              <BarChart3 className="w-5 h-5" />
+              View Demo
+            </Link>
+          </div>
+          <div className="mt-10 flex items-center justify-center gap-8 text-sm text-slate-600">
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+              <span>No credit card required</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+              <span>Free forever</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Features Grid */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-20">
+          <FeatureCard
+            icon={<Route className="w-10 h-10 text-blue-600" />}
+            title="Route Optimization"
+            description="A* pathfinding, Nearest Neighbor TSP, and K-means clustering for optimal picking paths"
+            badge="40% faster"
+          />
+          <FeatureCard
+            icon={<TrendingUp className="w-10 h-10 text-emerald-600" />}
+            title="Real-time Analytics"
+            description="Track KPIs, efficiency metrics, and system health with interactive dashboards"
+            badge="Live data"
+          />
+          <FeatureCard
+            icon={<Calendar className="w-10 h-10 text-violet-600" />}
+            title="Smart Prioritization"
+            description="Multi-factor scoring based on SLA, revenue impact, urgency, and task complexity"
+            badge="15+ factors"
+          />
+          <FeatureCard
+            icon={<Zap className="w-10 h-10 text-amber-600" />}
+            title="Visual Insights"
+            description="Heatmaps, scenario comparisons, and analytics for data-driven decisions"
+            badge="Advanced"
+          />
+        </div>
+
+        {/* Stats Section */}
+        <div className="bg-white rounded-2xl shadow-xl border border-slate-200 p-12 mb-20">
+          <h2 className="text-3xl font-bold text-center mb-12 text-slate-900">
+            Performance Metrics
+          </h2>
+          <div className="grid md:grid-cols-3 gap-12">
+            <StatCard
+              label="Pick Time Reduction"
+              value="40%"
+              sublabel="Optimized routing"
+              icon={<TrendingUp className="w-8 h-8 text-emerald-600" />}
+            />
+            <StatCard
+              label="Labor Cost Savings"
+              value="25%"
+              sublabel="Efficient paths"
+              icon={<Package className="w-8 h-8 text-blue-600" />}
+            />
+            <StatCard
+              label="Error Reduction"
+              value="35%"
+              sublabel="Smart prioritization"
+              icon={<Zap className="w-8 h-8 text-violet-600" />}
+            />
+          </div>
+        </div>
+
+        {/* CTA Section */}
+        <div className="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl shadow-2xl p-12 text-white text-center">
+          <h2 className="text-4xl font-bold mb-4">
+            Ready to Transform Your Warehouse?
+          </h2>
+          <p className="text-xl mb-8 text-blue-100 max-w-2xl mx-auto">
+            Join modern warehouses using algorithm-powered optimization. Start
+            with our interactive demo or dive into the full platform.
+          </p>
+          <div className="flex gap-4 justify-center flex-wrap">
+            <Link
+              href="/routes"
+              className="px-8 py-4 bg-white text-blue-600 rounded-xl font-semibold hover:bg-blue-50 transition-all hover:shadow-lg inline-flex items-center gap-2"
+            >
+              <Map className="w-5 h-5" />
+              Create Layout
+            </Link>
+            <Link
+              href="/tasks"
+              className="px-8 py-4 bg-blue-700 text-white rounded-xl font-semibold hover:bg-blue-800 transition-all border-2 border-blue-400 inline-flex items-center gap-2"
+            >
+              <Calendar className="w-5 h-5" />
+              Manage Tasks
+            </Link>
+          </div>
         </div>
       </div>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* KPI Dashboard */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          {metrics.map((metric, index) => (
-            <div
-              key={index}
-              className="bg-card rounded-xl p-6 shadow-sm border border-custom hover:shadow-md transition-shadow"
+      {/* Footer */}
+      <footer className="border-t border-slate-200 bg-white mt-20">
+        <div className="container mx-auto px-4 py-8">
+          <div className="flex items-center justify-between flex-wrap gap-4">
+            <div className="flex items-center gap-2">
+              <Package className="w-6 h-6 text-blue-600" />
+              <span className="font-semibold text-slate-900">
+                Warehouse Optimizer
+              </span>
+            </div>
+            <p className="text-slate-600 text-sm">
+              Built by{" "}
+              <a
+                href="https://github.com/krisono"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-600 hover:text-blue-700 font-medium"
+              >
+                Nnaemeka Onochie
+              </a>{" "}
+              • Software Engineer crafting digital experiences
+            </p>
+            <a
+              href="https://github.com/krisono/Warehouse-Optimizer"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-slate-600 hover:text-slate-900 transition-colors"
             >
-              <div className="flex items-center justify-between">
-                <div className="min-w-0 flex-1">
-                  <p className="text-sm font-medium text-slate-600 dark:text-slate-400 truncate">
-                    {metric.label}
-                  </p>
-                  <p className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-slate-100 mt-1">
-                    {metric.value}
-                  </p>
-                  <div className="flex items-center mt-2">
-                    <TrendingUp className="h-4 w-4 text-emerald-500 mr-1 flex-shrink-0" />
-                    <span className="text-sm text-emerald-600 font-medium truncate">
-                      {metric.change}
-                    </span>
-                  </div>
-                </div>
-                <div
-                  className={`p-3 ${metric.bgColor} rounded-lg flex-shrink-0 ml-4`}
-                >
-                  <metric.icon
-                    className={`h-6 w-6 sm:h-8 sm:w-8 ${metric.iconColor}`}
-                  />
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
-          {/* Priority Tasks Queue */}
-          <div className="xl:col-span-2 bg-card rounded-xl shadow-sm border border-custom">
-            <div className="p-6 border-b border-custom">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">
-                  High Priority Queue
-                </h2>
-                <div className="flex items-center space-x-2">
-                  <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                  <span className="text-sm text-slate-600 dark:text-slate-400">
-                    AI Optimized
-                  </span>
-                </div>
-              </div>
-            </div>
-            <div className="p-6">
-              <div className="space-y-4">
-                {tasks.map((task) => (
-                  <div
-                    key={task.id}
-                    className="border border-custom rounded-lg p-4 hover:bg-muted transition-colors"
-                  >
-                    <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-                      <div className="flex items-start space-x-4 min-w-0 flex-1">
-                        <div
-                          className={`w-3 h-3 rounded-full mt-1 flex-shrink-0 ${
-                            task.urgency === "high"
-                              ? "bg-red-500"
-                              : task.urgency === "medium"
-                              ? "bg-amber-500"
-                              : "bg-green-500"
-                          }`}
-                        />
-                        <div className="min-w-0 flex-1">
-                          <div className="flex flex-wrap items-center gap-2 mb-1">
-                            <span className="font-medium text-slate-900 dark:text-slate-100">
-                              {task.id}
-                            </span>
-                            <span
-                              className={`px-2 py-1 text-xs font-medium rounded-full ${
-                                task.priority === "Critical"
-                                  ? "bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300"
-                                  : task.priority === "High"
-                                  ? "bg-amber-100 text-amber-700 dark:bg-amber-900 dark:text-amber-300"
-                                  : "bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300"
-                              }`}
-                            >
-                              {task.priority}
-                            </span>
-                          </div>
-                          <p className="text-sm text-slate-600 dark:text-slate-400 mb-1 truncate">
-                            {task.product}
-                          </p>
-                          <p className="text-xs text-slate-500 dark:text-slate-500">
-                            {task.location}
-                          </p>
-                        </div>
-                      </div>
-                      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 lg:gap-6">
-                        <div className="grid grid-cols-2 gap-4 sm:flex sm:gap-6">
-                          <div className="text-left sm:text-right">
-                            <p className="text-xs text-slate-500 dark:text-slate-500">
-                              SLA Time
-                            </p>
-                            <p className="font-medium text-slate-900 dark:text-slate-100">
-                              {task.sla}
-                            </p>
-                          </div>
-                          <div className="text-left sm:text-right">
-                            <p className="text-xs text-slate-500 dark:text-slate-500">
-                              Revenue
-                            </p>
-                            <p className="font-medium text-emerald-600">
-                              {task.revenue}
-                            </p>
-                          </div>
-                        </div>
-                        {task.status === "pending" ? (
-                          <button
-                            onClick={() => setAssignModalTask(task)}
-                            className="w-full sm:w-auto px-4 py-2 bg-primary text-white text-sm font-medium rounded-lg hover:bg-primary-hover transition-colors flex items-center justify-center space-x-2"
-                          >
-                            <User className="h-4 w-4" />
-                            <span>Assign</span>
-                          </button>
-                        ) : task.status === "assigned" ? (
-                          <div className="flex flex-col sm:flex-row gap-2">
-                            <div className="text-left sm:text-right">
-                              <p className="text-xs text-slate-500 dark:text-slate-500">
-                                Assigned to
-                              </p>
-                              <p className="font-medium text-primary text-sm">
-                                {task.assignedWorker}
-                              </p>
-                            </div>
-                            <button
-                              onClick={() =>
-                                updateTaskStatus(task.id, "in-progress")
-                              }
-                              className="px-3 py-1 bg-amber-600 text-white text-xs font-medium rounded-lg hover:bg-amber-700 transition-colors"
-                            >
-                              Start
-                            </button>
-                          </div>
-                        ) : task.status === "in-progress" ? (
-                          <div className="flex flex-col sm:flex-row gap-2">
-                            <div className="text-left sm:text-right">
-                              <p className="text-xs text-slate-500 dark:text-slate-500">
-                                In Progress
-                              </p>
-                              <p className="font-medium text-primary text-sm">
-                                {task.assignedWorker}
-                              </p>
-                            </div>
-                            <button
-                              onClick={() =>
-                                updateTaskStatus(task.id, "completed")
-                              }
-                              className="px-3 py-1 bg-green-600 text-white text-xs font-medium rounded-lg hover:bg-green-700 transition-colors flex items-center space-x-1"
-                            >
-                              <CheckCircle className="h-3 w-3" />
-                              <span>Complete</span>
-                            </button>
-                          </div>
-                        ) : (
-                          <div className="text-left sm:text-right">
-                            <p className="text-xs text-slate-500 dark:text-slate-500">
-                              Status
-                            </p>
-                            <span className="inline-block px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300">
-                              Completed
-                            </span>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* System Status & Controls */}
-          <div className="space-y-6">
-            <div className="bg-card rounded-xl shadow-sm border border-custom">
-              <div className="p-6 border-b border-custom">
-                <h3 className="font-semibold text-slate-900 dark:text-slate-100">
-                  Zone Status
-                </h3>
-              </div>
-              <div className="p-6">
-                <div className="space-y-4">
-                  {zones.map((zone, index) => (
-                    <div
-                      key={index}
-                      className="flex items-center justify-between"
-                    >
-                      <div className="flex items-center space-x-3 min-w-0 flex-1">
-                        <div
-                          className={`w-2 h-2 rounded-full flex-shrink-0 ${
-                            zone.color === "green"
-                              ? "bg-green-500"
-                              : zone.color === "amber"
-                              ? "bg-amber-500"
-                              : "bg-slate-400"
-                          }`}
-                        />
-                        <div className="min-w-0 flex-1">
-                          <p className="text-sm font-medium text-slate-900 dark:text-slate-100 truncate">
-                            {zone.zone}
-                          </p>
-                          <p className="text-xs text-slate-500 dark:text-slate-500">
-                            {zone.workers} workers
-                          </p>
-                        </div>
-                      </div>
-                      <span
-                        className={`text-xs font-medium px-2 py-1 rounded-full flex-shrink-0 ${
-                          zone.status === "Optimal"
-                            ? "bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300"
-                            : zone.status === "Busy"
-                            ? "bg-amber-100 text-amber-700 dark:bg-amber-900 dark:text-amber-300"
-                            : zone.status === "Normal"
-                            ? "bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300"
-                            : "bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300"
-                        }`}
-                      >
-                        {zone.status}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-card rounded-xl shadow-sm border border-custom">
-              <div className="p-6 border-b border-custom">
-                <h3 className="font-semibold text-slate-900 dark:text-slate-100">
-                  System Health
-                </h3>
-              </div>
-              <div className="p-6">
-                <div className="space-y-3">
-                  {services.map((service, index) => (
-                    <div
-                      key={index}
-                      className="flex items-center justify-between"
-                    >
-                      <span className="text-sm text-slate-700 dark:text-slate-300 min-w-0 flex-1 truncate">
-                        {service.service}
-                      </span>
-                      <div className="flex items-center space-x-2 flex-shrink-0">
-                        {service.status === "online" ? (
-                          <CheckCircle className="h-4 w-4 text-green-500" />
-                        ) : (
-                          <AlertTriangle className="h-4 w-4 text-amber-500" />
-                        )}
-                        <span
-                          className={`text-xs font-medium ${
-                            service.status === "online"
-                              ? "text-green-600"
-                              : "text-amber-600"
-                          }`}
-                        >
-                          {service.status === "online" ? "Online" : "Warning"}
-                        </span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
+              <Github className="w-6 h-6" />
+            </a>
           </div>
         </div>
+      </footer>
+    </div>
+  );
+}
 
-        {/* Action Controls */}
-        <div className="mt-8 flex flex-col sm:flex-row justify-center gap-4">
-          <Link href="/tasks">
-            <button className="px-6 py-3 bg-primary text-white font-medium rounded-lg hover:bg-primary-hover transition-colors flex items-center justify-center space-x-2 shadow-lg">
-              <List className="h-5 w-5" />
-              <span>Manage Tasks</span>
-            </button>
-          </Link>
-          <Link href="/routes">
-            <button className="px-6 py-3 bg-emerald-600 text-white font-medium rounded-lg hover:bg-emerald-700 transition-colors flex items-center justify-center space-x-2 shadow-lg">
-              <MapPin className="h-5 w-5" />
-              <span>Optimize Routes</span>
-            </button>
-          </Link>
-          <button
-            onClick={refreshTasks}
-            className="px-6 py-3 bg-secondary text-white font-medium rounded-lg hover:bg-secondary-hover transition-colors flex items-center justify-center space-x-2 shadow-lg"
-          >
-            <RefreshCw className="h-5 w-5" />
-            <span>Refresh Data</span>
-          </button>
-          <Link href="/settings">
-            <button className="px-6 py-3 bg-accent text-white font-medium rounded-lg hover:bg-accent-hover transition-colors flex items-center justify-center space-x-2 shadow-lg">
-              <Settings className="h-5 w-5" />
-              <span>Settings</span>
-            </button>
-          </Link>
+function FeatureCard({
+  icon,
+  title,
+  description,
+  badge,
+}: {
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+  badge: string;
+}) {
+  return (
+    <div className="relative bg-white p-8 rounded-2xl shadow-lg border border-slate-200 hover:shadow-xl hover:scale-105 transition-all group">
+      <div className="absolute top-4 right-4">
+        <span className="px-3 py-1 bg-blue-100 text-blue-700 text-xs font-semibold rounded-full">
+          {badge}
+        </span>
+      </div>
+      <div className="mb-4 p-3 bg-gradient-to-br from-slate-50 to-blue-50 rounded-xl w-fit">
+        {icon}
+      </div>
+      <h3 className="text-xl font-bold mb-3 text-slate-900">{title}</h3>
+      <p className="text-slate-600 leading-relaxed">{description}</p>
+    </div>
+  );
+}
+
+function StatCard({
+  label,
+  value,
+  sublabel,
+  icon,
+}: {
+  label: string;
+  value: string;
+  sublabel: string;
+  icon: React.ReactNode;
+}) {
+  return (
+    <div className="text-center group">
+      <div className="flex justify-center mb-4">
+        <div className="p-4 bg-gradient-to-br from-slate-50 to-blue-50 rounded-2xl group-hover:scale-110 transition-transform">
+          {icon}
         </div>
-      </main>
-
-      {/* Assignment Modal */}
-      {assignModalTask && (
-        <AssignTaskModal
-          task={assignModalTask}
-          isOpen={!!assignModalTask}
-          onClose={() => setAssignModalTask(null)}
-        />
-      )}
+      </div>
+      <p className="text-slate-600 mb-2 text-sm font-medium uppercase tracking-wide">
+        {label}
+      </p>
+      <p className="text-5xl font-bold mb-2 bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+        {value}
+      </p>
+      <p className="text-slate-500 text-sm">{sublabel}</p>
     </div>
   );
 }

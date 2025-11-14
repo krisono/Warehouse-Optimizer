@@ -18,7 +18,7 @@ export function Header({ currentTime, mounted }: HeaderProps) {
               </div>
               <div>
                 <h1 className="text-xl font-bold text-slate-900">
-                  Warehouse Optimizer Pro
+                  Warehouse Optimizer
                 </h1>
                 <p className="text-xs text-slate-500">
                   AI-Powered Operations Dashboard

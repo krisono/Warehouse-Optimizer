@@ -1,9 +1,6 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Enable React Compiler
-  reactCompiler: true,
-  
   // Enable experimental features
   experimental: {
     optimizePackageImports: ['lucide-react'],
@@ -43,8 +40,6 @@ const nextConfig: NextConfig = {
     ];
   },
   
-  // Turbopack configuration (empty to silence warnings)
-  turbopack: {}
 };
 
 export default nextConfig;

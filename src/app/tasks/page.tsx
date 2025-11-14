@@ -13,11 +13,15 @@ import {
   MapPin,
 } from "lucide-react";
 import Link from "next/link";
+import { AssignTaskModal } from "@/components/AssignTaskModal";
 
 export default function TasksPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] = useState("all");
   const [filterPriority, setFilterPriority] = useState("all");
+  const [selectedTaskForAssignment, setSelectedTaskForAssignment] =
+    useState<any>(null);
+  const [isAssignModalOpen, setIsAssignModalOpen] = useState(false);
 
   // Extended mock data with more tasks
   const allTasks = [
@@ -187,8 +191,9 @@ export default function TasksPage() {
     return matchesSearch && matchesStatus && matchesPriority;
   });
 
-  const handleAssignTask = (taskId: string) => {
-    alert(`Assigning task ${taskId} to next available worker...`);
+  const handleAssignTask = (task: any) => {
+    setSelectedTaskForAssignment(task);
+    setIsAssignModalOpen(true);
   };
 
   const handleEditTask = (taskId: string) => {
@@ -448,7 +453,7 @@ export default function TasksPage() {
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                       <div className="flex space-x-2">
                         <button
-                          onClick={() => handleAssignTask(task.id)}
+                          onClick={() => handleAssignTask(task)}
                           className="text-blue-600 hover:text-blue-900"
                           title="Assign Task"
                         >
@@ -477,6 +482,18 @@ export default function TasksPage() {
           </div>
         </div>
       </main>
+
+      {/* Assign Task Modal */}
+      {selectedTaskForAssignment && (
+        <AssignTaskModal
+          task={selectedTaskForAssignment}
+          isOpen={isAssignModalOpen}
+          onClose={() => {
+            setIsAssignModalOpen(false);
+            setSelectedTaskForAssignment(null);
+          }}
+        />
+      )}
     </div>
   );
 }
