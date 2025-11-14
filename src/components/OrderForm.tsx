@@ -60,7 +60,7 @@ export default function OrderForm({
         }
 
         onChange(items);
-      } catch (error) {
+      } catch (_error) {
         alert("Invalid CSV file");
       }
     };

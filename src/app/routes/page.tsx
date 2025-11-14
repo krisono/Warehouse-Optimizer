@@ -8,9 +8,6 @@ import {
   Clock,
   Zap,
   RotateCcw,
-  TrendingUp,
-  Users,
-  Target,
 } from "lucide-react";
 import Link from "next/link";
 import RouteOptimizer, {
@@ -29,15 +26,24 @@ export default function RoutesPage() {
     energySaved: 0,
     timeReduction: 0,
   });
-  const [optimizer] = useState(() => new RouteOptimizer());
+  const [optimizer] = useState(() => {
+    const opt = new RouteOptimizer();
+    return opt;
+  });
 
   // Initialize with optimized routes on component mount
   useEffect(() => {
-    const { tasks, workers } = optimizer.generateMockData();
-    const result = optimizer.optimizeRoutes(tasks, workers);
+    const initializeRoutes = () => {
+      const { tasks, workers } = optimizer.generateMockData();
+      const result = optimizer.optimizeRoutes(tasks, workers);
+      return result;
+    };
+
+    const result = initializeRoutes();
     setRoutes(result.routes);
     setMetrics(result.metrics);
-  }, [optimizer]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleOptimizeRoutes = async () => {
     setIsOptimizing(true);

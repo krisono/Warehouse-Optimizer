@@ -1,6 +1,6 @@
 import { Warehouse, Coord } from "@/lib/types";
 import { useState, useRef } from "react";
-import { Grid, Plus, Trash2, Upload, Save, Package } from "lucide-react";
+import { Grid, Trash2, Upload, Save, Package } from "lucide-react";
 
 interface LayoutEditorProps {
   value: Warehouse;
@@ -55,7 +55,7 @@ export default function LayoutEditor({ value, onChange }: LayoutEditorProps) {
       try {
         const imported = JSON.parse(evt.target?.result as string);
         onChange(imported);
-      } catch (error) {
+      } catch (_error) {
         alert("Invalid JSON file");
       }
     };

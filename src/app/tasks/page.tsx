@@ -13,14 +13,30 @@ import {
   MapPin,
 } from "lucide-react";
 import Link from "next/link";
-import { AssignTaskModal } from "@/components/AssignTaskModal";
 
 export default function TasksPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] = useState("all");
   const [filterPriority, setFilterPriority] = useState("all");
+
+  type TaskType = {
+    id: string;
+    product: string;
+    location: string;
+    priority: string;
+    sla: string;
+    revenue: string;
+    urgency: string;
+    status: string;
+    assignedWorker: string | null;
+    estimatedTime: number;
+    category: string;
+    weight: string;
+    dimensions: string;
+  };
+
   const [selectedTaskForAssignment, setSelectedTaskForAssignment] =
-    useState<any>(null);
+    useState<TaskType | null>(null);
   const [isAssignModalOpen, setIsAssignModalOpen] = useState(false);
 
   // Extended mock data with more tasks
@@ -191,7 +207,7 @@ export default function TasksPage() {
     return matchesSearch && matchesStatus && matchesPriority;
   });
 
-  const handleAssignTask = (task: any) => {
+  const handleAssignTask = (task: TaskType) => {
     setSelectedTaskForAssignment(task);
     setIsAssignModalOpen(true);
   };
@@ -485,14 +501,24 @@ export default function TasksPage() {
 
       {/* Assign Task Modal */}
       {selectedTaskForAssignment && (
-        <AssignTaskModal
-          task={selectedTaskForAssignment}
-          isOpen={isAssignModalOpen}
-          onClose={() => {
-            setIsAssignModalOpen(false);
-            setSelectedTaskForAssignment(null);
-          }}
-        />
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md w-full">
+            <h3 className="text-lg font-bold mb-4">Assign Task</h3>
+            <p className="mb-4">
+              Assigning task: {selectedTaskForAssignment.id} -{" "}
+              {selectedTaskForAssignment.product}
+            </p>
+            <button
+              onClick={() => {
+                setIsAssignModalOpen(false);
+                setSelectedTaskForAssignment(null);
+              }}
+              className="bg-blue-600 text-white px-4 py-2 rounded-lg"
+            >
+              Close
+            </button>
+          </div>
+        </div>
       )}
     </div>
   );

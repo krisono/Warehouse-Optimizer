@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Warehouse, Coord } from "@/lib/types";
+import { Warehouse } from "@/lib/types";
 import { Activity, RefreshCw } from "lucide-react";
 
 interface HeatmapControlsProps {

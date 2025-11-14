@@ -1,5 +1,6 @@
-import { Coord, OrderItem, WarehouseLayout, OptimizeParams, OptimizeResult } from "@/types";
-import { astarPath, buildMultiWaypointPath, manhattan, pathLength } from "./pathfinding";
+import { Coord, OrderItem, OptimizeParams } from "./types";
+import { WarehouseLayout, OptimizeResult } from "@/types";
+import { manhattan, pathLength, buildMultiWaypointPath } from "./pathfinding";
 
 /**
  * Nearest Neighbor TSP heuristic

@@ -1,4 +1,5 @@
-import { WarehouseLayout, Coord } from "@/types";
+import { Coord } from "./types";
+import { WarehouseLayout } from "@/types";
 
 // Direction vectors for 4-way grid movement
 const DIRECTIONS: Coord[] = [

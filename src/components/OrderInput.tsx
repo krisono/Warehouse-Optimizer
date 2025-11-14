@@ -116,7 +116,9 @@ export default function OrderInput({
         setUploadStatus("error");
       }
     } catch (error) {
-      setValidationErrors(["Failed to read file"]);
+      setValidationErrors([
+        error instanceof Error ? error.message : "Failed to read file",
+      ]);
       setUploadStatus("error");
     }
 

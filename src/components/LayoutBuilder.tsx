@@ -1,19 +1,18 @@
 "use client";
 
-import { useState } from "react";
-import { WarehouseLayout, Coord } from "@/types";
+import React, { useState } from "react";
+import { Warehouse, Coord } from "@/lib/types";
 import {
-  Grid,
-  Plus,
-  Trash2,
-  Download,
-  Upload,
+  Grid3x3,
+  Save,
+  RotateCcw,
+  Eye,
   Settings as SettingsIcon,
 } from "lucide-react";
 
 interface LayoutBuilderProps {
-  value: WarehouseLayout;
-  onChange: (layout: WarehouseLayout) => void;
+  value: Warehouse;
+  onChange: (layout: Warehouse) => void;
 }
 
 export default function LayoutBuilder({ value, onChange }: LayoutBuilderProps) {
@@ -131,7 +130,7 @@ export default function LayoutBuilder({ value, onChange }: LayoutBuilderProps) {
     <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
-          <Grid className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+          <Grid3x3 className="h-6 w-6 text-blue-600 dark:text-blue-400" />
           <h2 className="text-xl font-bold text-gray-900 dark:text-white">
             Layout Builder
           </h2>

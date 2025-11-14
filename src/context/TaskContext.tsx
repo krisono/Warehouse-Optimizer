@@ -5,6 +5,7 @@ import React, {
   useContext,
   useState,
   useEffect,
+  useCallback,
   ReactNode,
 } from "react";
 import TaskPrioritizer, { type PrioritizedTask } from "../lib/taskPrioritizer";
@@ -256,13 +257,8 @@ export function TaskProvider({ children }: { children: ReactNode }) {
   const [taskPrioritizer] = useState(() => new TaskPrioritizer());
   const [isLoading, setIsLoading] = useState(true);
 
-  // Get notifications hook, but handle gracefully if not available
-  let notificationHooks;
-  try {
-    notificationHooks = useNotifications();
-  } catch {
-    notificationHooks = null;
-  }
+  // Always call hooks at the top level
+  const notificationHooks = useNotifications();
 
   // Convert Task to prioritizer-compatible format
   const convertTasksForPrioritizer = (tasks: Task[]) => {
@@ -310,7 +306,7 @@ export function TaskProvider({ children }: { children: ReactNode }) {
   };
 
   // Prioritize tasks using the AI system
-  const reprioritizeTasks = () => {
+  const reprioritizeTasks = useCallback(() => {
     const convertedTasks = convertTasksForPrioritizer(
       tasks.filter((t) => t.status !== "completed")
     );
@@ -324,14 +320,14 @@ export function TaskProvider({ children }: { children: ReactNode }) {
 
     setPrioritizedTasks(prioritized);
     setPrioritizationInsights(insights);
-  };
+  }, [tasks, workers, taskPrioritizer]);
 
   // Initialize prioritization on mount and when tasks/workers change
   useEffect(() => {
     if (tasks.length > 0 && workers.length > 0) {
       reprioritizeTasks();
     }
-  }, [tasks, workers]);
+  }, [tasks, workers, reprioritizeTasks]);
 
   // Load data from persistent storage on mount
   useEffect(() => {

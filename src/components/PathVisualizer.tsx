@@ -20,24 +20,33 @@ export default function PathVisualizer({
   const svgRef = useRef<SVGSVGElement>(null);
 
   useEffect(() => {
-    if (animate && result) {
-      const duration = 2000; // 2 seconds
-      const startTime = Date.now();
-
-      const updateProgress = () => {
-        const elapsed = Date.now() - startTime;
-        const progress = Math.min(elapsed / duration, 1);
-        setAnimationProgress(progress);
-
-        if (progress < 1) {
-          requestAnimationFrame(updateProgress);
-        }
-      };
-
-      requestAnimationFrame(updateProgress);
-    } else {
-      setAnimationProgress(1);
+    if (!animate || !result) {
+      // When not animating, set progress to 1 using setTimeout to avoid setState in effect
+      const timer = setTimeout(() => setAnimationProgress(1), 0);
+      return () => clearTimeout(timer);
     }
+
+    const duration = 2000; // 2 seconds
+    const startTime = Date.now();
+    let animationId: number;
+
+    const updateProgress = () => {
+      const elapsed = Date.now() - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      setAnimationProgress(progress);
+
+      if (progress < 1) {
+        animationId = requestAnimationFrame(updateProgress);
+      }
+    };
+
+    animationId = requestAnimationFrame(updateProgress);
+
+    return () => {
+      if (animationId) {
+        cancelAnimationFrame(animationId);
+      }
+    };
   }, [result, animate]);
 
   const cellSize = 40;

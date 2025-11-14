@@ -3,6 +3,7 @@ import "./globals.css";
 import { TaskProvider } from "@/context/TaskContext";
 import { NotificationProvider } from "@/context/NotificationContext";
 import { ThemeProvider } from "@/context/ThemeContext";
+import { SettingsProvider } from "@/context/SettingsContext";
 
 export const metadata: Metadata = {
   title: "Warehouse Optimizer - AI-Powered Warehouse Management",
@@ -34,9 +35,11 @@ export default function RootLayout({
     <html lang="en" className="scroll-smooth">
       <body className="antialiased">
         <ThemeProvider>
-          <NotificationProvider>
-            <TaskProvider>{children}</TaskProvider>
-          </NotificationProvider>
+          <SettingsProvider>
+            <NotificationProvider>
+              <TaskProvider>{children}</TaskProvider>
+            </NotificationProvider>
+          </SettingsProvider>
         </ThemeProvider>
       </body>
     </html>

@@ -53,7 +53,7 @@ export interface AppSettings {
 export interface CachedData {
   tasks: Task[];
   workers: Worker[];
-  analytics: any;
+  analytics: Record<string, unknown>;
   lastSyncTime: number;
   version: string;
 }
@@ -139,7 +139,7 @@ class PersistentDataManager {
     }
   }
 
-  private getItem<T>(key: string, defaultValue: T): T {
+  private getItem<T>(key: string, defaultValue: T | null): T | null {
     try {
       const item = localStorage.getItem(key);
       if (!item) return defaultValue;
@@ -173,7 +173,9 @@ class PersistentDataManager {
   }
 
   loadTasks(): Task[] {
-    const tasks = this.getItem<Task[]>(this.STORAGE_KEYS.TASKS, []);
+    const tasks = this.getItem<Task[] | null>(this.STORAGE_KEYS.TASKS, null);
+    
+    if (!tasks) return [];
     
     // Ensure dates are properly parsed
     return tasks.map(task => ({
@@ -189,7 +191,7 @@ class PersistentDataManager {
   }
 
   loadWorkers(): Worker[] {
-    return this.getItem<Worker[]>(this.STORAGE_KEYS.WORKERS, []);
+    return this.getItem<Worker[] | null>(this.STORAGE_KEYS.WORKERS, null) || [];
   }
 
   // User preferences
@@ -198,10 +200,10 @@ class PersistentDataManager {
   }
 
   loadUserPreferences(): UserPreferences {
-    return this.getItem<UserPreferences>(
+    return this.getItem<UserPreferences | null>(
       this.STORAGE_KEYS.USER_PREFERENCES,
-      this.DEFAULT_PREFERENCES
-    );
+      null
+    ) || this.DEFAULT_PREFERENCES;
   }
 
   // App settings
@@ -210,27 +212,28 @@ class PersistentDataManager {
   }
 
   loadAppSettings(): AppSettings {
-    return this.getItem<AppSettings>(
+    return this.getItem<AppSettings | null>(
       this.STORAGE_KEYS.APP_SETTINGS,
-      this.DEFAULT_SETTINGS
-    );
+      null
+    ) || this.DEFAULT_SETTINGS;
   }
 
   // Analytics cache
-  saveAnalyticsCache(data: any): void {
+  saveAnalyticsCache(data: Record<string, unknown>): void {
     this.setItem(this.STORAGE_KEYS.ANALYTICS_CACHE, {
       ...data,
       cachedAt: Date.now(),
     });
   }
 
-  loadAnalyticsCache(): any {
-    const cached = this.getItem<any>(this.STORAGE_KEYS.ANALYTICS_CACHE, null);
+  loadAnalyticsCache(): Record<string, unknown> | null {
+    const cached = this.getItem<Record<string, unknown> | null>(this.STORAGE_KEYS.ANALYTICS_CACHE, null);
     
     if (!cached) return null;
     
     // Check if cache is still valid (24 hours)
-    const cacheAge = Date.now() - (cached.cachedAt || 0);
+    const cachedAt = typeof cached.cachedAt === 'number' ? cached.cachedAt : 0;
+    const cacheAge = Date.now() - cachedAt;
     const maxAge = 24 * 60 * 60 * 1000; // 24 hours
     
     if (cacheAge > maxAge) {
@@ -242,7 +245,7 @@ class PersistentDataManager {
   }
 
   // Session data (temporary data that expires when browser closes)
-  saveSessionData(key: string, data: any): void {
+  saveSessionData(key: string, data: unknown): void {
     try {
       sessionStorage.setItem(`warehouse-session-${key}`, JSON.stringify(data));
     } catch (error) {
@@ -250,7 +253,7 @@ class PersistentDataManager {
     }
   }
 
-  loadSessionData(key: string, defaultValue: any = null): any {
+  loadSessionData<T>(key: string, defaultValue: T | null = null): T | null {
     try {
       const item = sessionStorage.getItem(`warehouse-session-${key}`);
       return item ? JSON.parse(item) : defaultValue;
@@ -305,7 +308,7 @@ class PersistentDataManager {
       if (data.settings) this.saveAppSettings(data.settings);
       
       return { success: true, message: 'Data imported successfully' };
-    } catch (error) {
+    } catch (_error) {
       return { success: false, message: 'Failed to import data: Invalid JSON' };
     }
   }
@@ -325,7 +328,7 @@ class PersistentDataManager {
   } {
     try {
       let used = 0;
-      for (let key in localStorage) {
+      for (const key in localStorage) {
         if (localStorage.hasOwnProperty(key) && key.startsWith('warehouse-')) {
           used += localStorage[key].length;
         }
@@ -339,7 +342,7 @@ class PersistentDataManager {
         available: estimated,
         percentage: (used / estimated) * 100,
       };
-    } catch (error) {
+    } catch (_error) {
       return { used: 0, available: 0, percentage: 0 };
     }
   }

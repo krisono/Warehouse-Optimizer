@@ -1,4 +1,4 @@
-import { OptimizeResult, Coord } from "./types";
+import { Warehouse, OptimizeResult, HeatmapData } from "./types";
 import { manhattan, euclidean } from "./graph";
 
 export function calculateMetrics(
