@@ -1,25 +1,4 @@
 {
-  "version": 2,
-  "name": "warehouse-optimizer",
-  "builds": [
-    {
-      "src": "package.json",
-      "use": "@vercel/next"
-    }
-  ],
-  "env": {
-    "NEXT_PUBLIC_APP_NAME": "Warehouse Optimizer"
-  },
-  "build": {
-    "env": {
-      "NODE_ENV": "production"
-    }
-  },
-  "functions": {
-    "app/**/*.{js,ts,tsx}": {
-      "maxDuration": 10
-    }
-  },
-  "regions": ["iad1"],
-  "framework": "nextjs"
+  "framework": "nextjs",
+  "buildCommand": "next build"
 }
