@@ -151,7 +151,7 @@ export default function PrioritizationDashboard() {
             Prioritized Task Queue
           </h3>
           <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
-            Tasks automatically ranked by AI priority algorithm
+            Tasks automatically ranked by deadline, value, and complexity
           </p>
         </div>
 

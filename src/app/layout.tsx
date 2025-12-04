@@ -14,22 +14,22 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "Warehouse Optimizer - Algorithm-Powered Warehouse Management",
+  title: "Warehouse Optimizer – Smart Route & Task Planning",
   description:
-    "Optimize warehouse operations with intelligent route planning, real-time analytics, and algorithm-powered task management. Reduce picking time by 40%.",
+    "Plan warehouse picks, simulate routes, and monitor performance in a single dashboard. Portfolio demo project.",
   keywords: [
     "warehouse optimization",
     "route planning",
     "logistics",
-    "algorithms",
     "task management",
     "warehouse management system",
+    "operations dashboard",
   ],
   authors: [{ name: "Nnaemeka Onochie" }],
   openGraph: {
-    title: "Warehouse Optimizer - Algorithm-Powered Warehouse Management",
+    title: "Warehouse Optimizer – Smart Route & Task Planning",
     description:
-      "Reduce picking time by 40% with intelligent route optimization and algorithm-powered task management.",
+      "Reduce picking time with smart routing, task prioritization, and live performance analytics.",
     type: "website",
   },
 };
@@ -41,7 +41,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="scroll-smooth">
-      <body className="antialiased">
+      <body className="antialiased bg-muted">
         <ThemeProvider>
           <SettingsProvider>
             <NotificationProvider>

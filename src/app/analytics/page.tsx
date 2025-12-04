@@ -109,10 +109,10 @@ export default function AnalyticsPage() {
                 </div>
                 <div>
                   <h1 className="text-xl font-bold text-slate-900">
-                    Analytics Dashboard
+                    Performance Dashboard
                   </h1>
                   <p className="text-xs text-slate-500">
-                    Performance insights & metrics
+                    Operational insights & metrics
                   </p>
                 </div>
               </div>
@@ -172,7 +172,7 @@ export default function AnalyticsPage() {
                   : "border-transparent text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300"
               }`}
             >
-              AI Task Prioritization
+              Task Prioritization
             </button>
           </nav>
         </div>

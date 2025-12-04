@@ -208,3 +208,31 @@ body {
 .bg-accent-hover {
   background-color: var(--accent-hover);
 }
+
+/* App shell and card utilities */
+.app-shell {
+  min-height: 100vh;
+  background-color: var(--muted-bg);
+  padding: 1.5rem 0;
+}
+
+.app-card {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  transition: box-shadow 0.2s ease;
+}
+
+.app-card:hover {
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+
+.app-card-sm {
+  padding: 1rem;
+}
+
+.app-card-lg {
+  padding: 2rem;
+}

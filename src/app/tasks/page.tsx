@@ -273,10 +273,10 @@ export default function TasksPage() {
                 </div>
                 <div>
                   <h1 className="text-xl font-bold text-slate-900">
-                    Task Management
+                    Task Board
                   </h1>
                   <p className="text-xs text-slate-500">
-                    Manage warehouse operations
+                    Organize picks and assignments
                   </p>
                 </div>
               </div>

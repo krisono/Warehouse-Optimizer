@@ -1,27 +1,33 @@
 # Warehouse Optimizer
 
-A warehouse management dashboard that optimizes task routing and worker assignments using algorithmic optimization.
+A portfolio demo simulating route planning, task prioritization, and performance analytics for warehouse operations.
 
 ## What It Does
 
-This application helps warehouse managers optimize operations by:
+This application helps warehouse managers plan and optimize operations by:
 
-- **Route Optimization**: Uses A\* pathfinding algorithm to calculate efficient picking routes
-- **Task Management**: Prioritizes tasks based on deadlines, revenue, and worker availability
-- **Zone Monitoring**: Tracks warehouse zone status and capacity in real-time
-- **Performance Analytics**: Displays operational metrics and identifies bottlenecks
+- **Route Planning**: Calculates efficient picking routes through aisles and docks to reduce walking time
+- **Task Management**: Prioritizes tasks based on deadlines, order value, and worker availability
+- **Zone Monitoring**: Tracks warehouse zone status, capacity, and worker distribution in real-time
+- **Performance Analytics**: Displays operational metrics, identifies bottlenecks, and simulates improvements
 
 ## How It Works
 
-The system uses several optimization algorithms:
+The system simulates warehouse operations using:
 
-- **A\* Algorithm**: Finds shortest paths between warehouse locations
-- **Dijkstra's Algorithm**: Calculates optimal routes considering distance and priority
-- **K-means Clustering**: Groups tasks by location for efficient batching
-- **Nearest Neighbor TSP**: Sequences multiple picks to minimize travel distance
+- **Shortest-path routing** to minimize walking distance between pick locations
+- **Route sequencing** to determine the optimal order for visiting multiple stops
+- **Zone-based batching** to group nearby picks and reduce backtracking
+- **Multi-factor task scoring** to rank tasks by deadline urgency, order value, and complexity
+
+All calculations run client-side using simulated data. No real warehouse information is stored.
 
 ## Tech Stack
 
 - **Next.js 16** with React 19 and TypeScript
 - **Tailwind CSS** for styling
 - **Lucide React** for icons
+
+## Under the Hood (for engineers)
+
+The implementation demonstrates practical use of pathfinding algorithms (shortest-path graph traversal), clustering techniques (grouping by location proximity), and heuristic optimization (sequencing stops to minimize total distance). View the source code in `/src/lib/` to see how these concepts translate into working TypeScript.

@@ -21,7 +21,7 @@ export function Header({ currentTime, mounted }: HeaderProps) {
                   Warehouse Optimizer
                 </h1>
                 <p className="hidden sm:block text-xs text-slate-500">
-                  Algorithm-Powered Operations
+                  Smart Route & Task Planning
                 </p>
               </div>
             </div>

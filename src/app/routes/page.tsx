@@ -97,9 +97,9 @@ export default function RoutesPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+    <div className="min-h-screen bg-muted">
       {/* Header */}
-      <nav className="bg-white shadow-lg border-b border-slate-200">
+      <nav className="bg-white shadow-sm border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center space-x-4">
@@ -108,19 +108,20 @@ export default function RoutesPage() {
                 className="flex items-center space-x-2 text-blue-600 hover:text-blue-700"
               >
                 <ArrowLeft className="h-5 w-5" />
-                <span className="text-sm font-medium">Back to Dashboard</span>
+                <span className="text-sm font-medium">Back</span>
               </Link>
               <div className="h-6 w-px bg-slate-300"></div>
               <div className="flex items-center space-x-3">
-                <div className="p-2 bg-emerald-600 rounded-lg">
+                <div className="p-2 bg-blue-600 rounded-lg">
                   <MapPin className="h-6 w-6 text-white" />
                 </div>
                 <div>
                   <h1 className="text-xl font-bold text-slate-900">
-                    Route Optimization
+                    Route Planner
                   </h1>
                   <p className="text-xs text-slate-500">
-                    AI-powered path planning
+                    Simulate pick paths and see how route planning affects
+                    walking time
                   </p>
                 </div>
               </div>
@@ -136,7 +137,7 @@ export default function RoutesPage() {
               <button
                 onClick={handleOptimizeRoutes}
                 disabled={isOptimizing}
-                className="px-4 py-2 bg-emerald-600 text-white text-sm font-medium rounded-lg hover:bg-emerald-700 transition-colors flex items-center space-x-2 disabled:opacity-50"
+                className="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2 disabled:opacity-50"
               >
                 <Zap className="h-4 w-4" />
                 <span>
@@ -151,10 +152,10 @@ export default function RoutesPage() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Optimization Progress */}
         {isOptimizing && (
-          <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 mb-8">
+          <div className="app-card mb-8">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-semibold text-slate-900">
-                AI Route Optimization in Progress
+                Route Optimization in Progress
               </h3>
               <span className="text-sm text-slate-600">
                 {optimizationProgress}%
@@ -162,20 +163,20 @@ export default function RoutesPage() {
             </div>
             <div className="w-full bg-slate-200 rounded-full h-3">
               <div
-                className="bg-emerald-600 h-3 rounded-full transition-all duration-300"
+                className="bg-blue-600 h-3 rounded-full transition-all duration-300"
                 style={{ width: `${optimizationProgress}%` }}
               ></div>
             </div>
             <p className="text-sm text-slate-600 mt-2">
-              Analyzing patterns, calculating optimal paths, and minimizing
-              travel time...
+              Calculating shortest walking paths and grouping nearby picks for
+              optimal routes...
             </p>
           </div>
         )}
 
         {/* Optimization Metrics */}
         <div className="grid grid-cols-1 md:grid-cols-5 gap-6 mb-8">
-          <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
+          <div className="app-card app-card-sm">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-slate-600">
@@ -190,7 +191,7 @@ export default function RoutesPage() {
               </div>
             </div>
           </div>
-          <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
+          <div className="app-card app-card-sm">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-slate-600">
@@ -205,7 +206,7 @@ export default function RoutesPage() {
               </div>
             </div>
           </div>
-          <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
+          <div className="app-card app-card-sm">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-slate-600">
@@ -220,7 +221,7 @@ export default function RoutesPage() {
               </div>
             </div>
           </div>
-          <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
+          <div className="app-card app-card-sm">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-slate-600">
@@ -235,7 +236,7 @@ export default function RoutesPage() {
               </div>
             </div>
           </div>
-          <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
+          <div className="app-card app-card-sm">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-slate-600">Time Saved</p>
@@ -255,7 +256,7 @@ export default function RoutesPage() {
           {routes.map((route) => (
             <div
               key={route.id}
-              className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow"
+              className="app-card hover:shadow-lg transition-shadow"
             >
               <div className="flex items-start justify-between mb-4">
                 <div>
@@ -363,7 +364,7 @@ export default function RoutesPage() {
         </div>
 
         {/* Route Visualization */}
-        <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+        <div className="app-card">
           <h3 className="text-lg font-semibold text-slate-900 mb-4">
             Warehouse Layout & Routes
           </h3>
@@ -407,8 +408,7 @@ export default function RoutesPage() {
             </div>
           </div>
           <div className="mt-4 text-sm text-slate-600 text-center">
-            Interactive route visualization • Click zones to view detailed paths
-            • Routes updated in real-time
+            Simulated warehouse zones with real-time worker distribution
           </div>
         </div>
       </main>

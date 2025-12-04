@@ -178,10 +178,16 @@ export default function OrderForm({
             }
             className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent"
           >
-            <option value="nearest">Nearest Neighbor</option>
-            <option value="return_to_dock">Return to Dock</option>
-            <option value="zone_cluster">Zone Cluster</option>
+            <option value="nearest">Shortest Path</option>
+            <option value="return_to_dock">
+              Return to Dock Between Batches
+            </option>
+            <option value="zone_cluster">Zone-based Batching</option>
           </select>
+          <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+            Choose how the planner balances walking distance, dock returns, and
+            zone batching
+          </p>
         </div>
 
         <div className="grid grid-cols-2 gap-3">
