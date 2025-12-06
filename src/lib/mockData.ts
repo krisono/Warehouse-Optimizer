@@ -13,9 +13,10 @@ export const generateMockTasks = (): Task[] => {
     'Art Supplies Collection'
   ];
 
+  // WMS location codes: ZONE-RACK-SECTION-SHELF-BIN
   const locations = [
-    'Aisle 12B-04', 'Aisle 08A-12', 'Aisle 15C-08', 'Aisle 06D-15',
-    'Aisle 09F-22', 'Aisle 11A-07', 'Aisle 14G-11', 'Aisle 05B-19'
+    'A-01-AA-01-B01', 'A-03-AB-02-B03', 'B-05-AC-01-B02', 'B-08-AD-03-B05',
+    'C-02-BA-04-B01', 'F-01-CA-02-B02', 'R-01-DA-01-B01', 'P-02-EA-01-B03'
   ];
 
   const priorities = ['Critical', 'High', 'Medium', 'Low'] as const;
@@ -42,63 +43,73 @@ export const generateMockZones = (): Zone[] => {
   return [
     {
       id: 'zone-a',
-      name: 'Zone A (Electronics)',
-      category: 'Electronics',
-      workers: 8,
-      status: 'Optimal',
-      capacity: 100,
-      currentLoad: 75,
-      efficiency: 96.8
+      name: 'Zone A – Fast Moving Picks',
+      category: 'Fast Movers',
+      workers: 12,
+      status: 'Busy',
+      capacity: 200,
+      currentLoad: 185,
+      efficiency: 97.5
     },
     {
       id: 'zone-b', 
-      name: 'Zone B (Appliances)',
-      category: 'Appliances',
-      workers: 12,
-      status: 'Busy',
-      capacity: 150,
-      currentLoad: 140,
-      efficiency: 89.2
+      name: 'Zone B – Standard Shelving',
+      category: 'Standard Storage',
+      workers: 15,
+      status: 'Optimal',
+      capacity: 350,
+      currentLoad: 280,
+      efficiency: 94.2
     },
     {
       id: 'zone-c',
-      name: 'Zone C (Sports)',
-      category: 'Sports',
-      workers: 6,
+      name: 'Zone C – High-Bay Pallets',
+      category: 'Bulk Storage',
+      workers: 8,
       status: 'Normal',
-      capacity: 80,
-      currentLoad: 45,
-      efficiency: 92.1
+      capacity: 500,
+      currentLoad: 340,
+      efficiency: 91.8
     },
     {
-      id: 'zone-d',
-      name: 'Zone D (Media)',
-      category: 'Media',
-      workers: 4,
-      status: 'Idle',
-      capacity: 60,
-      currentLoad: 20,
-      efficiency: 78.5
-    },
-    {
-      id: 'zone-e',
-      name: 'Zone E (Automotive)',
-      category: 'Automotive',
+      id: 'zone-r',
+      name: 'Zone R – Receiving Room',
+      category: 'Receiving',
       workers: 10,
-      status: 'Optimal',
-      capacity: 120,
-      currentLoad: 95,
-      efficiency: 94.3
+      status: 'Busy',
+      capacity: 150,
+      currentLoad: 135,
+      efficiency: 89.5
     },
     {
       id: 'zone-f',
-      name: 'Zone F (Home & Garden)',
-      category: 'Home & Garden',
-      workers: 7,
+      name: 'Zone F – Refrigerated Storage',
+      category: 'Cold Storage',
+      workers: 6,
       status: 'Normal',
-      capacity: 90,
-      currentLoad: 60,
-      efficiency: 88.7
+      capacity: 120,
+      currentLoad: 85,
+      efficiency: 93.7
+    },
+    {
+      id: 'zone-p',
+      name: 'Zone P – Packing',
+      category: 'Packing',
+      workers: 14,
+      status: 'Optimal',
+      capacity: 180,
+      currentLoad: 165,
+      efficiency: 96.3
+    },
+    {
+      id: 'zone-s',
+      name: 'Zone S – Shipping / Staging',
+      category: 'Shipping',
+      workers: 11,
+      status: 'Busy',
+      capacity: 200,
+      currentLoad: 175,
+      efficiency: 88.9
     }
   ];
 };

@@ -272,6 +272,7 @@ export function TaskProvider({ children }: { children: ReactNode }) {
         priority:
           task.priority === "Critical" ? 3 : task.priority === "High" ? 2 : 1,
         timeEstimate: task.estimatedTime,
+        sequence: Math.floor(Math.random() * 100), // Mock sequence number
       },
       priority: task.priority.toLowerCase() as
         | "critical"
@@ -299,6 +300,7 @@ export function TaskProvider({ children }: { children: ReactNode }) {
         zone: worker.currentZone || "A",
         priority: 1,
         timeEstimate: 5,
+        sequence: Math.floor(Math.random() * 100), // Mock sequence number
       },
       maxCapacity: 5,
       efficiency: worker.efficiency / 100,

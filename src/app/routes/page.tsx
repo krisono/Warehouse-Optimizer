@@ -135,8 +135,8 @@ export default function RoutesPage() {
               ></div>
             </div>
             <p className="text-sm text-slate-300 dark:text-slate-300 mt-2">
-              Calculating shortest walking paths and grouping nearby picks for
-              optimal routes...
+              Calculating routes that follow your location sequence so pickers
+              walk the floor once, hitting nearby picks in order.
             </p>
           </Card>
         )}
@@ -182,18 +182,19 @@ export default function RoutesPage() {
                 description: "How routes are computed",
               }}
             >
-              <div className="space-y-3 text-sm text-slate-600">
+              <div className="space-y-3 text-sm text-slate-700 dark:text-slate-300">
                 <p>
-                  <strong>Shortest-path routing:</strong> Minimizes walking
-                  distance between picks
+                  <strong>Location sequence:</strong> Follows the same path
+                  you'd walk when scanning locations in order, minimizing
+                  backtracking.
                 </p>
                 <p>
-                  <strong>Zone batching:</strong> Groups nearby items to reduce
-                  backtracking
+                  <strong>Zone batching:</strong> Groups nearby picks inside the
+                  same storage area to reduce unnecessary zone transitions.
                 </p>
                 <p>
-                  <strong>Return-to-dock:</strong> Routes end at starting
-                  position
+                  <strong>Return to dock:</strong> Brings workers back to
+                  shipping or receiving at the end of each route for staging.
                 </p>
               </div>
             </Card>
@@ -202,121 +203,126 @@ export default function RoutesPage() {
           {/* Right Column: Warehouse Visualizer & Routes */}
           <div className="lg:col-span-2 space-y-6">
             {/* Warehouse Layout Visualizer */}
-            <Card
-              header={{
-                title: "Warehouse Layout & Routes",
-                description: "Simulated 4-zone warehouse with active routes",
-              }}
-            >
-              <div className="grid grid-cols-4 gap-4 h-80 bg-slate-50 rounded-lg p-4">
-                {/* Zone A */}
-                <div className="bg-blue-100 rounded-lg p-4 flex flex-col items-center justify-center">
-                  <div className="text-lg font-bold text-blue-800 mb-2">
-                    Zone A
-                  </div>
-                  <div className="text-sm text-blue-600">Electronics</div>
-                  <div className="text-xs text-blue-500 mt-2">8 workers</div>
-                  <div className="w-3 h-3 bg-blue-500 rounded-full mt-2 animate-pulse"></div>
+            <Card className="rounded-2xl border border-slate-200/20 dark:border-slate-700/50 shadow-sm md:shadow-md">
+              <div className="p-6 space-y-4">
+                <div>
+                  <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100 mb-1">
+                    Warehouse Layout & Routes
+                  </h3>
+                  <p className="text-sm text-slate-600 dark:text-slate-400">
+                    {routes.length > 0 &&
+                    routes[0].zones &&
+                    routes[0].zones.length > 0
+                      ? `Example route: Zone ${
+                          routes[0].zones[0]
+                        } → ${routes[0].zones.slice(1).join(" → ")} → Shipping`
+                      : "Simulated multi-zone warehouse with receiving, storage, packing, and shipping routes"}
+                  </p>
                 </div>
 
-                {/* Zone B */}
-                <div className="bg-emerald-100 rounded-lg p-4 flex flex-col items-center justify-center">
-                  <div className="text-lg font-bold text-emerald-800 mb-2">
-                    Zone B
-                  </div>
-                  <div className="text-sm text-emerald-600">Appliances</div>
-                  <div className="text-xs text-emerald-500 mt-2">
-                    12 workers
-                  </div>
-                  <div className="w-3 h-3 bg-emerald-500 rounded-full mt-2 animate-pulse"></div>
+                <div className="relative overflow-hidden rounded-2xl bg-slate-50 dark:bg-slate-900/80 p-8 border border-slate-200 dark:border-slate-700 min-h-[500px]">
+                  <img
+                    src="/warehouse-layout.png"
+                    alt="Warehouse isometric layout"
+                    className="w-full h-auto object-contain max-h-[600px]"
+                  />
                 </div>
 
-                {/* Zone C */}
-                <div className="bg-purple-100 rounded-lg p-4 flex flex-col items-center justify-center">
-                  <div className="text-lg font-bold text-purple-800 mb-2">
-                    Zone C
+                {/* Legend */}
+                <div className="flex items-center gap-6 text-sm text-slate-600 dark:text-slate-400 pt-2 border-t border-slate-200 dark:border-slate-700">
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+                    <span className="text-xs font-medium">Active worker</span>
                   </div>
-                  <div className="text-sm text-purple-600">Sports</div>
-                  <div className="text-xs text-purple-500 mt-2">6 workers</div>
-                  <div className="w-3 h-3 bg-purple-500 rounded-full mt-2 animate-pulse"></div>
-                </div>
-
-                {/* Zone D */}
-                <div className="bg-amber-100 rounded-lg p-4 flex flex-col items-center justify-center">
-                  <div className="text-lg font-bold text-amber-800 mb-2">
-                    Zone D
+                  <div className="flex items-center gap-2">
+                    <MapPin className="h-4 w-4 text-slate-400" />
+                    <span className="text-xs font-medium">Pick location</span>
                   </div>
-                  <div className="text-sm text-amber-600">Media</div>
-                  <div className="text-xs text-amber-500 mt-2">4 workers</div>
-                  <div className="w-3 h-3 bg-amber-500 rounded-full mt-2 animate-pulse"></div>
-                </div>
-              </div>
-
-              {/* Legend */}
-              <div className="mt-4 flex items-center gap-6 text-sm text-slate-600">
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
-                  <span>Active worker</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <MapPin className="h-4 w-4 text-slate-400" />
-                  <span>Pick location</span>
                 </div>
               </div>
             </Card>
 
-            {/* Route Steps Example */}
-            {routes.length > 0 && (
-              <Card
-                header={{
-                  title: "Route Steps - Example",
-                  description: `${routes[0].name || `Route ${routes[0].id}`}`,
-                }}
-              >
-                <div className="space-y-2">
-                  <div className="flex items-start gap-3 p-2 bg-slate-800 dark:bg-slate-800 rounded">
-                    <div className="w-6 h-6 flex items-center justify-center rounded-full bg-blue-100 text-blue-700 text-xs font-bold mt-0.5">
-                      1
-                    </div>
-                    <div className="flex-1">
-                      <p className="text-sm font-medium text-slate-100 dark:text-slate-100">
-                        Start at Dock
-                      </p>
-                      <p className="text-xs text-slate-300 dark:text-slate-300 font-medium">
-                        Zone entry point
-                      </p>
-                    </div>
+            {/* Route Steps */}
+            {routes.length > 0 && routes[0].tasks && (
+              <Card className="rounded-2xl border border-slate-200/20 dark:border-slate-700/50 shadow-sm md:shadow-md">
+                <div className="p-6">
+                  <div className="mb-4">
+                    <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100 mb-1">
+                      Route Steps
+                    </h3>
+                    <p className="text-sm text-slate-600 dark:text-slate-400">
+                      {routes[0].name || `Route ${routes[0].id}`}
+                    </p>
                   </div>
-                  {routes[0].tasks.slice(0, 3).map((task, idx) => (
-                    <div
-                      key={`task-${idx}`}
-                      className="flex items-start gap-3 p-2 bg-slate-800 dark:bg-slate-800 rounded"
-                    >
-                      <div className="w-6 h-6 flex items-center justify-center rounded-full bg-blue-100 text-blue-700 text-xs font-bold mt-0.5">
-                        {idx + 2}
+
+                  <div className="space-y-2">
+                    {/* Start */}
+                    <div className="flex items-start gap-3 p-3 bg-slate-50 dark:bg-slate-900/50 rounded-lg border border-slate-200 dark:border-slate-700">
+                      <div className="w-7 h-7 flex items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 text-sm font-bold mt-0.5 flex-shrink-0">
+                        1
                       </div>
                       <div className="flex-1">
-                        <p className="text-sm font-medium text-slate-100 dark:text-slate-100">
-                          Pick item {String(task)}
+                        <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">
+                          Start at Receiving (Zone R)
                         </p>
-                        <p className="text-xs text-slate-400 dark:text-slate-400">
-                          Aisle {routes[0].zones?.[0] || "A"}-
-                          {String(task).padStart(2, "0")}
+                        <p className="text-xs text-slate-600 dark:text-slate-400 mt-0.5">
+                          Begin route from dock
                         </p>
                       </div>
                     </div>
-                  ))}
-                  <div className="flex items-start gap-3 p-2 bg-slate-800 dark:bg-slate-800 rounded">
-                    <div className="w-6 h-6 flex items-center justify-center rounded-full bg-emerald-100 text-emerald-700 text-xs font-bold mt-0.5">
-                      ✓
-                    </div>
-                    <div className="flex-1">
-                      <p className="text-sm font-medium text-slate-100 dark:text-slate-100">
-                        Return to Dock
-                      </p>
-                      <p className="text-xs text-slate-400 dark:text-slate-400">
-                        Complete and stage order
-                      </p>
+
+                    {/* Pick tasks */}
+                    {routes[0].tasks
+                      .slice(0, 4)
+                      .map((task: any, idx: number) => (
+                        <div
+                          key={`task-${idx}`}
+                          className="flex items-start gap-3 p-3 bg-slate-50 dark:bg-slate-900/50 rounded-lg border border-slate-200 dark:border-slate-700"
+                        >
+                          <div className="w-7 h-7 flex items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 text-sm font-bold mt-0.5 flex-shrink-0">
+                            {idx + 2}
+                          </div>
+                          <div className="flex-1">
+                            <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">
+                              Pick{" "}
+                              {typeof task === "object" && task.id
+                                ? task.id
+                                : `Task ${idx + 1}`}
+                            </p>
+                            <p className="text-xs text-slate-600 dark:text-slate-400 mt-0.5">
+                              {typeof task === "object" && task.location
+                                ? `Location: ${task.location} • ${
+                                    task.priority || "Standard"
+                                  } priority${
+                                    task.sla ? `, ${task.sla} SLA` : ""
+                                  }`
+                                : `Location code available on assignment`}
+                            </p>
+                          </div>
+                        </div>
+                      ))}
+
+                    {routes[0].tasks.length > 4 && (
+                      <div className="text-center py-2">
+                        <span className="text-xs text-slate-500 dark:text-slate-400">
+                          +{routes[0].tasks.length - 4} more picks
+                        </span>
+                      </div>
+                    )}
+
+                    {/* End */}
+                    <div className="flex items-start gap-3 p-3 bg-emerald-50 dark:bg-emerald-900/20 rounded-lg border border-emerald-200 dark:border-emerald-800">
+                      <div className="w-7 h-7 flex items-center justify-center rounded-full bg-emerald-100 dark:bg-emerald-900 text-emerald-700 dark:text-emerald-300 text-sm font-bold mt-0.5 flex-shrink-0">
+                        ✓
+                      </div>
+                      <div className="flex-1">
+                        <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">
+                          Return to Shipping (Zone S)
+                        </p>
+                        <p className="text-xs text-slate-600 dark:text-slate-400 mt-0.5">
+                          Complete route and stage for shipping
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>

@@ -5,6 +5,7 @@ interface Location {
   zone: string;
   priority: number;
   timeEstimate: number; // minutes
+  sequence: number; // walk sequence for optimal single-pass route
 }
 
 interface Task {
@@ -61,26 +62,51 @@ class RouteOptimizer {
   }
 
   private initializeWarehouseLayout() {
-    // Define warehouse zones and their locations
+    // Define warehouse zones with their base coordinates
+    // Layout: R (Receiving) -> A (Fast) -> B (Standard) -> C (High-bay) -> F (Cold) -> P (Packing) -> S (Shipping)
     const zones = {
-      'A': { baseX: 10, baseY: 10 }, // Electronics
-      'B': { baseX: 50, baseY: 10 }, // Appliances  
-      'C': { baseX: 10, baseY: 50 }, // Sports
-      'D': { baseX: 50, baseY: 50 }, // Media
+      'R': { baseX: 5, baseY: 10, name: 'Receiving' },      // Start: Receiving
+      'A': { baseX: 20, baseY: 10, name: 'Fast Movers' },   // Zone A: Fast moving items
+      'B': { baseX: 50, baseY: 10, name: 'Standard' },       // Zone B: Standard shelving
+      'C': { baseX: 80, baseY: 10, name: 'High-Bay' },       // Zone C: High-bay pallets
+      'F': { baseX: 20, baseY: 50, name: 'Cold Storage' },   // Zone F: Refrigerated
+      'P': { baseX: 80, baseY: 50, name: 'Packing' },        // Zone P: Packing station
+      'S': { baseX: 110, baseY: 50, name: 'Shipping' },      // End: Shipping
     };
 
-    // Create locations within each zone
-    Object.entries(zones).forEach(([zone, coords]) => {
-      for (let i = 1; i <= 20; i++) {
-        const location: Location = {
-          id: `${zone}-${i.toString().padStart(2, '0')}`,
-          x: coords.baseX + (Math.random() * 30),
-          y: coords.baseY + (Math.random() * 30),
-          zone,
-          priority: Math.random() > 0.7 ? 2 : 1,
-          timeEstimate: 2 + Math.random() * 8, // 2-10 minutes
-        };
-        this.warehouseLayout[location.id] = location;
+    // Define sequence order for single-pass warehouse walk
+    const zoneSequenceOrder: Array<'R' | 'A' | 'B' | 'C' | 'F' | 'P' | 'S'> = ['R', 'A', 'B', 'C', 'F', 'P', 'S'];
+    let globalSequence = 0;
+
+    // Create locations within each zone with WMS-style IDs
+    zoneSequenceOrder.forEach((zone, zoneIndex) => {
+      const coords = zones[zone];
+      const locationsPerZone = zone === 'R' || zone === 'S' ? 5 : 15; // Fewer in receiving/shipping
+      
+      for (let rack = 1; rack <= Math.ceil(locationsPerZone / 3); rack++) {
+        const sections = ['AA', 'AB', 'AC'];
+        sections.forEach((section, sectionIdx) => {
+          if (globalSequence >= (zoneIndex * 20) + locationsPerZone) return;
+          
+          const shelf = 1 + Math.floor(Math.random() * 4); // Shelves 1-4
+          const bin = `B${String(1 + Math.floor(Math.random() * 5)).padStart(2, '0')}`; // Bins B01-B05
+          
+          // WMS location format: ZONE-RACK-SECTION-SHELF-BIN
+          const locationId = `${zone}-${String(rack).padStart(2, '0')}-${section}-${String(shelf).padStart(2, '0')}-${bin}`;
+          
+          const location: Location = {
+            id: locationId,
+            x: coords.baseX + (rack * 8) + (sectionIdx * 2) + (Math.random() * 2),
+            y: coords.baseY + (Math.random() * 15),
+            zone,
+            priority: Math.random() > 0.7 ? 2 : 1,
+            timeEstimate: 2 + Math.random() * 8, // 2-10 minutes
+            sequence: globalSequence // Sequential number for optimal walk order
+          };
+          
+          this.warehouseLayout[location.id] = location;
+          globalSequence++;
+        });
       }
     });
   }
@@ -110,7 +136,9 @@ class RouteOptimizer {
   }
 
   /**
-   * Solve Traveling Salesman Problem using Nearest Neighbor with priority weighting
+   * Optimize task order using location sequence and priority
+   * Strategy: Follow the warehouse walk sequence (one pass through facility)
+   * while considering task priority and minimizing backtracking
    */
   private optimizeTaskOrder(tasks: Task[], startLocation: Location): Task[] {
     if (tasks.length <= 1) return tasks;
@@ -123,13 +151,31 @@ class RouteOptimizer {
       let bestTask: Task | null = null;
       let bestScore = Infinity;
 
-      // Find the best next task considering distance and priority
+      // Find the best next task considering distance, sequence, and priority
       for (const task of unvisited) {
         const distance = this.calculateDistance(currentLocation, task.location);
         const priorityWeight = this.calculatePriorityWeight(task);
         
-        // Lower score is better (shorter distance, higher priority)
-        const score = distance / (priorityWeight + 0.1); // Avoid division by zero
+        // Calculate sequence delta (prefer moving forward in sequence)
+        const sequenceDelta = task.location.sequence - currentLocation.sequence;
+        
+        // Penalize backtracking heavily, reward forward movement
+        let sequencePenalty = 0;
+        if (sequenceDelta < 0) {
+          // Going backwards - apply exponential penalty
+          sequencePenalty = Math.abs(sequenceDelta) * 3.0;
+        } else {
+          // Going forward - small bonus
+          sequencePenalty = -Math.min(sequenceDelta * 0.1, 5);
+        }
+        
+        // Combined score: lower is better
+        // Balance between following sequence, minimizing distance, and respecting priority
+        const distanceScore = distance * 0.4;
+        const sequenceScore = sequencePenalty * 0.4;
+        const priorityScore = -(priorityWeight * 10); // Negative because lower score is better
+        
+        const score = distanceScore + sequenceScore + priorityScore;
         
         if (score < bestScore) {
           bestScore = score;
@@ -208,7 +254,7 @@ class RouteOptimizer {
   }
 
   /**
-   * Calculate route metrics
+   * Calculate route metrics including sequence adherence
    */
   private calculateRouteMetrics(worker: Worker, tasks: Task[]): {
     totalDistance: number;
@@ -223,21 +269,34 @@ class RouteOptimizer {
     let totalDistance = 0;
     let totalTime = 0;
     let currentLocation = worker.currentLocation;
+    let backtrackingCount = 0;
 
-    // Calculate total distance and time
+    // Calculate total distance, time, and backtracking
     tasks.forEach(task => {
       const distance = this.calculateDistance(currentLocation, task.location);
       totalDistance += distance;
       totalTime += distance * 0.1 + task.location.timeEstimate; // 0.1 min per distance unit + task time
+      
+      // Count backtracking (moving backwards in sequence)
+      if (task.location.sequence < currentLocation.sequence) {
+        backtrackingCount++;
+      }
+      
       currentLocation = task.location;
     });
 
     // Apply worker efficiency
     const adjustedTime = totalTime / worker.efficiency;
 
-    // Calculate efficiency based on distance optimization
+    // Calculate efficiency based on distance optimization and sequence adherence
     const theoreticalMinDistance = tasks.length * 20; // Theoretical minimum
-    const efficiency = Math.max(0, Math.min(100, (theoreticalMinDistance / totalDistance) * 100));
+    const distanceEfficiency = Math.max(0, Math.min(100, (theoreticalMinDistance / totalDistance) * 100));
+    
+    // Calculate sequence adherence bonus (fewer backtracks = higher efficiency)
+    const sequenceEfficiency = Math.max(0, 100 - (backtrackingCount * 15)); // Penalize backtracks
+    
+    // Combined efficiency: weight distance and sequence adherence
+    const efficiency = (distanceEfficiency * 0.6) + (sequenceEfficiency * 0.4);
 
     // Calculate optimization score considering priority fulfillment
     const priorityScore = tasks.reduce((sum, task) => sum + this.calculatePriorityWeight(task), 0) / tasks.length;
