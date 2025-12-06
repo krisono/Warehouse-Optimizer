@@ -94,273 +94,94 @@ export default function Home() {
 
           {/* Right Column - Mini Dashboard */}
           <div>
-            <Card className="bg-gradient-to-br from-white to-blue-50 dark:from-slate-800 dark:to-slate-700 shadow-xl border-2 border-slate-200 dark:border-slate-600">
+            <Card className="bg-gradient-to-br from-slate-800 to-slate-900 dark:from-slate-800 dark:to-slate-900 shadow-xl border-2 border-slate-700 dark:border-slate-600">
               <div className="space-y-4">
+                {/* Warehouse Layout Header */}
+                <div>
+                  <h3 className="text-lg font-bold text-slate-100 mb-1">
+                    Warehouse Layout & Routes
+                  </h3>
+                  <p className="text-sm text-slate-400">
+                    Simulated 4-zone warehouse with active routes
+                  </p>
+                </div>
+
                 {/* Mini warehouse grid */}
-                <div className="grid grid-cols-4 gap-3 h-52 bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 rounded-xl p-5 border border-slate-200 dark:border-slate-700 shadow-inner">
-                  <div className="bg-blue-100 dark:bg-blue-900/40 rounded-lg flex items-center justify-center text-xs font-semibold text-blue-700 dark:text-blue-300 shadow-md border border-blue-200 dark:border-blue-800 hover:scale-105 transition-transform">
-                    Zone A
+                <div className="grid grid-cols-4 gap-3 h-52 bg-gradient-to-br from-slate-700 to-slate-800 dark:from-slate-900 dark:to-slate-800 rounded-xl p-5 border border-slate-600 dark:border-slate-700 shadow-inner">
+                  {/* Zone A */}
+                  <div className="bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-900/40 dark:to-blue-800/40 rounded-lg p-3 flex flex-col items-center justify-center shadow-md border border-blue-300 dark:border-blue-700 hover:scale-105 transition-transform relative">
+                    <div className="text-base font-bold text-blue-700 dark:text-blue-300 mb-1">
+                      Zone A
+                    </div>
+                    <div className="text-xs text-blue-600 dark:text-blue-400 font-medium">
+                      Electronics
+                    </div>
+                    <div className="text-xs text-blue-600 dark:text-blue-400 mt-1">
+                      8 workers
+                    </div>
+                    <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 shadow-lg"></div>
                   </div>
-                  <div className="bg-emerald-100 dark:bg-emerald-900/40 rounded-lg flex items-center justify-center text-xs font-semibold text-emerald-700 dark:text-emerald-300 shadow-md border border-emerald-200 dark:border-emerald-800 hover:scale-105 transition-transform">
-                    Zone B
+
+                  {/* Zone B */}
+                  <div className="bg-gradient-to-br from-emerald-100 to-emerald-200 dark:from-emerald-900/40 dark:to-emerald-800/40 rounded-lg p-3 flex flex-col items-center justify-center shadow-md border border-emerald-300 dark:border-emerald-700 hover:scale-105 transition-transform relative">
+                    <div className="text-base font-bold text-emerald-700 dark:text-emerald-300 mb-1">
+                      Zone B
+                    </div>
+                    <div className="text-xs text-emerald-600 dark:text-emerald-400 font-medium">
+                      Appliances
+                    </div>
+                    <div className="text-xs text-emerald-600 dark:text-emerald-400 mt-1">
+                      12 workers
+                    </div>
+                    <div className="w-2 h-2 bg-emerald-500 rounded-full mt-2 shadow-lg"></div>
                   </div>
-                  <div className="bg-purple-100 dark:bg-purple-900/40 rounded-lg flex items-center justify-center text-xs font-semibold text-purple-700 dark:text-purple-300 shadow-md border border-purple-200 dark:border-purple-800 hover:scale-105 transition-transform">
-                    Zone C
+
+                  {/* Zone C */}
+                  <div className="bg-gradient-to-br from-purple-100 to-purple-200 dark:from-purple-900/40 dark:to-purple-800/40 rounded-lg p-3 flex flex-col items-center justify-center shadow-md border border-purple-300 dark:border-purple-700 hover:scale-105 transition-transform relative">
+                    <div className="text-base font-bold text-purple-700 dark:text-purple-300 mb-1">
+                      Zone C
+                    </div>
+                    <div className="text-xs text-purple-600 dark:text-purple-400 font-medium">
+                      Sports
+                    </div>
+                    <div className="text-xs text-purple-600 dark:text-purple-400 mt-1">
+                      6 workers
+                    </div>
+                    <div className="w-2 h-2 bg-purple-500 rounded-full mt-2 shadow-lg"></div>
                   </div>
-                  <div className="bg-amber-100 dark:bg-amber-900/40 rounded-lg flex items-center justify-center text-xs font-semibold text-amber-700 dark:text-amber-300 shadow-md border border-amber-200 dark:border-amber-800 hover:scale-105 transition-transform">
-                    Dock
+
+                  {/* Zone D */}
+                  <div className="bg-gradient-to-br from-amber-100 to-amber-200 dark:from-amber-900/40 dark:to-amber-800/40 rounded-lg p-3 flex flex-col items-center justify-center shadow-md border border-amber-300 dark:border-amber-700 hover:scale-105 transition-transform relative">
+                    <div className="text-base font-bold text-amber-700 dark:text-amber-300 mb-1">
+                      Zone D
+                    </div>
+                    <div className="text-xs text-amber-600 dark:text-amber-400 font-medium">
+                      Media
+                    </div>
+                    <div className="text-xs text-amber-600 dark:text-amber-400 mt-1">
+                      4 workers
+                    </div>
+                    <div className="w-2 h-2 bg-amber-500 rounded-full mt-2 shadow-lg"></div>
                   </div>
-                  <div className="col-span-4 relative bg-gradient-to-br from-slate-50 via-slate-100 to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 rounded-lg p-3 border border-slate-300 dark:border-slate-700 shadow-inner">
-                    <svg className="w-full h-32" viewBox="0 0 100 40">
-                      <defs>
-                        <filter id="glow">
-                          <feGaussianBlur
-                            stdDeviation="2"
-                            result="coloredBlur"
-                          />
-                          <feMerge>
-                            <feMergeNode in="coloredBlur" />
-                            <feMergeNode in="SourceGraphic" />
-                          </feMerge>
-                        </filter>
-                        <linearGradient
-                          id="pathGradient"
-                          x1="0%"
-                          y1="0%"
-                          x2="100%"
-                          y2="0%"
-                        >
-                          <stop offset="0%" stopColor="#3b82f6" />
-                          <stop offset="100%" stopColor="#10b981" />
-                        </linearGradient>
-                      </defs>
+                </div>
 
-                      {/* Background grid pattern */}
-                      <defs>
-                        <pattern
-                          id="grid"
-                          width="10"
-                          height="10"
-                          patternUnits="userSpaceOnUse"
-                        >
-                          <path
-                            d="M 10 0 L 0 0 0 10"
-                            fill="none"
-                            stroke="#cbd5e1"
-                            strokeWidth="0.5"
-                            opacity="0.3"
-                          />
-                        </pattern>
-                      </defs>
-                      <rect width="100" height="40" fill="url(#grid)" />
-
-                      {/* Warehouse shelves/boxes as background elements */}
-                      <rect
-                        x="15"
-                        y="18"
-                        width="4"
-                        height="4"
-                        fill="#93c5fd"
-                        opacity="0.3"
-                        rx="0.5"
-                      />
-                      <rect
-                        x="35"
-                        y="8"
-                        width="4"
-                        height="4"
-                        fill="#93c5fd"
-                        opacity="0.3"
-                        rx="0.5"
-                      />
-                      <rect
-                        x="48"
-                        y="23"
-                        width="4"
-                        height="4"
-                        fill="#93c5fd"
-                        opacity="0.3"
-                        rx="0.5"
-                      />
-                      <rect
-                        x="65"
-                        y="13"
-                        width="4"
-                        height="4"
-                        fill="#93c5fd"
-                        opacity="0.3"
-                        rx="0.5"
-                      />
-                      <rect
-                        x="85"
-                        y="28"
-                        width="4"
-                        height="4"
-                        fill="#6ee7b7"
-                        opacity="0.3"
-                        rx="0.5"
-                      />
-
-                      {/* Main path with gradient */}
-                      <path
-                        d="M 10,20 L 30,10 L 50,25 L 70,15 L 90,30"
-                        stroke="url(#pathGradient)"
-                        strokeWidth="3"
-                        fill="none"
-                        strokeDasharray="5 3"
-                        filter="url(#glow)"
-                        className="animate-pulse"
-                      />
-
-                      {/* Connecting lines from path to boxes */}
-                      <line
-                        x1="17"
-                        y1="20"
-                        x2="17"
-                        y2="18"
-                        stroke="#3b82f6"
-                        strokeWidth="1"
-                        opacity="0.4"
-                        strokeDasharray="1 1"
-                      />
-                      <line
-                        x1="37"
-                        y1="10"
-                        x2="37"
-                        y2="8"
-                        stroke="#3b82f6"
-                        strokeWidth="1"
-                        opacity="0.4"
-                        strokeDasharray="1 1"
-                      />
-                      <line
-                        x1="50"
-                        y1="25"
-                        x2="50"
-                        y2="23"
-                        stroke="#3b82f6"
-                        strokeWidth="1"
-                        opacity="0.4"
-                        strokeDasharray="1 1"
-                      />
-                      <line
-                        x1="67"
-                        y1="15"
-                        x2="67"
-                        y2="13"
-                        stroke="#3b82f6"
-                        strokeWidth="1"
-                        opacity="0.4"
-                        strokeDasharray="1 1"
-                      />
-                      <line
-                        x1="87"
-                        y1="30"
-                        x2="87"
-                        y2="28"
-                        stroke="#10b981"
-                        strokeWidth="1"
-                        opacity="0.4"
-                        strokeDasharray="1 1"
-                      />
-
-                      {/* Path waypoint circles with animation */}
-                      <circle
-                        cx="10"
-                        cy="20"
-                        r="4"
-                        fill="#3b82f6"
-                        className="drop-shadow-lg"
-                      >
-                        <animate
-                          attributeName="r"
-                          values="4;5;4"
-                          dur="2s"
-                          repeatCount="indefinite"
-                        />
-                      </circle>
-                      <circle
-                        cx="30"
-                        cy="10"
-                        r="3"
-                        fill="#60a5fa"
-                        opacity="0.9"
-                      >
-                        <animate
-                          attributeName="opacity"
-                          values="0.9;1;0.9"
-                          dur="1.5s"
-                          repeatCount="indefinite"
-                        />
-                      </circle>
-                      <circle
-                        cx="50"
-                        cy="25"
-                        r="3"
-                        fill="#60a5fa"
-                        opacity="0.9"
-                      >
-                        <animate
-                          attributeName="opacity"
-                          values="0.9;1;0.9"
-                          dur="1.5s"
-                          begin="0.3s"
-                          repeatCount="indefinite"
-                        />
-                      </circle>
-                      <circle
-                        cx="70"
-                        cy="15"
-                        r="3"
-                        fill="#60a5fa"
-                        opacity="0.9"
-                      >
-                        <animate
-                          attributeName="opacity"
-                          values="0.9;1;0.9"
-                          dur="1.5s"
-                          begin="0.6s"
-                          repeatCount="indefinite"
-                        />
-                      </circle>
-                      <circle
-                        cx="90"
-                        cy="30"
-                        r="4"
-                        fill="#10b981"
-                        className="drop-shadow-lg"
-                      >
-                        <animate
-                          attributeName="r"
-                          values="4;5;4"
-                          dur="2s"
-                          begin="0.5s"
-                          repeatCount="indefinite"
-                        />
-                      </circle>
-
-                      {/* Start and end labels */}
-                      <text
-                        x="10"
-                        y="32"
-                        fontSize="3"
-                        fill="#3b82f6"
-                        fontWeight="bold"
-                        textAnchor="middle"
-                      >
-                        START
-                      </text>
-                      <text
-                        x="90"
-                        y="38"
-                        fontSize="3"
-                        fill="#10b981"
-                        fontWeight="bold"
-                        textAnchor="middle"
-                      >
-                        END
-                      </text>
+                {/* Legend */}
+                <div className="flex items-center justify-center gap-4 text-xs pt-2 border-t border-slate-600">
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                    <span className="text-slate-300">Active worker</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <svg
+                      className="w-4 h-4 text-slate-400"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                    >
+                      <circle cx="12" cy="12" r="10" />
+                      <path d="M12 6v6l4 2" />
                     </svg>
+                    <span className="text-slate-300">Pick location</span>
                   </div>
                 </div>
 

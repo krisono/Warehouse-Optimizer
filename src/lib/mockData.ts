@@ -79,6 +79,26 @@ export const generateMockZones = (): Zone[] => {
       capacity: 60,
       currentLoad: 20,
       efficiency: 78.5
+    },
+    {
+      id: 'zone-e',
+      name: 'Zone E (Automotive)',
+      category: 'Automotive',
+      workers: 10,
+      status: 'Optimal',
+      capacity: 120,
+      currentLoad: 95,
+      efficiency: 94.3
+    },
+    {
+      id: 'zone-f',
+      name: 'Zone F (Home & Garden)',
+      category: 'Home & Garden',
+      workers: 7,
+      status: 'Normal',
+      capacity: 90,
+      currentLoad: 60,
+      efficiency: 88.7
     }
   ];
 };

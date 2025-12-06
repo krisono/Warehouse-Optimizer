@@ -44,6 +44,8 @@ export default function AnalyticsPage() {
       { zone: "B", orders: 523, efficiency: 94.8, workers: 12, avgTime: 8.1 },
       { zone: "C", orders: 389, efficiency: 92.5, workers: 6, avgTime: 8.9 },
       { zone: "D", orders: 479, efficiency: 93.7, workers: 4, avgTime: 8.4 },
+      { zone: "E", orders: 412, efficiency: 94.3, workers: 10, avgTime: 7.8 },
+      { zone: "F", orders: 368, efficiency: 88.7, workers: 7, avgTime: 9.2 },
     ],
     topWorkers: [
       { name: "Sarah Johnson", orders: 127, efficiency: 98.5, rating: 4.9 },
@@ -97,12 +99,20 @@ export default function AnalyticsPage() {
             <select
               value={timeRange}
               onChange={(e) => setTimeRange(e.target.value)}
-              className="px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="px-4 py-2 bg-white dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-600 rounded-lg text-sm font-semibold text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 hover:border-slate-400 dark:hover:border-slate-500 transition-colors cursor-pointer shadow-sm"
             >
-              <option value="day">Today</option>
-              <option value="week">This Week</option>
-              <option value="month">This Month</option>
-              <option value="quarter">This Quarter</option>
+              <option value="day" className="font-medium">
+                Today
+              </option>
+              <option value="week" className="font-medium">
+                This Week
+              </option>
+              <option value="month" className="font-medium">
+                This Month
+              </option>
+              <option value="quarter" className="font-medium">
+                This Quarter
+              </option>
             </select>
             <button
               onClick={handleRefresh}
