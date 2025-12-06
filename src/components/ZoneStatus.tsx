@@ -52,11 +52,11 @@ export function ZoneStatus({ zone, onClick }: ZoneStatusProps) {
           <p className="text-sm font-medium text-slate-900 dark:text-white">
             {zone.name}
           </p>
-          <p className="text-xs text-slate-500 dark:text-gray-500">
+          <p className="text-xs text-slate-600 dark:text-slate-400 font-medium">
             {zone.workers} workers •{" "}
             {Math.round((zone.currentLoad / zone.capacity) * 100)}% capacity
           </p>
-          <p className="text-xs text-slate-500 dark:text-gray-500">
+          <p className="text-xs text-slate-600 dark:text-slate-400 font-medium">
             Efficiency: {zone.efficiency}%
           </p>
         </div>

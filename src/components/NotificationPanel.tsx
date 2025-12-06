@@ -100,7 +100,7 @@ function NotificationItem({
               <p
                 className={`text-sm mt-1 ${
                   notification.read
-                    ? "text-slate-500 dark:text-slate-500"
+                    ? "text-slate-600 dark:text-slate-400"
                     : "text-slate-700 dark:text-slate-300"
                 }`}
               >
@@ -108,7 +108,7 @@ function NotificationItem({
               </p>
               <div className="flex items-center space-x-2 mt-2">
                 <Clock className="h-3 w-3 text-slate-400" />
-                <span className="text-xs text-slate-500 dark:text-slate-500">
+                <span className="text-xs text-slate-600 dark:text-slate-400 font-medium">
                   {formatTime(notification.timestamp)}
                 </span>
                 {notification.priority === "critical" && (
@@ -270,12 +270,12 @@ export function NotificationPanel({ isOpen, onClose }: NotificationPanelProps) {
             {filteredNotifications.length === 0 ? (
               <div className="flex flex-col items-center justify-center h-full text-center p-8">
                 <Bell className="h-12 w-12 text-slate-300 dark:text-slate-600 mb-4" />
-                <h3 className="text-lg font-medium text-slate-600 dark:text-slate-400 mb-2">
+                <h3 className="text-lg font-medium text-slate-700 dark:text-slate-300 mb-2">
                   {filter === "unread"
                     ? "No unread notifications"
                     : "No notifications"}
                 </h3>
-                <p className="text-sm text-slate-500 dark:text-slate-500">
+                <p className="text-sm text-slate-600 dark:text-slate-400">
                   {filter === "unread"
                     ? "All caught up! Check back later for updates."
                     : "You'll receive notifications here for task assignments, SLA warnings, and system alerts."}

@@ -69,7 +69,7 @@ export function TaskItem({ task, onAssign }: TaskItemProps) {
             <p className="text-sm text-slate-600 dark:text-gray-400 mt-1">
               {task.product}
             </p>
-            <p className="text-xs text-slate-500 dark:text-gray-500">
+            <p className="text-xs text-slate-600 dark:text-slate-400 font-medium">
               {task.location}
             </p>
             {task.assignedWorker && (
@@ -81,7 +81,7 @@ export function TaskItem({ task, onAssign }: TaskItemProps) {
         </div>
         <div className="flex items-center space-x-6">
           <div className="text-right">
-            <p className="text-xs text-slate-500 dark:text-gray-500">
+            <p className="text-xs text-slate-600 dark:text-slate-400 font-medium">
               SLA Time
             </p>
             <p className="font-medium text-slate-900 dark:text-white">
@@ -89,7 +89,9 @@ export function TaskItem({ task, onAssign }: TaskItemProps) {
             </p>
           </div>
           <div className="text-right">
-            <p className="text-xs text-slate-500 dark:text-gray-500">Revenue</p>
+            <p className="text-xs text-slate-600 dark:text-slate-400 font-medium">
+              Revenue
+            </p>
             <p className="font-medium text-emerald-600 dark:text-emerald-400">
               {task.revenue}
             </p>

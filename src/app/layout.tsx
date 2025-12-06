@@ -41,7 +41,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="scroll-smooth">
-      <body className="antialiased bg-muted">
+      <body className="antialiased bg-slate-50 dark:bg-slate-900">
         <ThemeProvider>
           <SettingsProvider>
             <NotificationProvider>

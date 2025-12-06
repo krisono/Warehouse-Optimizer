@@ -37,7 +37,9 @@ export function Header({ currentTime, mounted }: HeaderProps) {
             <NotificationBell />
             {mounted && (
               <div className="text-right hidden md:block">
-                <p className="text-xs text-slate-500">Live Time</p>
+                <p className="text-xs text-slate-600 dark:text-slate-400 font-medium">
+                  Live Time
+                </p>
                 <p className="font-mono text-sm font-medium text-slate-900">
                   {currentTime}
                 </p>

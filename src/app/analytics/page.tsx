@@ -2,16 +2,14 @@
 
 import { useState } from "react";
 import {
-  ArrowLeft,
   TrendingUp,
   Users,
   Package,
   Clock,
-  BarChart3,
   Download,
   RefreshCw,
 } from "lucide-react";
-import Link from "next/link";
+import { AppShell, PageHeader, Card, Stat } from "@/components/ui";
 import PrioritizationDashboard from "../../components/PrioritizationDashboard";
 
 export default function AnalyticsPage() {
@@ -89,219 +87,145 @@ export default function AnalyticsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
-      {/* Header */}
-      <nav className="bg-white shadow-lg border-b border-slate-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center space-x-4">
-              <Link
-                href="/"
-                className="flex items-center space-x-2 text-blue-600 hover:text-blue-700"
-              >
-                <ArrowLeft className="h-5 w-5" />
-                <span className="text-sm font-medium">Back to Dashboard</span>
-              </Link>
-              <div className="h-6 w-px bg-slate-300"></div>
-              <div className="flex items-center space-x-3">
-                <div className="p-2 bg-purple-600 rounded-lg">
-                  <BarChart3 className="h-6 w-6 text-white" />
-                </div>
-                <div>
-                  <h1 className="text-xl font-bold text-slate-900">
-                    Performance Dashboard
-                  </h1>
-                  <p className="text-xs text-slate-500">
-                    Operational insights & metrics
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className="flex items-center space-x-3">
-              <select
-                value={timeRange}
-                onChange={(e) => setTimeRange(e.target.value)}
-                className="px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
-              >
-                <option value="day">Today</option>
-                <option value="week">This Week</option>
-                <option value="month">This Month</option>
-                <option value="quarter">This Quarter</option>
-              </select>
-              <button
-                onClick={handleRefresh}
-                disabled={refreshing}
-                className="px-4 py-2 bg-slate-600 text-white text-sm font-medium rounded-lg hover:bg-slate-700 transition-colors flex items-center space-x-2 disabled:opacity-50"
-              >
-                <RefreshCw
-                  className={`h-4 w-4 ${refreshing ? "animate-spin" : ""}`}
-                />
-                <span>Refresh</span>
-              </button>
-              <button
-                onClick={handleExport}
-                className="px-4 py-2 bg-purple-600 text-white text-sm font-medium rounded-lg hover:bg-purple-700 transition-colors flex items-center space-x-2"
-              >
-                <Download className="h-4 w-4" />
-                <span>Export</span>
-              </button>
-            </div>
+    <AppShell>
+      <PageHeader
+        badge="Demo Data"
+        title="Performance Dashboard"
+        description="Explore simulated throughput, time per order, and zone-level performance."
+        actions={
+          <div className="flex items-center space-x-3">
+            <select
+              value={timeRange}
+              onChange={(e) => setTimeRange(e.target.value)}
+              className="px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="day">Today</option>
+              <option value="week">This Week</option>
+              <option value="month">This Month</option>
+              <option value="quarter">This Quarter</option>
+            </select>
+            <button
+              onClick={handleRefresh}
+              disabled={refreshing}
+              className="px-4 py-2 bg-slate-600 text-white text-sm font-medium rounded-lg hover:bg-slate-700 transition-colors flex items-center space-x-2 disabled:opacity-50"
+            >
+              <RefreshCw
+                className={`h-4 w-4 ${refreshing ? "animate-spin" : ""}`}
+              />
+              <span>Refresh</span>
+            </button>
+            <button
+              onClick={handleExport}
+              className="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2"
+            >
+              <Download className="h-4 w-4" />
+              <span>Export</span>
+            </button>
           </div>
-        </div>
-      </nav>
+        }
+      />
 
-      {/* Tab Navigation */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
-        <div className="border-b border-slate-200 dark:border-slate-700">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+        {/* Tab Navigation */}
+        <div className="border-b border-slate-200">
           <nav className="flex space-x-8">
             <button
               onClick={() => setActiveTab("overview")}
-              className={`py-2 px-1 border-b-2 font-medium text-sm transition-colors ${
+              className={`py-3 px-1 border-b-2 font-medium text-sm transition-colors ${
                 activeTab === "overview"
-                  ? "border-primary text-primary"
-                  : "border-transparent text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300"
+                  ? "border-blue-600 text-blue-600"
+                  : "border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300"
               }`}
             >
-              Performance Overview
+              Overview
             </button>
             <button
               onClick={() => setActiveTab("prioritization")}
-              className={`py-2 px-1 border-b-2 font-medium text-sm transition-colors ${
+              className={`py-3 px-1 border-b-2 font-medium text-sm transition-colors ${
                 activeTab === "prioritization"
-                  ? "border-primary text-primary"
-                  : "border-transparent text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300"
+                  ? "border-blue-600 text-blue-600"
+                  : "border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300"
               }`}
             >
               Task Prioritization
             </button>
           </nav>
         </div>
-      </div>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {activeTab === "overview" && (
           <>
             {/* Key Metrics Overview */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-              <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-slate-600">
-                      Total Orders
-                    </p>
-                    <p className="text-2xl font-bold text-slate-900">
-                      {analyticsData.overview.totalOrders.toLocaleString()}
-                    </p>
-                    <p
-                      className={`text-sm ${getGrowthColor(
-                        analyticsData.overview.orderGrowth
-                      )}`}
-                    >
-                      {getGrowthIcon(analyticsData.overview.orderGrowth)}{" "}
-                      {Math.abs(analyticsData.overview.orderGrowth)}% vs last
-                      period
-                    </p>
-                  </div>
-                  <div className="p-3 bg-blue-100 rounded-lg">
-                    <Package className="h-6 w-6 text-blue-600" />
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-slate-600">
-                      Avg Processing Time
-                    </p>
-                    <p className="text-2xl font-bold text-slate-900">
-                      {analyticsData.overview.avgProcessingTime} min
-                    </p>
-                    <p
-                      className={`text-sm ${getGrowthColor(
-                        analyticsData.overview.timeImprovement
-                      )}`}
-                    >
-                      {getGrowthIcon(analyticsData.overview.timeImprovement)}{" "}
-                      {Math.abs(analyticsData.overview.timeImprovement)}% vs
-                      last period
-                    </p>
-                  </div>
-                  <div className="p-3 bg-green-100 rounded-lg">
-                    <Clock className="h-6 w-6 text-green-600" />
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-slate-600">
-                      Worker Efficiency
-                    </p>
-                    <p className="text-2xl font-bold text-slate-900">
-                      {analyticsData.overview.workerEfficiency}%
-                    </p>
-                    <p
-                      className={`text-sm ${getGrowthColor(
-                        analyticsData.overview.efficiencyGrowth
-                      )}`}
-                    >
-                      {getGrowthIcon(analyticsData.overview.efficiencyGrowth)}{" "}
-                      {Math.abs(analyticsData.overview.efficiencyGrowth)}% vs
-                      last period
-                    </p>
-                  </div>
-                  <div className="p-3 bg-purple-100 rounded-lg">
-                    <Users className="h-6 w-6 text-purple-600" />
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-slate-600">
-                      Cost per Order
-                    </p>
-                    <p className="text-2xl font-bold text-slate-900">
-                      ${analyticsData.overview.costPerOrder}
-                    </p>
-                    <p
-                      className={`text-sm ${getGrowthColor(
-                        analyticsData.overview.costReduction
-                      )}`}
-                    >
-                      {getGrowthIcon(analyticsData.overview.costReduction)}{" "}
-                      {Math.abs(analyticsData.overview.costReduction)}% vs last
-                      period
-                    </p>
-                  </div>
-                  <div className="p-3 bg-amber-100 rounded-lg">
-                    <TrendingUp className="h-6 w-6 text-amber-600" />
-                  </div>
-                </div>
-              </div>
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+              <Card>
+                <Stat
+                  icon={<Package className="h-6 w-6" />}
+                  label="Total Orders"
+                  value={analyticsData.overview.totalOrders.toLocaleString()}
+                  sublabel={`${getGrowthIcon(
+                    analyticsData.overview.orderGrowth
+                  )} ${Math.abs(
+                    analyticsData.overview.orderGrowth
+                  )}% vs last period`}
+                />
+              </Card>
+              <Card>
+                <Stat
+                  icon={<Clock className="h-6 w-6" />}
+                  label="Avg Processing Time"
+                  value={`${analyticsData.overview.avgProcessingTime} min`}
+                  sublabel={`${getGrowthIcon(
+                    analyticsData.overview.timeImprovement
+                  )} ${Math.abs(
+                    analyticsData.overview.timeImprovement
+                  )}% vs last period`}
+                />
+              </Card>
+              <Card>
+                <Stat
+                  icon={<Users className="h-6 w-6" />}
+                  label="Worker Efficiency"
+                  value={`${analyticsData.overview.workerEfficiency}%`}
+                  sublabel={`${getGrowthIcon(
+                    analyticsData.overview.efficiencyGrowth
+                  )} ${Math.abs(
+                    analyticsData.overview.efficiencyGrowth
+                  )}% vs last period`}
+                />
+              </Card>
+              <Card>
+                <Stat
+                  icon={<TrendingUp className="h-6 w-6" />}
+                  label="Cost per Order"
+                  value={`$${analyticsData.overview.costPerOrder}`}
+                  sublabel={`${getGrowthIcon(
+                    analyticsData.overview.costReduction
+                  )} ${Math.abs(
+                    analyticsData.overview.costReduction
+                  )}% vs last period`}
+                />
+              </Card>
             </div>
 
             {/* Charts Section */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* Daily Performance Chart */}
-              <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
-                <div className="flex items-center justify-between mb-6">
-                  <h3 className="text-lg font-semibold text-slate-900">
-                    Daily Performance Trends
-                  </h3>
-                  <select
-                    value={selectedMetric}
-                    onChange={(e) => setSelectedMetric(e.target.value)}
-                    className="px-3 py-1 border border-slate-300 rounded text-sm"
-                  >
-                    <option value="productivity">Orders</option>
-                    <option value="efficiency">Efficiency</option>
-                    <option value="time">Avg Time</option>
-                  </select>
-                </div>
+              <Card
+                header={{
+                  title: "Daily Performance Trends",
+                  description: "Order volume and efficiency patterns",
+                  action: (
+                    <select
+                      value={selectedMetric}
+                      onChange={(e) => setSelectedMetric(e.target.value)}
+                      className="px-3 py-1 border border-slate-300 rounded text-sm"
+                    >
+                      <option value="productivity">Orders</option>
+                      <option value="efficiency">Efficiency</option>
+                      <option value="time">Avg Time</option>
+                    </select>
+                  ),
+                }}
+              >
                 <div className="space-y-4">
                   {analyticsData.dailyMetrics.map((day, index) => (
                     <div
@@ -314,7 +238,7 @@ export default function AnalyticsPage() {
                       <div className="flex-1 mx-4">
                         <div className="bg-slate-100 rounded-full h-2 relative">
                           <div
-                            className="bg-gradient-to-r from-blue-500 to-purple-600 h-2 rounded-full transition-all duration-300"
+                            className="bg-gradient-to-r from-blue-500 to-blue-600 h-2 rounded-full transition-all duration-300"
                             style={{
                               width:
                                 selectedMetric === "productivity"
@@ -336,13 +260,15 @@ export default function AnalyticsPage() {
                     </div>
                   ))}
                 </div>
-              </div>
+              </Card>
 
               {/* Zone Performance */}
-              <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
-                <h3 className="text-lg font-semibold text-slate-900 mb-6">
-                  Zone Performance Comparison
-                </h3>
+              <Card
+                header={{
+                  title: "Zone Performance Comparison",
+                  description: "Throughput and efficiency by warehouse zone",
+                }}
+              >
                 <div className="space-y-4">
                   {analyticsData.zonePerformance.map((zone, index) => (
                     <div
@@ -359,19 +285,25 @@ export default function AnalyticsPage() {
                       </div>
                       <div className="grid grid-cols-3 gap-4 text-sm">
                         <div>
-                          <p className="text-slate-500">Orders</p>
+                          <p className="text-slate-700 dark:text-slate-300 font-medium">
+                            Orders
+                          </p>
                           <p className="font-semibold text-blue-600">
                             {zone.orders}
                           </p>
                         </div>
                         <div>
-                          <p className="text-slate-500">Efficiency</p>
+                          <p className="text-slate-700 dark:text-slate-300 font-medium">
+                            Efficiency
+                          </p>
                           <p className="font-semibold text-green-600">
                             {zone.efficiency}%
                           </p>
                         </div>
                         <div>
-                          <p className="text-slate-500">Avg Time</p>
+                          <p className="text-slate-700 dark:text-slate-300 font-medium">
+                            Avg Time
+                          </p>
                           <p className="font-semibold text-amber-600">
                             {zone.avgTime}m
                           </p>
@@ -380,16 +312,18 @@ export default function AnalyticsPage() {
                     </div>
                   ))}
                 </div>
-              </div>
+              </Card>
             </div>
 
             {/* Top Performers & Hourly Distribution */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* Top Workers */}
-              <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
-                <h3 className="text-lg font-semibold text-slate-900 mb-6">
-                  Top Performing Workers
-                </h3>
+              <Card
+                header={{
+                  title: "Top Workers This Week",
+                  description: "Highest-performing associates by order volume",
+                }}
+              >
                 <div className="space-y-4">
                   {analyticsData.topWorkers.map((worker, index) => (
                     <div
@@ -397,7 +331,7 @@ export default function AnalyticsPage() {
                       className="flex items-center justify-between p-3 bg-slate-50 rounded-lg"
                     >
                       <div className="flex items-center space-x-3">
-                        <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                        <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full flex items-center justify-center text-white text-sm font-bold">
                           {index + 1}
                         </div>
                         <div>
@@ -423,13 +357,15 @@ export default function AnalyticsPage() {
                     </div>
                   ))}
                 </div>
-              </div>
+              </Card>
 
               {/* Hourly Distribution */}
-              <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
-                <h3 className="text-lg font-semibold text-slate-900 mb-6">
-                  Hourly Order Distribution
-                </h3>
+              <Card
+                header={{
+                  title: "Hourly Order Distribution",
+                  description: "Peak hours and staffing alignment",
+                }}
+              >
                 <div className="space-y-3">
                   {analyticsData.hourlyDistribution.map((hour, index) => (
                     <div
@@ -451,20 +387,31 @@ export default function AnalyticsPage() {
                         <div className="text-sm font-medium text-slate-900">
                           {hour.orders} orders
                         </div>
-                        <div className="text-xs text-slate-500">
+                        <div className="text-xs text-slate-600 dark:text-slate-400 font-medium">
                           {hour.workers} workers
                         </div>
                       </div>
                     </div>
                   ))}
                 </div>
-              </div>
+              </Card>
             </div>
           </>
         )}
 
+        {activeTab === "prioritization" && (
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+            <p className="text-sm text-blue-800">
+              <strong>How tasks are scored:</strong> Tasks are ranked 0–100
+              based on SLA risk (deadline proximity), order value (revenue
+              impact), and distance from current position. Higher scores
+              indicate tasks that should be picked sooner.
+            </p>
+          </div>
+        )}
+
         {activeTab === "prioritization" && <PrioritizationDashboard />}
-      </main>
-    </div>
+      </div>
+    </AppShell>
   );
 }

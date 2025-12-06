@@ -38,7 +38,9 @@ export function LoadingState({
       <div className="flex items-center justify-center p-8">
         <div className="flex flex-col items-center space-y-3">
           <LoadingSpinner {...spinner} />
-          <p className="text-sm text-slate-500">Loading...</p>
+          <p className="text-sm text-slate-700 dark:text-slate-300 font-medium">
+            Loading...
+          </p>
         </div>
       </div>
     );
@@ -74,7 +76,9 @@ export function ErrorState({ error, onRetry }: ErrorStateProps) {
         <h3 className="text-lg font-semibold text-slate-900 mb-2">
           Something went wrong
         </h3>
-        <p className="text-sm text-slate-500 mb-4">{error}</p>
+        <p className="text-sm text-slate-700 dark:text-slate-300 mb-4">
+          {error}
+        </p>
         {onRetry && (
           <button
             onClick={onRetry}

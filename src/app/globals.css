@@ -8,12 +8,21 @@
   --muted-bg: #f8fafc;
   --secondary: #64748b;
   --secondary-hover: #475569;
-  --accent: #8b5cf6;
-  --accent-hover: #7c3aed;
+  --accent: #2563eb;
+  --accent-hover: #1d4ed8;
   --primary: #2563eb;
   --primary-hover: #1d4ed8;
   --primary-dark: #1e40af;
   --primary-light: #dbeafe;
+  
+  /* Typography scale */
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 1.875rem;
 }
 
 /* Mobile-first base styles */
@@ -41,11 +50,11 @@ button, a, input, select, textarea {
 
 /* Dark theme */
 .dark {
-  --background: #0a0a0a;
+  --background: #0f172a;
   --foreground: #f1f5f9;
-  --card-bg: #1a1a1a;
+  --card-bg: #1e293b;
   --border-color: #334155;
-  --muted-bg: #0f172a;
+  --muted-bg: #0a0a0a;
   --secondary: #64748b;
   --secondary-hover: #94a3b8;
 }
@@ -155,10 +164,27 @@ button, a, input, select, textarea {
 }
 
 body {
-  background: var(--background);
+  background: var(--muted-bg);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   transition: background-color 0.2s ease, color 0.2s ease;
+  line-height: 1.6;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--foreground);
+}
+
+h1 { font-size: var(--font-size-3xl); }
+h2 { font-size: var(--font-size-2xl); }
+h3 { font-size: var(--font-size-xl); }
+h4 { font-size: var(--font-size-lg); }
+
+p {
+  line-height: 1.6;
 }
 
 /* Custom utility classes for theme support */
@@ -213,26 +239,28 @@ body {
 .app-shell {
   min-height: 100vh;
   background-color: var(--muted-bg);
-  padding: 1.5rem 0;
 }
 
 .app-card {
   background-color: var(--card-bg);
   border: 1px solid var(--border-color);
-  border-radius: 0.75rem;
+  border-radius: 1rem;
   padding: 1.5rem;
-  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-  transition: box-shadow 0.2s ease;
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
 .app-card:hover {
-  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+  border-color: var(--primary-light);
 }
 
 .app-card-sm {
   padding: 1rem;
+  border-radius: 0.75rem;
 }
 
 .app-card-lg {
   padding: 2rem;
+  border-radius: 1.25rem;
 }
