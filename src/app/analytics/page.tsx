@@ -40,12 +40,62 @@ export default function AnalyticsPage() {
       { day: "Sun", orders: 202, efficiency: 89, avgTime: 8.8, workers: 22 },
     ],
     zonePerformance: [
-      { zone: "A", orders: 456, efficiency: 96.2, workers: 8, avgTime: 7.2 },
-      { zone: "B", orders: 523, efficiency: 94.8, workers: 12, avgTime: 8.1 },
-      { zone: "C", orders: 389, efficiency: 92.5, workers: 6, avgTime: 8.9 },
-      { zone: "D", orders: 479, efficiency: 93.7, workers: 4, avgTime: 8.4 },
-      { zone: "E", orders: 412, efficiency: 94.3, workers: 10, avgTime: 7.8 },
-      { zone: "F", orders: 368, efficiency: 88.7, workers: 7, avgTime: 9.2 },
+      {
+        zone: "A",
+        name: "Fast Moving Picks",
+        orders: 456,
+        efficiency: 97.5,
+        workers: 12,
+        avgTime: 7.2,
+      },
+      {
+        zone: "B",
+        name: "Standard Shelving",
+        orders: 523,
+        efficiency: 94.2,
+        workers: 15,
+        avgTime: 8.1,
+      },
+      {
+        zone: "C",
+        name: "High-Bay Pallets",
+        orders: 389,
+        efficiency: 91.8,
+        workers: 8,
+        avgTime: 8.9,
+      },
+      {
+        zone: "R",
+        name: "Receiving Room",
+        orders: 479,
+        efficiency: 89.5,
+        workers: 10,
+        avgTime: 8.4,
+      },
+      {
+        zone: "F",
+        name: "Refrigerated Storage",
+        orders: 368,
+        efficiency: 93.7,
+        workers: 6,
+        avgTime: 9.2,
+      },
+      {
+        zone: "P",
+        name: "Packing",
+        orders: 412,
+        efficiency: 96.3,
+        workers: 14,
+        avgTime: 7.8,
+      },
+      {
+        zone: "S",
+        name: "Shipping/Staging",
+        orders: 398,
+        efficiency: 88.9,
+        workers: 11,
+        avgTime: 8.7,
+      },
     ],
     topWorkers: [
       { name: "Sarah Johnson", orders: 127, efficiency: 98.5, rating: 4.9 },
@@ -279,42 +329,47 @@ export default function AnalyticsPage() {
                   description: "Throughput and efficiency by warehouse zone",
                 }}
               >
-                <div className="space-y-4">
+                <div className="space-y-3">
                   {analyticsData.zonePerformance.map((zone, index) => (
                     <div
                       key={index}
-                      className="border border-slate-200 rounded-lg p-4"
+                      className="border border-slate-200 dark:border-slate-700 rounded-lg p-4 hover:border-blue-300 dark:hover:border-blue-600 transition-colors"
                     >
-                      <div className="flex items-center justify-between mb-2">
-                        <h4 className="font-medium text-slate-900">
-                          Zone {zone.zone}
-                        </h4>
-                        <span className="text-sm text-slate-600">
+                      <div className="flex items-center justify-between mb-3">
+                        <div>
+                          <h4 className="font-bold text-slate-900 dark:text-slate-100">
+                            Zone {zone.zone}
+                          </h4>
+                          <p className="text-xs text-slate-600 dark:text-slate-400 font-medium">
+                            {zone.name}
+                          </p>
+                        </div>
+                        <span className="text-sm text-slate-700 dark:text-slate-300 font-semibold">
                           {zone.workers} workers
                         </span>
                       </div>
                       <div className="grid grid-cols-3 gap-4 text-sm">
                         <div>
-                          <p className="text-slate-700 dark:text-slate-300 font-medium">
+                          <p className="text-slate-600 dark:text-slate-400 font-semibold mb-1">
                             Orders
                           </p>
-                          <p className="font-semibold text-blue-600">
+                          <p className="font-bold text-blue-600 dark:text-blue-400 text-lg">
                             {zone.orders}
                           </p>
                         </div>
                         <div>
-                          <p className="text-slate-700 dark:text-slate-300 font-medium">
+                          <p className="text-slate-600 dark:text-slate-400 font-semibold mb-1">
                             Efficiency
                           </p>
-                          <p className="font-semibold text-green-600">
+                          <p className="font-bold text-green-600 dark:text-green-400 text-lg">
                             {zone.efficiency}%
                           </p>
                         </div>
                         <div>
-                          <p className="text-slate-700 dark:text-slate-300 font-medium">
+                          <p className="text-slate-600 dark:text-slate-400 font-semibold mb-1">
                             Avg Time
                           </p>
-                          <p className="font-semibold text-amber-600">
+                          <p className="font-bold text-amber-600 dark:text-amber-400 text-lg">
                             {zone.avgTime}m
                           </p>
                         </div>

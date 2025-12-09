@@ -381,40 +381,43 @@ export default function TasksPage() {
         >
           <div className="overflow-x-auto">
             <table className="w-full">
-              <thead className="bg-slate-50 dark:bg-slate-800">
+              <thead className="bg-slate-100 dark:bg-slate-800">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider">
                     Task
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider">
                     Status
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider">
                     Priority
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider">
                     Assigned To
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider">
                     Revenue
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider">
                     Actions
                   </th>
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-slate-200">
+              <tbody className="bg-white dark:bg-slate-900 divide-y divide-slate-200 dark:divide-slate-700">
                 {filteredTasks.map((task) => (
-                  <tr key={task.id} className="hover:bg-slate-50">
+                  <tr
+                    key={task.id}
+                    className="hover:bg-slate-50 dark:hover:bg-slate-800"
+                  >
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div>
-                        <div className="text-sm font-medium text-slate-900">
+                        <div className="text-sm font-bold text-slate-900 dark:text-slate-100">
                           {task.id}
                         </div>
-                        <div className="text-sm text-slate-700 dark:text-slate-300 font-medium">
+                        <div className="text-sm text-slate-800 dark:text-slate-200 font-semibold">
                           {task.product}
                         </div>
-                        <div className="text-xs text-slate-600 dark:text-slate-400 flex items-center gap-1 mt-1">
+                        <div className="text-xs text-slate-700 dark:text-slate-300 font-semibold flex items-center gap-1 mt-1">
                           <MapPin className="h-3 w-3" />
                           {task.location} · SLA: {task.sla}
                         </div>
@@ -439,12 +442,14 @@ export default function TasksPage() {
                         {task.priority}
                       </span>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-900">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-slate-900 dark:text-slate-100">
                       {task.assignedWorker || (
-                        <span className="text-slate-400">Unassigned</span>
+                        <span className="text-slate-500 dark:text-slate-400 font-semibold">
+                          Unassigned
+                        </span>
                       )}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-emerald-600">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-emerald-600 dark:text-emerald-400">
                       {task.revenue}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
@@ -480,9 +485,10 @@ export default function TasksPage() {
         </Card>
 
         {/* Note about SLA */}
-        <div className="text-sm text-slate-700 dark:text-slate-300 text-center font-medium">
-          <strong>SLA</strong> = Latest time this order should leave the dock.
-          Tasks with shorter SLA times are typically prioritized higher.
+        <div className="text-sm text-slate-800 dark:text-slate-200 text-center font-bold bg-blue-50 dark:bg-blue-900/30 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
+          <strong className="text-blue-700 dark:text-blue-300">SLA</strong> =
+          Latest time this order should leave the dock. Tasks with shorter SLA
+          times are typically prioritized higher.
         </div>
       </div>
 

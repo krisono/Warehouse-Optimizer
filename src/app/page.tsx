@@ -27,26 +27,38 @@ export default function Home() {
               <div className="p-1.5 bg-blue-600 rounded-lg">
                 <Package className="w-5 h-5 text-white" />
               </div>
-              <span className="text-lg font-bold text-slate-100">
+              <span className="text-lg font-bold text-slate-900 dark:text-slate-100">
                 Warehouse Optimizer
               </span>
             </Link>
             <div className="flex items-center gap-4">
               <Link
                 href="/routes"
-                className="hidden sm:inline-block text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-100 font-medium transition-colors"
+                className="hidden sm:inline-block text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 font-semibold transition-colors"
               >
                 Route Planner
               </Link>
               <Link
                 href="/analytics"
-                className="hidden sm:inline-block text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-100 font-medium transition-colors"
+                className="hidden sm:inline-block text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 font-semibold transition-colors"
               >
                 Performance
               </Link>
               <Link
+                href="/tasks"
+                className="hidden md:inline-block text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 font-semibold transition-colors"
+              >
+                Tasks
+              </Link>
+              <Link
+                href="/settings"
+                className="hidden md:inline-block text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 font-semibold transition-colors"
+              >
+                Settings
+              </Link>
+              <Link
                 href="/routes"
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors"
               >
                 Get Started
               </Link>
@@ -58,9 +70,15 @@ export default function Home() {
       {/* Hero Section */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20">
         {/* Hero Content */}
-        <div className="text-center max-w-4xl mx-auto mb-16">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold !text-slate-900 dark:!text-white mb-6 leading-tight">
-            Optimize Warehouse Routes & Minimize Walk Time
+        <div className="text-center max-w-4xl mx-auto mb-12">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold !text-slate-900 dark:!text-white mb-6 leading-tight tracking-tight">
+            <span className="bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 bg-clip-text text-transparent">
+              Optimize Warehouse Routes
+            </span>
+            <br />
+            <span className="text-slate-800 dark:text-slate-200">
+              & Minimize Walk Time
+            </span>
           </h1>
         </div>
 
@@ -154,7 +172,7 @@ export default function Home() {
         </Card>
 
         {/* Description and CTAs */}
-        <div className="text-center max-w-3xl mx-auto mt-12">
+        <div className="text-center max-w-3xl mx-auto mt-8">
           <p className="text-lg text-slate-600 dark:text-slate-300 mb-8 leading-relaxed">
             Model your warehouse zones, simulate pick lists, and test different
             routes. Minimize walking distance, make routes easy to explain to
@@ -183,90 +201,92 @@ export default function Home() {
       </section>
 
       {/* Features - 3 Specific Blocks */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid md:grid-cols-3 gap-6">
-          <Card>
-            <div className="flex items-start gap-4">
-              <div className="p-3 bg-blue-100 rounded-lg flex-shrink-0">
-                <Route className="w-6 h-6 text-blue-600" />
-              </div>
-              <div>
-                <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-2">
-                  Route experiments, not just pretty maps
-                </h3>
-                <p className="text-slate-600 dark:text-slate-300 text-sm leading-relaxed">
-                  Test different start points, return-to-dock rules, and zone
-                  assignments to see how much walking you can remove from a
-                  typical pick list.
-                </p>
-              </div>
-            </div>
-          </Card>
-
-          <Card>
-            <div className="flex items-start gap-4">
-              <div className="p-3 bg-emerald-100 rounded-lg flex-shrink-0">
-                <Sliders className="w-6 h-6 text-emerald-600" />
-              </div>
-              <div>
-                <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-2">
-                  Task rules you can explain to your team
-                </h3>
-                <p className="text-slate-600 dark:text-slate-300 text-sm leading-relaxed">
-                  Score work by due time, value, and distance so it's easy to
-                  explain why one pallet moves before another.
-                </p>
-              </div>
-            </div>
-          </Card>
-
-          <Card>
-            <div className="flex items-start gap-4">
-              <div className="p-3 bg-purple-100 rounded-lg flex-shrink-0">
-                <BarChart3 className="w-6 h-6 text-purple-600" />
-              </div>
-              <div>
-                <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-2">
-                  Performance views that match real shifts
-                </h3>
-                <p className="text-slate-600 dark:text-slate-300 text-sm leading-relaxed">
-                  Look at today vs this week, and spot zones or hours where
-                  orders back up.
-                </p>
-              </div>
-            </div>
-          </Card>
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 bg-gradient-to-b from-transparent to-slate-100/50 dark:to-slate-800/30">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-slate-100 mb-4">
+            Built for Real Warehouse Operations
+          </h2>
+          <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
+            No black boxes or complex algorithms. Just clear tools that help you
+            make better decisions.
+          </p>
         </div>
-      </section>
 
-      {/* Metrics with Context */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid md:grid-cols-3 gap-6">
-          <Card>
-            <Stat
-              label="Walk distance reduced"
-              value="40%"
-              sublabel="Simulated, based on redirecting picks through closer aisles and reducing backtracking"
-              icon={<TrendingUp className="w-5 h-5 text-emerald-600" />}
-            />
+        <div className="grid md:grid-cols-3 gap-8">
+          <Card className="bg-gradient-to-br from-blue-50 to-white dark:from-blue-900/10 dark:to-slate-800 border-blue-200 dark:border-blue-800/50 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+            <div className="flex flex-col h-full">
+              <div className="flex items-start gap-4 mb-4">
+                <div className="p-4 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl shadow-lg flex-shrink-0">
+                  <Route className="w-7 h-7 text-white" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-3">
+                    Route Experiments, Not Just Maps
+                  </h3>
+                </div>
+              </div>
+              <p className="text-slate-600 dark:text-slate-300 leading-relaxed mb-4 flex-1">
+                Test different start points, return-to-dock rules, and zone
+                assignments. See exactly how much walking you can eliminate from
+                a typical pick list.
+              </p>
+              <div className="pt-4 border-t border-blue-200 dark:border-blue-800/50">
+                <div className="flex items-center gap-2 text-sm font-medium text-blue-600 dark:text-blue-400">
+                  <span>Try different scenarios</span>
+                  <ArrowRight className="w-4 h-4" />
+                </div>
+              </div>
+            </div>
           </Card>
 
-          <Card>
-            <Stat
-              label="Labor hours saved"
-              value="25%"
-              sublabel="In a typical route scenario with 50 picks across 4 zones and return-to-dock rules"
-              icon={<Package className="w-5 h-5 text-blue-600" />}
-            />
+          <Card className="bg-gradient-to-br from-emerald-50 to-white dark:from-emerald-900/10 dark:to-slate-800 border-emerald-200 dark:border-emerald-800/50 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+            <div className="flex flex-col h-full">
+              <div className="flex items-start gap-4 mb-4">
+                <div className="p-4 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl shadow-lg flex-shrink-0">
+                  <Sliders className="w-7 h-7 text-white" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-3">
+                    Task Rules Your Team Understands
+                  </h3>
+                </div>
+              </div>
+              <p className="text-slate-600 dark:text-slate-300 leading-relaxed mb-4 flex-1">
+                Score work by due time, value, and distance. Make it crystal
+                clear why one pallet moves before another—no mystery scoring.
+              </p>
+              <div className="pt-4 border-t border-emerald-200 dark:border-emerald-800/50">
+                <div className="flex items-center gap-2 text-sm font-medium text-emerald-600 dark:text-emerald-400">
+                  <span>Clear prioritization</span>
+                  <ArrowRight className="w-4 h-4" />
+                </div>
+              </div>
+            </div>
           </Card>
 
-          <Card>
-            <Stat
-              label="Task clarity improvement"
-              value="35%"
-              sublabel="Associates spend less time deciding what to pick next when priorities are clear"
-              icon={<MapPin className="w-5 h-5 text-purple-600" />}
-            />
+          <Card className="bg-gradient-to-br from-purple-50 to-white dark:from-purple-900/10 dark:to-slate-800 border-purple-200 dark:border-purple-800/50 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+            <div className="flex flex-col h-full">
+              <div className="flex items-start gap-4 mb-4">
+                <div className="p-4 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl shadow-lg flex-shrink-0">
+                  <BarChart3 className="w-7 h-7 text-white" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-3">
+                    Performance That Matches Real Shifts
+                  </h3>
+                </div>
+              </div>
+              <p className="text-slate-600 dark:text-slate-300 leading-relaxed mb-4 flex-1">
+                Compare today versus this week. Spot which zones or time windows
+                cause bottlenecks so you can staff accordingly.
+              </p>
+              <div className="pt-4 border-t border-purple-200 dark:border-purple-800/50">
+                <div className="flex items-center gap-2 text-sm font-medium text-purple-600 dark:text-purple-400">
+                  <span>Identify bottlenecks</span>
+                  <ArrowRight className="w-4 h-4" />
+                </div>
+              </div>
+            </div>
           </Card>
         </div>
       </section>
@@ -324,116 +344,84 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-slate-200 dark:border-slate-700 bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-950 mt-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-          <div className="grid md:grid-cols-4 gap-12 mb-12">
+      <footer className="border-t border-slate-200 dark:border-slate-700 bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-950 mt-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="grid md:grid-cols-3 gap-8 mb-6">
             {/* Brand Section */}
             <div className="md:col-span-2">
-              <div className="flex items-center gap-2 mb-4">
-                <div className="p-2 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl shadow-lg">
-                  <Package className="w-6 h-6 text-white" />
+              <div className="flex items-center gap-2 mb-3">
+                <div className="p-1.5 bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg shadow-md">
+                  <Package className="w-5 h-5 text-white" />
                 </div>
-                <span className="text-xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 dark:from-slate-100 dark:to-slate-300 bg-clip-text text-transparent">
+                <span className="text-lg font-bold bg-gradient-to-r from-slate-900 to-slate-700 dark:from-slate-100 dark:to-slate-300 bg-clip-text text-transparent">
                   Warehouse Optimizer
                 </span>
               </div>
-              <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-6 max-w-md">
+              <p className="text-slate-600 dark:text-slate-400 text-xs leading-relaxed mb-4 max-w-md">
                 A simulation-only tool for exploring route planning, task
-                prioritization, and warehouse optimization strategies. Test
-                different scenarios before implementing changes on the floor.
+                prioritization, and warehouse optimization strategies.
               </p>
-              <div className="flex items-center gap-4">
-                <a
-                  href="https://www.nnaemekaonochie.com/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors shadow-md hover:shadow-lg"
-                >
-                  <span>View Portfolio</span>
-                  <ArrowRight className="w-4 h-4" />
-                </a>
-              </div>
+              <a
+                href="https://www.nnaemekaonochie.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded-lg transition-colors"
+              >
+                <span>View Portfolio</span>
+                <ArrowRight className="w-3 h-3" />
+              </a>
             </div>
 
             {/* Quick Links */}
             <div>
-              <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100 uppercase tracking-wider mb-4">
+              <h3 className="text-sm font-extrabold text-slate-900 dark:!text-white uppercase tracking-wider mb-3">
                 Navigation
               </h3>
-              <ul className="space-y-3">
+              <ul className="space-y-1">
                 <li>
                   <Link
                     href="/routes"
-                    className="text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 text-sm font-medium transition-colors flex items-center gap-2"
+                    className="text-slate-900 dark:text-slate-100 hover:text-blue-600 dark:hover:text-blue-400 text-xs font-semibold transition-colors flex items-center gap-1.5"
                   >
-                    <Route className="w-4 h-4" />
+                    <Route className="w-3 h-3" />
                     Route Planner
                   </Link>
                 </li>
                 <li>
                   <Link
                     href="/analytics"
-                    className="text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 text-sm font-medium transition-colors flex items-center gap-2"
+                    className="text-slate-900 dark:text-slate-100 hover:text-blue-600 dark:hover:text-blue-400 text-xs font-semibold transition-colors flex items-center gap-1.5"
                   >
-                    <BarChart3 className="w-4 h-4" />
+                    <BarChart3 className="w-3 h-3" />
                     Performance Dashboard
                   </Link>
                 </li>
                 <li>
                   <Link
                     href="/tasks"
-                    className="text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 text-sm font-medium transition-colors flex items-center gap-2"
+                    className="text-slate-900 dark:text-slate-100 hover:text-blue-600 dark:hover:text-blue-400 text-xs font-semibold transition-colors flex items-center gap-1.5"
                   >
-                    <Package className="w-4 h-4" />
+                    <Package className="w-3 h-3" />
                     Task Board
                   </Link>
-                </li>
-              </ul>
-            </div>
-
-            {/* Features */}
-            <div>
-              <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100 uppercase tracking-wider mb-4">
-                Features
-              </h3>
-              <ul className="space-y-3">
-                <li className="text-slate-700 dark:text-slate-300 text-sm font-medium flex items-start gap-2">
-                  <TrendingUp className="w-4 h-4 text-emerald-600 dark:text-emerald-400 mt-0.5 flex-shrink-0" />
-                  <span>Route Optimization</span>
-                </li>
-                <li className="text-slate-700 dark:text-slate-300 text-sm font-medium flex items-start gap-2">
-                  <MapPin className="w-4 h-4 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0" />
-                  <span>Task Prioritization</span>
-                </li>
-                <li className="text-slate-700 dark:text-slate-300 text-sm font-medium flex items-start gap-2">
-                  <Sliders className="w-4 h-4 text-purple-600 dark:text-purple-400 mt-0.5 flex-shrink-0" />
-                  <span>Performance Analytics</span>
                 </li>
               </ul>
             </div>
           </div>
 
           {/* Bottom Bar */}
-          <div className="pt-8 border-t border-slate-200 dark:border-slate-800">
-            <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-              <p className="text-xs text-slate-600 dark:text-slate-400 font-medium">
+          <div className="pt-4 border-t border-slate-200 dark:border-slate-800">
+            <div className="flex flex-col md:flex-row justify-between items-center gap-2">
+              <p className="text-xs text-slate-600 dark:text-slate-400">
                 © {new Date().getFullYear()} Warehouse Optimizer. Portfolio
                 project by Nnaemeka Onochie.
               </p>
-              <div className="flex items-center gap-6">
-                <Link
-                  href="/settings"
-                  className="text-xs text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 transition-colors font-medium"
-                >
-                  Settings
-                </Link>
-                <span className="text-xs text-slate-400 dark:text-slate-500">
-                  •
-                </span>
-                <span className="text-xs text-slate-600 dark:text-slate-400 font-medium">
-                  Simulation data only
-                </span>
-              </div>
+              <Link
+                href="/settings"
+                className="text-xs text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 transition-colors"
+              >
+                Settings
+              </Link>
             </div>
           </div>
         </div>
