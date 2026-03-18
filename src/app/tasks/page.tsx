@@ -212,14 +212,19 @@ export default function TasksPage() {
     setIsAssignModalOpen(true);
   };
 
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  const showToast = (message: string) => {
+    setToastMessage(message);
+    setTimeout(() => setToastMessage(null), 2500);
+  };
+
   const handleEditTask = (taskId: string) => {
-    alert(`Opening edit dialog for task ${taskId}`);
+    showToast(`Edit mode for ${taskId} (demo)`);
   };
 
   const handleDeleteTask = (taskId: string) => {
-    if (confirm(`Are you sure you want to delete task ${taskId}?`)) {
-      alert(`Task ${taskId} deleted successfully`);
-    }
+    showToast(`${taskId} removed (demo)`);
   };
 
   const getStatusColor = (status: string) => {
@@ -253,389 +258,398 @@ export default function TasksPage() {
   };
 
   return (
-    <AppShell>
-      <PageHeader
-        badge="Simulation"
-        title="Task Board"
-        description="Filter and review simulated picks and assignments."
-        actions={
-          <button
-            onClick={() => setIsNewTaskModalOpen(true)}
-            className="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2"
-          >
-            <Plus className="h-4 w-4" />
-            <span>New Task</span>
-          </button>
-        }
-      />
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-        {/* Filters and Search */}
-        <Card>
-          <div className="flex flex-col lg:flex-row gap-4">
-            <div className="flex-1">
-              <div className="relative">
-                <Search className="h-5 w-5 text-slate-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
-                <input
-                  type="text"
-                  placeholder="Search tasks, IDs, or locations..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                />
-              </div>
-            </div>
-            <div className="flex gap-4">
-              <select
-                value={filterStatus}
-                onChange={(e) => setFilterStatus(e.target.value)}
-                className="px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              >
-                <option value="all">All Status</option>
-                <option value="pending">Pending</option>
-                <option value="assigned">Assigned</option>
-                <option value="in-progress">In Progress</option>
-                <option value="completed">Completed</option>
-              </select>
-              <select
-                value={filterPriority}
-                onChange={(e) => setFilterPriority(e.target.value)}
-                className="px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              >
-                <option value="all">All Priority</option>
-                <option value="Critical">Critical</option>
-                <option value="High">High</option>
-                <option value="Medium">Medium</option>
-                <option value="Low">Low</option>
-              </select>
-            </div>
-          </div>
-        </Card>
-
-        {/* Task Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <Card>
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-slate-600">
-                  Total Tasks
-                </p>
-                <p className="text-3xl font-bold text-slate-900">
-                  {allTasks.length}
-                </p>
-              </div>
-              <div className="p-3 bg-blue-100 rounded-lg">
-                <Package className="h-8 w-8 text-blue-600" />
-              </div>
-            </div>
-          </Card>
-          <Card>
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-slate-600">Pending</p>
-                <p className="text-3xl font-bold text-yellow-600">
-                  {allTasks.filter((t) => t.status === "pending").length}
-                </p>
-              </div>
-              <div className="p-3 bg-yellow-100 rounded-lg">
-                <Clock className="h-8 w-8 text-yellow-600" />
-              </div>
-            </div>
-          </Card>
-          <Card>
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-slate-600">
-                  In Progress
-                </p>
-                <p className="text-3xl font-bold text-purple-600">
-                  {allTasks.filter((t) => t.status === "in-progress").length}
-                </p>
-              </div>
-              <div className="p-3 bg-purple-100 rounded-lg">
-                <MapPin className="h-8 w-8 text-purple-600" />
-              </div>
-            </div>
-          </Card>
-          <Card>
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-slate-600">Completed</p>
-                <p className="text-3xl font-bold text-green-600">
-                  {allTasks.filter((t) => t.status === "completed").length}
-                </p>
-              </div>
-              <div className="p-3 bg-green-100 rounded-lg">
-                <Package className="h-8 w-8 text-green-600" />
-              </div>
-            </div>
-          </Card>
-        </div>
-
-        {/* Tasks Table */}
-        <Card
-          header={{
-            title: `Tasks (${filteredTasks.length})`,
-            description: "All warehouse pick orders with status and priority",
-          }}
-        >
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead className="bg-slate-100 dark:bg-slate-800">
-                <tr>
-                  <th className="px-6 py-3 text-left text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider">
-                    Task
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider">
-                    Status
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider">
-                    Priority
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider">
-                    Assigned To
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider">
-                    Revenue
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider">
-                    Actions
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="bg-white dark:bg-slate-900 divide-y divide-slate-200 dark:divide-slate-700">
-                {filteredTasks.map((task) => (
-                  <tr
-                    key={task.id}
-                    className="hover:bg-slate-50 dark:hover:bg-slate-800"
-                  >
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div>
-                        <div className="text-sm font-bold text-slate-900 dark:text-slate-100">
-                          {task.id}
-                        </div>
-                        <div className="text-sm text-slate-800 dark:text-slate-200 font-semibold">
-                          {task.product}
-                        </div>
-                        <div className="text-xs text-slate-700 dark:text-slate-300 font-semibold flex items-center gap-1 mt-1">
-                          <MapPin className="h-3 w-3" />
-                          {task.location} · SLA: {task.sla}
-                        </div>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span
-                        className={`px-2 py-1 text-xs font-medium rounded-full ${getStatusColor(
-                          task.status
-                        )}`}
-                      >
-                        {task.status.charAt(0).toUpperCase() +
-                          task.status.slice(1).replace("-", " ")}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span
-                        className={`px-2 py-1 text-xs font-medium rounded-full ${getPriorityColor(
-                          task.priority
-                        )}`}
-                      >
-                        {task.priority}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-slate-900 dark:text-slate-100">
-                      {task.assignedWorker || (
-                        <span className="text-slate-500 dark:text-slate-400 font-semibold">
-                          Unassigned
-                        </span>
-                      )}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-emerald-600 dark:text-emerald-400">
-                      {task.revenue}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                      <div className="flex space-x-2">
-                        <button
-                          onClick={() => handleAssignTask(task)}
-                          className="text-blue-600 hover:text-blue-900"
-                          title="View Details"
-                        >
-                          <Eye className="h-4 w-4" />
-                        </button>
-                        <button
-                          onClick={() => handleEditTask(task.id)}
-                          className="text-yellow-600 hover:text-yellow-900"
-                          title="Edit Task"
-                        >
-                          <Edit className="h-4 w-4" />
-                        </button>
-                        <button
-                          onClick={() => handleDeleteTask(task.id)}
-                          className="text-red-600 hover:text-red-900"
-                          title="Delete Task"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </Card>
-
-        {/* Note about SLA */}
-        <div className="text-sm text-slate-800 dark:text-slate-200 text-center font-bold bg-blue-50 dark:bg-blue-900/30 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
-          <strong className="text-blue-700 dark:text-blue-300">SLA</strong> =
-          Latest time this order should leave the dock. Tasks with shorter SLA
-          times are typically prioritized higher.
-        </div>
-      </div>
-
-      {/* Assign Task Modal */}
-      {selectedTaskForAssignment && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md w-full">
-            <h3 className="text-lg font-bold mb-4">Task Details</h3>
-            <p className="mb-4">
-              {selectedTaskForAssignment.id} -{" "}
-              {selectedTaskForAssignment.product}
-            </p>
+    <>
+      <AppShell>
+        <PageHeader
+          badge="Simulation"
+          title="Task Board"
+          description="Filter and review simulated picks and assignments."
+          actions={
             <button
-              onClick={() => {
-                setIsAssignModalOpen(false);
-                setSelectedTaskForAssignment(null);
-              }}
-              className="bg-blue-600 text-white px-4 py-2 rounded-lg"
+              onClick={() => setIsNewTaskModalOpen(true)}
+              className="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2"
             >
-              Close
+              <Plus className="h-4 w-4" />
+              <span>New Task</span>
             </button>
+          }
+        />
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+          {/* Filters and Search */}
+          <Card>
+            <div className="flex flex-col lg:flex-row gap-4">
+              <div className="flex-1">
+                <div className="relative">
+                  <Search className="h-5 w-5 text-slate-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
+                  <input
+                    type="text"
+                    placeholder="Search tasks, IDs, or locations..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  />
+                </div>
+              </div>
+              <div className="flex gap-4">
+                <select
+                  value={filterStatus}
+                  onChange={(e) => setFilterStatus(e.target.value)}
+                  className="px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                >
+                  <option value="all">All Status</option>
+                  <option value="pending">Pending</option>
+                  <option value="assigned">Assigned</option>
+                  <option value="in-progress">In Progress</option>
+                  <option value="completed">Completed</option>
+                </select>
+                <select
+                  value={filterPriority}
+                  onChange={(e) => setFilterPriority(e.target.value)}
+                  className="px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                >
+                  <option value="all">All Priority</option>
+                  <option value="Critical">Critical</option>
+                  <option value="High">High</option>
+                  <option value="Medium">Medium</option>
+                  <option value="Low">Low</option>
+                </select>
+              </div>
+            </div>
+          </Card>
+
+          {/* Task Stats */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <Card>
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-slate-600">
+                    Total Tasks
+                  </p>
+                  <p className="text-3xl font-bold text-slate-900">
+                    {allTasks.length}
+                  </p>
+                </div>
+                <div className="p-3 bg-blue-100 rounded-lg">
+                  <Package className="h-8 w-8 text-blue-600" />
+                </div>
+              </div>
+            </Card>
+            <Card>
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-slate-600">Pending</p>
+                  <p className="text-3xl font-bold text-yellow-600">
+                    {allTasks.filter((t) => t.status === "pending").length}
+                  </p>
+                </div>
+                <div className="p-3 bg-yellow-100 rounded-lg">
+                  <Clock className="h-8 w-8 text-yellow-600" />
+                </div>
+              </div>
+            </Card>
+            <Card>
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-slate-600">
+                    In Progress
+                  </p>
+                  <p className="text-3xl font-bold text-purple-600">
+                    {allTasks.filter((t) => t.status === "in-progress").length}
+                  </p>
+                </div>
+                <div className="p-3 bg-purple-100 rounded-lg">
+                  <MapPin className="h-8 w-8 text-purple-600" />
+                </div>
+              </div>
+            </Card>
+            <Card>
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-slate-600">
+                    Completed
+                  </p>
+                  <p className="text-3xl font-bold text-green-600">
+                    {allTasks.filter((t) => t.status === "completed").length}
+                  </p>
+                </div>
+                <div className="p-3 bg-green-100 rounded-lg">
+                  <Package className="h-8 w-8 text-green-600" />
+                </div>
+              </div>
+            </Card>
+          </div>
+
+          {/* Tasks Table */}
+          <Card
+            header={{
+              title: `Tasks (${filteredTasks.length})`,
+              description: "All warehouse pick orders with status and priority",
+            }}
+          >
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead className="bg-slate-100 dark:bg-slate-800">
+                  <tr>
+                    <th className="px-6 py-3 text-left text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider">
+                      Task
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider">
+                      Status
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider">
+                      Priority
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider">
+                      Assigned To
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider">
+                      Revenue
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider">
+                      Actions
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white dark:bg-slate-900 divide-y divide-slate-200 dark:divide-slate-700">
+                  {filteredTasks.map((task) => (
+                    <tr
+                      key={task.id}
+                      className="hover:bg-slate-50 dark:hover:bg-slate-800"
+                    >
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div>
+                          <div className="text-sm font-bold text-slate-900 dark:text-slate-100">
+                            {task.id}
+                          </div>
+                          <div className="text-sm text-slate-800 dark:text-slate-200 font-semibold">
+                            {task.product}
+                          </div>
+                          <div className="text-xs text-slate-700 dark:text-slate-300 font-semibold flex items-center gap-1 mt-1">
+                            <MapPin className="h-3 w-3" />
+                            {task.location} · SLA: {task.sla}
+                          </div>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <span
+                          className={`px-2 py-1 text-xs font-medium rounded-full ${getStatusColor(
+                            task.status,
+                          )}`}
+                        >
+                          {task.status.charAt(0).toUpperCase() +
+                            task.status.slice(1).replace("-", " ")}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <span
+                          className={`px-2 py-1 text-xs font-medium rounded-full ${getPriorityColor(
+                            task.priority,
+                          )}`}
+                        >
+                          {task.priority}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-slate-900 dark:text-slate-100">
+                        {task.assignedWorker || (
+                          <span className="text-slate-500 dark:text-slate-400 font-semibold">
+                            Unassigned
+                          </span>
+                        )}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-emerald-600 dark:text-emerald-400">
+                        {task.revenue}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                        <div className="flex space-x-2">
+                          <button
+                            onClick={() => handleAssignTask(task)}
+                            className="text-blue-600 hover:text-blue-900"
+                            title="View Details"
+                          >
+                            <Eye className="h-4 w-4" />
+                          </button>
+                          <button
+                            onClick={() => handleEditTask(task.id)}
+                            className="text-yellow-600 hover:text-yellow-900"
+                            title="Edit Task"
+                          >
+                            <Edit className="h-4 w-4" />
+                          </button>
+                          <button
+                            onClick={() => handleDeleteTask(task.id)}
+                            className="text-red-600 hover:text-red-900"
+                            title="Delete Task"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </Card>
+
+          {/* Note about SLA */}
+          <div className="text-sm text-slate-800 dark:text-slate-200 text-center font-bold bg-blue-50 dark:bg-blue-900/30 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
+            <strong className="text-blue-700 dark:text-blue-300">SLA</strong> =
+            Latest time this order should leave the dock. Tasks with shorter SLA
+            times are typically prioritized higher.
           </div>
         </div>
-      )}
 
-      {/* New Task Modal */}
-      {isNewTaskModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white dark:bg-slate-800 rounded-lg p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100">
-                Create New Task
-              </h3>
+        {/* Assign Task Modal */}
+        {selectedTaskForAssignment && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md w-full">
+              <h3 className="text-lg font-bold mb-4">Task Details</h3>
+              <p className="mb-4">
+                {selectedTaskForAssignment.id} -{" "}
+                {selectedTaskForAssignment.product}
+              </p>
               <button
-                onClick={() => setIsNewTaskModalOpen(false)}
-                className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors"
+                onClick={() => {
+                  setIsAssignModalOpen(false);
+                  setSelectedTaskForAssignment(null);
+                }}
+                className="bg-blue-600 text-white px-4 py-2 rounded-lg"
               >
-                <span className="text-2xl text-slate-500">&times;</span>
+                Close
               </button>
             </div>
-
-            <form
-              className="space-y-4"
-              onSubmit={(e) => {
-                e.preventDefault();
-                alert(
-                  "New task created successfully! (Demo mode - data not persisted)"
-                );
-                setIsNewTaskModalOpen(false);
-              }}
-            >
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
-                    Product Name
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-blue-500"
-                    placeholder="e.g., Electronics Bundle"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
-                    Location
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-blue-500"
-                    placeholder="e.g., Aisle 12B-04"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
-                    Priority
-                  </label>
-                  <select
-                    required
-                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-blue-500"
-                  >
-                    <option value="Critical">Critical</option>
-                    <option value="High">High</option>
-                    <option value="Medium">Medium</option>
-                    <option value="Low">Low</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
-                    SLA (minutes)
-                  </label>
-                  <input
-                    type="number"
-                    required
-                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-blue-500"
-                    placeholder="e.g., 15"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
-                    Revenue
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-blue-500"
-                    placeholder="e.g., $1,250"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
-                    Category
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-blue-500"
-                    placeholder="e.g., Electronics"
-                  />
-                </div>
-              </div>
-
-              <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-200 dark:border-slate-700">
-                <button
-                  type="button"
-                  onClick={() => setIsNewTaskModalOpen(false)}
-                  className="px-4 py-2 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-                >
-                  Create Task
-                </button>
-              </div>
-            </form>
           </div>
+        )}
+
+        {/* New Task Modal */}
+        {isNewTaskModalOpen && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white dark:bg-slate-800 rounded-lg p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100">
+                  Create New Task
+                </h3>
+                <button
+                  onClick={() => setIsNewTaskModalOpen(false)}
+                  className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors"
+                >
+                  <span className="text-2xl text-slate-500">&times;</span>
+                </button>
+              </div>
+
+              <form
+                className="space-y-4"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  setIsNewTaskModalOpen(false);
+                  showToast("Task created successfully (demo)");
+                }}
+              >
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                      Product Name
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-blue-500"
+                      placeholder="e.g., Electronics Bundle"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                      Location
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-blue-500"
+                      placeholder="e.g., Aisle 12B-04"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                      Priority
+                    </label>
+                    <select
+                      required
+                      className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-blue-500"
+                    >
+                      <option value="Critical">Critical</option>
+                      <option value="High">High</option>
+                      <option value="Medium">Medium</option>
+                      <option value="Low">Low</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                      SLA (minutes)
+                    </label>
+                    <input
+                      type="number"
+                      required
+                      className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-blue-500"
+                      placeholder="e.g., 15"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                      Revenue
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-blue-500"
+                      placeholder="e.g., $1,250"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                      Category
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-blue-500"
+                      placeholder="e.g., Electronics"
+                    />
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-200 dark:border-slate-700">
+                  <button
+                    type="button"
+                    onClick={() => setIsNewTaskModalOpen(false)}
+                    className="px-4 py-2 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                  >
+                    Create Task
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
+      </AppShell>
+
+      {/* Toast Notification */}
+      {toastMessage && (
+        <div className="fixed bottom-6 right-6 z-[60] px-4 py-3 bg-slate-800 text-white text-sm font-medium rounded-lg shadow-lg animate-fade-in">
+          {toastMessage}
         </div>
       )}
-    </AppShell>
+    </>
   );
 }

@@ -66,7 +66,7 @@ interface TaskContextType {
   addTask: (task: Omit<Task, "id" | "createdAt" | "updatedAt">) => void;
   removeTask: (taskId: string) => void;
   addWorker: (
-    worker: Omit<Worker, "id" | "activeTasks" | "tasksCompleted">
+    worker: Omit<Worker, "id" | "activeTasks" | "tasksCompleted">,
   ) => void;
   removeWorker: (workerId: string) => void;
 }
@@ -241,7 +241,7 @@ export function TaskProvider({ children }: { children: ReactNode }) {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [workers, setWorkers] = useState<Worker[]>([]);
   const [prioritizedTasks, setPrioritizedTasks] = useState<PrioritizedTask[]>(
-    []
+    [],
   );
   const [prioritizationInsights, setPrioritizationInsights] = useState<{
     criticalTasks: number;
@@ -291,7 +291,7 @@ export function TaskProvider({ children }: { children: ReactNode }) {
       id: worker.id,
       name: worker.name,
       skills: worker.skills.map((skill) =>
-        skill.toLowerCase().replace(/ /g, "-")
+        skill.toLowerCase().replace(/ /g, "-"),
       ),
       currentLocation: {
         id: `${worker.currentZone || "A"}-01-01`,
@@ -310,13 +310,13 @@ export function TaskProvider({ children }: { children: ReactNode }) {
   // Prioritize tasks using the AI system
   const reprioritizeTasks = useCallback(() => {
     const convertedTasks = convertTasksForPrioritizer(
-      tasks.filter((t) => t.status !== "completed")
+      tasks.filter((t) => t.status !== "completed"),
     );
     const convertedWorkers = convertWorkersForPrioritizer(workers);
 
     const prioritized = taskPrioritizer.prioritizeTasks(
       convertedTasks,
-      convertedWorkers
+      convertedWorkers,
     );
     const insights = taskPrioritizer.getPrioritizationInsights(prioritized);
 
@@ -403,7 +403,7 @@ export function TaskProvider({ children }: { children: ReactNode }) {
             notificationHooks.showSLAWarning(
               task.id,
               task.product,
-              timeRemaining
+              timeRemaining,
             );
           }
 
@@ -438,8 +438,8 @@ export function TaskProvider({ children }: { children: ReactNode }) {
               assignedWorker: worker.name,
               updatedAt: new Date(),
             }
-          : task
-      )
+          : task,
+      ),
     );
 
     setWorkers((prevWorkers) =>
@@ -450,8 +450,8 @@ export function TaskProvider({ children }: { children: ReactNode }) {
               status: w.activeTasks.length > 0 ? "busy" : ("busy" as const),
               activeTasks: [...w.activeTasks, taskId],
             }
-          : w
-      )
+          : w,
+      ),
     );
 
     // Find the task for notification
@@ -461,18 +461,13 @@ export function TaskProvider({ children }: { children: ReactNode }) {
     if (notificationHooks && task) {
       notificationHooks.showTaskAssignment(taskId, task.product, worker.name);
     }
-
-    // Show success notification
-    setTimeout(() => {
-      alert(`Task ${taskId} has been assigned to ${worker.name}`);
-    }, 100);
   };
 
   const updateTaskStatus = (taskId: string, status: Task["status"]) => {
     setTasks((prevTasks) =>
       prevTasks.map((task) =>
-        task.id === taskId ? { ...task, status, updatedAt: new Date() } : task
-      )
+        task.id === taskId ? { ...task, status, updatedAt: new Date() } : task,
+      ),
     );
 
     // If task is completed, remove from worker's active tasks
@@ -491,8 +486,8 @@ export function TaskProvider({ children }: { children: ReactNode }) {
                       ? "available"
                       : "busy",
                 }
-              : w
-          )
+              : w,
+          ),
         );
 
         // Show completion notification
@@ -521,8 +516,8 @@ export function TaskProvider({ children }: { children: ReactNode }) {
               assignedWorker: undefined,
               updatedAt: new Date(),
             }
-          : t
-      )
+          : t,
+      ),
     );
 
     setWorkers((prevWorkers) =>
@@ -536,14 +531,14 @@ export function TaskProvider({ children }: { children: ReactNode }) {
                   ? "available"
                   : "busy",
             }
-          : w
-      )
+          : w,
+      ),
     );
   };
 
   const getAvailableWorkers = () => {
     return workers.filter(
-      (w) => w.status === "available" || w.activeTasks.length < 3
+      (w) => w.status === "available" || w.activeTasks.length < 3,
     );
   };
 
@@ -560,7 +555,7 @@ export function TaskProvider({ children }: { children: ReactNode }) {
       prevTasks.map((task) => ({
         ...task,
         updatedAt: now,
-      }))
+      })),
     );
   };
 
@@ -597,12 +592,12 @@ export function TaskProvider({ children }: { children: ReactNode }) {
           worker.activeTasks.filter((id) => id !== taskId).length === 0
             ? "available"
             : worker.status,
-      }))
+      })),
     );
   };
 
   const addWorker = (
-    workerData: Omit<Worker, "id" | "activeTasks" | "tasksCompleted">
+    workerData: Omit<Worker, "id" | "activeTasks" | "tasksCompleted">,
   ) => {
     const newWorker: Worker = {
       ...workerData,
@@ -627,13 +622,13 @@ export function TaskProvider({ children }: { children: ReactNode }) {
                 assignedWorker: undefined,
                 updatedAt: new Date(),
               }
-            : task
-        )
+            : task,
+        ),
       );
     }
 
     setWorkers((prevWorkers) =>
-      prevWorkers.filter((worker) => worker.id !== workerId)
+      prevWorkers.filter((worker) => worker.id !== workerId),
     );
   };
 

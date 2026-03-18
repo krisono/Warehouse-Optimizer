@@ -4,14 +4,12 @@ import Link from "next/link";
 import {
   ArrowRight,
   Route,
-  Sliders,
   BarChart3,
   MapPin,
   Package,
   TrendingUp,
 } from "lucide-react";
 import { Card } from "@/components/ui/Card";
-import { Stat } from "@/components/ui/Stat";
 
 export default function Home() {
   return (
@@ -197,97 +195,6 @@ export default function Home() {
           <p className="text-sm text-slate-500 dark:text-slate-400">
             Simulated data only. No real customer information.
           </p>
-        </div>
-      </section>
-
-      {/* Features - 3 Specific Blocks */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 bg-gradient-to-b from-transparent to-slate-100/50 dark:to-slate-800/30">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-slate-100 mb-4">
-            Built for Real Warehouse Operations
-          </h2>
-          <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
-            No black boxes or complex algorithms. Just clear tools that help you
-            make better decisions.
-          </p>
-        </div>
-
-        <div className="grid md:grid-cols-3 gap-8">
-          <Card className="bg-gradient-to-br from-blue-50 to-white dark:from-blue-900/10 dark:to-slate-800 border-blue-200 dark:border-blue-800/50 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-            <div className="flex flex-col h-full">
-              <div className="flex items-start gap-4 mb-4">
-                <div className="p-4 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl shadow-lg flex-shrink-0">
-                  <Route className="w-7 h-7 text-white" />
-                </div>
-                <div className="flex-1">
-                  <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-3">
-                    Route Experiments, Not Just Maps
-                  </h3>
-                </div>
-              </div>
-              <p className="text-slate-600 dark:text-slate-300 leading-relaxed mb-4 flex-1">
-                Test different start points, return-to-dock rules, and zone
-                assignments. See exactly how much walking you can eliminate from
-                a typical pick list.
-              </p>
-              <div className="pt-4 border-t border-blue-200 dark:border-blue-800/50">
-                <div className="flex items-center gap-2 text-sm font-medium text-blue-600 dark:text-blue-400">
-                  <span>Try different scenarios</span>
-                  <ArrowRight className="w-4 h-4" />
-                </div>
-              </div>
-            </div>
-          </Card>
-
-          <Card className="bg-gradient-to-br from-emerald-50 to-white dark:from-emerald-900/10 dark:to-slate-800 border-emerald-200 dark:border-emerald-800/50 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-            <div className="flex flex-col h-full">
-              <div className="flex items-start gap-4 mb-4">
-                <div className="p-4 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl shadow-lg flex-shrink-0">
-                  <Sliders className="w-7 h-7 text-white" />
-                </div>
-                <div className="flex-1">
-                  <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-3">
-                    Task Rules Your Team Understands
-                  </h3>
-                </div>
-              </div>
-              <p className="text-slate-600 dark:text-slate-300 leading-relaxed mb-4 flex-1">
-                Score work by due time, value, and distance. Make it crystal
-                clear why one pallet moves before another—no mystery scoring.
-              </p>
-              <div className="pt-4 border-t border-emerald-200 dark:border-emerald-800/50">
-                <div className="flex items-center gap-2 text-sm font-medium text-emerald-600 dark:text-emerald-400">
-                  <span>Clear prioritization</span>
-                  <ArrowRight className="w-4 h-4" />
-                </div>
-              </div>
-            </div>
-          </Card>
-
-          <Card className="bg-gradient-to-br from-purple-50 to-white dark:from-purple-900/10 dark:to-slate-800 border-purple-200 dark:border-purple-800/50 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-            <div className="flex flex-col h-full">
-              <div className="flex items-start gap-4 mb-4">
-                <div className="p-4 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl shadow-lg flex-shrink-0">
-                  <BarChart3 className="w-7 h-7 text-white" />
-                </div>
-                <div className="flex-1">
-                  <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-3">
-                    Performance That Matches Real Shifts
-                  </h3>
-                </div>
-              </div>
-              <p className="text-slate-600 dark:text-slate-300 leading-relaxed mb-4 flex-1">
-                Compare today versus this week. Spot which zones or time windows
-                cause bottlenecks so you can staff accordingly.
-              </p>
-              <div className="pt-4 border-t border-purple-200 dark:border-purple-800/50">
-                <div className="flex items-center gap-2 text-sm font-medium text-purple-600 dark:text-purple-400">
-                  <span>Identify bottlenecks</span>
-                  <ArrowRight className="w-4 h-4" />
-                </div>
-              </div>
-            </div>
-          </Card>
         </div>
       </section>
 

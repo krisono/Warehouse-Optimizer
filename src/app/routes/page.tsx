@@ -12,6 +12,7 @@ export default function RoutesPage() {
   const [isOptimizing, setIsOptimizing] = useState(false);
   const [optimizationProgress, setOptimizationProgress] = useState(0);
   const [routes, setRoutes] = useState<Route[]>([]);
+  const [expandedRouteId, setExpandedRouteId] = useState<string | null>(null);
   const [metrics, setMetrics] = useState<OptimizationResult["metrics"]>({
     totalDistance: 0,
     averageEfficiency: 0,
@@ -59,7 +60,7 @@ export default function RoutesPage() {
   const handleResetRoutes = () => {
     if (
       confirm(
-        "Are you sure you want to reset all routes to default configuration?"
+        "Are you sure you want to reset all routes to default configuration?",
       )
     ) {
       // Reset to initial state
@@ -388,7 +389,7 @@ export default function RoutesPage() {
                 action: (
                   <span
                     className={`px-2 py-1 text-xs font-medium rounded-full ${getStatusColor(
-                      route.status || "pending"
+                      route.status || "pending",
                     )}`}
                   >
                     {(route.status || "pending").charAt(0).toUpperCase() +
@@ -440,7 +441,7 @@ export default function RoutesPage() {
                     </p>
                     <p
                       className={`text-lg font-bold ${getEfficiencyColor(
-                        route.efficiency
+                        route.efficiency,
                       )}`}
                     >
                       {route.efficiency}%
@@ -452,19 +453,84 @@ export default function RoutesPage() {
                     </p>
                     <p
                       className={`text-lg font-bold ${getEfficiencyColor(
-                        route.optimizationScore
+                        route.optimizationScore,
                       )}`}
                     >
                       {route.optimizationScore}/100
                     </p>
                   </div>
                   <button
-                    onClick={() => alert("Route details feature coming soon!")}
+                    onClick={() =>
+                      setExpandedRouteId(
+                        expandedRouteId === route.id ? null : route.id,
+                      )
+                    }
                     className="text-blue-600 hover:text-blue-700 text-sm font-medium"
                   >
-                    View Details
+                    {expandedRouteId === route.id
+                      ? "Hide Details"
+                      : "View Details"}
                   </button>
                 </div>
+
+                {expandedRouteId === route.id && (
+                  <div className="pt-4 border-t border-slate-200 dark:border-slate-700 space-y-3">
+                    <div className="grid grid-cols-2 gap-3 text-sm">
+                      <div>
+                        <span className="text-slate-500 dark:text-slate-400">
+                          Worker
+                        </span>
+                        <p className="font-semibold text-slate-900 dark:text-slate-100">
+                          {route.worker.name}
+                        </p>
+                      </div>
+                      <div>
+                        <span className="text-slate-500 dark:text-slate-400">
+                          Efficiency
+                        </span>
+                        <p className="font-semibold text-slate-900 dark:text-slate-100">
+                          {Math.round(route.worker.efficiency * 100)}%
+                        </p>
+                      </div>
+                      <div>
+                        <span className="text-slate-500 dark:text-slate-400">
+                          Zones Covered
+                        </span>
+                        <p className="font-semibold text-slate-900 dark:text-slate-100">
+                          {route.zones?.join(", ") || "N/A"}
+                        </p>
+                      </div>
+                      <div>
+                        <span className="text-slate-500 dark:text-slate-400">
+                          Picks
+                        </span>
+                        <p className="font-semibold text-slate-900 dark:text-slate-100">
+                          {route.tasks.length} items
+                        </p>
+                      </div>
+                    </div>
+                    <div>
+                      <span className="text-xs text-slate-500 dark:text-slate-400">
+                        Pick Sequence
+                      </span>
+                      <div className="flex flex-wrap gap-1 mt-1">
+                        {route.tasks.slice(0, 8).map((task, i) => (
+                          <span
+                            key={i}
+                            className="px-2 py-0.5 bg-slate-100 dark:bg-slate-700 text-xs rounded font-medium text-slate-700 dark:text-slate-300"
+                          >
+                            {task.location.id}
+                          </span>
+                        ))}
+                        {route.tasks.length > 8 && (
+                          <span className="px-2 py-0.5 text-xs text-slate-500">
+                            +{route.tasks.length - 8} more
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                )}
 
                 {route.status === "completed" && route.actualTime && (
                   <div className="pt-4 border-t border-slate-200">

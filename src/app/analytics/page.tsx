@@ -127,7 +127,25 @@ export default function AnalyticsPage() {
   };
 
   const handleExport = () => {
-    alert("Exporting analytics data to CSV...");
+    const headers = [
+      "Zone",
+      "Name",
+      "Orders",
+      "Efficiency %",
+      "Workers",
+      "Avg Time (min)",
+    ];
+    const rows = analyticsData.zonePerformance.map((z) =>
+      [z.zone, z.name, z.orders, z.efficiency, z.workers, z.avgTime].join(","),
+    );
+    const csv = [headers.join(","), ...rows].join("\n");
+    const blob = new Blob([csv], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `warehouse-analytics-${timeRange}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
   };
 
   const getGrowthColor = (value: number) => {
@@ -222,9 +240,9 @@ export default function AnalyticsPage() {
                   label="Total Orders"
                   value={analyticsData.overview.totalOrders.toLocaleString()}
                   sublabel={`${getGrowthIcon(
-                    analyticsData.overview.orderGrowth
+                    analyticsData.overview.orderGrowth,
                   )} ${Math.abs(
-                    analyticsData.overview.orderGrowth
+                    analyticsData.overview.orderGrowth,
                   )}% vs last period`}
                 />
               </Card>
@@ -234,9 +252,9 @@ export default function AnalyticsPage() {
                   label="Avg Processing Time"
                   value={`${analyticsData.overview.avgProcessingTime} min`}
                   sublabel={`${getGrowthIcon(
-                    analyticsData.overview.timeImprovement
+                    analyticsData.overview.timeImprovement,
                   )} ${Math.abs(
-                    analyticsData.overview.timeImprovement
+                    analyticsData.overview.timeImprovement,
                   )}% vs last period`}
                 />
               </Card>
@@ -246,9 +264,9 @@ export default function AnalyticsPage() {
                   label="Worker Efficiency"
                   value={`${analyticsData.overview.workerEfficiency}%`}
                   sublabel={`${getGrowthIcon(
-                    analyticsData.overview.efficiencyGrowth
+                    analyticsData.overview.efficiencyGrowth,
                   )} ${Math.abs(
-                    analyticsData.overview.efficiencyGrowth
+                    analyticsData.overview.efficiencyGrowth,
                   )}% vs last period`}
                 />
               </Card>
@@ -258,9 +276,9 @@ export default function AnalyticsPage() {
                   label="Cost per Order"
                   value={`$${analyticsData.overview.costPerOrder}`}
                   sublabel={`${getGrowthIcon(
-                    analyticsData.overview.costReduction
+                    analyticsData.overview.costReduction,
                   )} ${Math.abs(
-                    analyticsData.overview.costReduction
+                    analyticsData.overview.costReduction,
                   )}% vs last period`}
                 />
               </Card>
@@ -304,8 +322,8 @@ export default function AnalyticsPage() {
                                 selectedMetric === "productivity"
                                   ? `${(day.orders / 350) * 100}%`
                                   : selectedMetric === "efficiency"
-                                  ? `${day.efficiency}%`
-                                  : `${(10 - day.avgTime) * 10}%`,
+                                    ? `${day.efficiency}%`
+                                    : `${(10 - day.avgTime) * 10}%`,
                             }}
                           ></div>
                         </div>
@@ -314,8 +332,8 @@ export default function AnalyticsPage() {
                         {selectedMetric === "productivity"
                           ? day.orders
                           : selectedMetric === "efficiency"
-                          ? `${day.efficiency}%`
-                          : `${day.avgTime}m`}
+                            ? `${day.efficiency}%`
+                            : `${day.avgTime}m`}
                       </div>
                     </div>
                   ))}
